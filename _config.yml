@@ -1,0 +1,19 @@
+title: PYQ Archive
+email: lakshyajeetjalal@gmail.com
+description: >- # this means to ignore newlines until "baseurl:"
+  A collection of PYQs for various exams.
+baseurl: "/pyqs"
+url: ""
+twitter_username: Lakshyajeet_J
+github_username: MG-LSJ
+
+# Build settings
+theme: minima
+feed:
+  disable: true
+
+collections:
+  btech:
+    output: true
+  bca:
+    output: true

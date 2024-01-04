@@ -1,0 +1,37 @@
+---
+title: sem 8
+layout: explorer
+entries:
+  - pdf: TCS,TIT-801 (End).pdf
+  - pdf: TCS,TIT-801 (Mid).pdf
+  - pdf: tcs--802 (end).pdf
+  - pdf: tcs--802 (mid).pdf
+  - pdf: tcs--811 (end).pdf
+  - pdf: tcs--811 (mid).pdf
+  - pdf: tcs--821 tit--823 (end).pdf
+  - pdf: tcs--821 tit--823 (mid).pdf
+  - pdf: TCS-801-END-2022.pdf
+  - pdf: TCS-801.pdf
+  - pdf: TCS-802 (End).pdf
+  - pdf: TCS-802 (Mid).pdf
+  - pdf: TCS-812 (End).pdf
+  - pdf: TCS-812 (Mid).pdf
+  - pdf: TCS-821,TIT-823 (End).pdf
+  - pdf: TCS-821,TIT-823 (Mid).pdf
+  - pdf: TCS-821-END-2023.pdf
+  - pdf: TCS-821-MID-2023.pdf
+  - pdf: TCS-823-END-2022.pdf
+  - pdf: TCS-833(mid).pdf
+  - pdf: TCS-833.pdf
+  - pdf: TCS-834-END-2022.pdf
+  - pdf: TCS-834.pdf
+  - pdf: TCS-TIT-801(mid).pdf
+  - pdf: TCS-TIT-812(mid).pdf
+  - pdf: tcs_tit--801 (end).pdf
+  - pdf: tcs__tit--801 (mid).pdf
+  - pdf: TCS~823.pdf
+  - pdf: TDM-881-END-2023.pdf
+  - pdf: TDM-881-MID-2023.pdf
+  - pdf: TOE-811-END-2023.pdf
+  - pdf: TOE-811-MID-2023.pdf
+---

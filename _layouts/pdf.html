@@ -1,0 +1,122 @@
+---
+layout: default
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ page.title }}</title>
+		<script
+			src="{{site.baseurl}}/pdf.js/build/pdf.mjs"
+			type="module"
+		></script>
+		<style>
+			html {
+				overflow-y: scroll;
+			}
+			.path-link {
+				color: #242424 !important;
+				font-size: large;
+				padding: 0 0.2em;
+			}
+			.functionRow {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin: 20px 0px;
+			}
+			.pathList {
+				display: flex;
+				flex-wrap: wrap;
+			}
+			#pdf-viewer {
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.1);
+				overflow: auto;
+			}
+
+			.pdf-page-canvas {
+				display: block;
+				margin: auto;
+				/* border: 1px solid rgba(0, 0, 0, 0.2); */
+			}
+		</style>
+	</head>
+	<body>
+		{% assign pathList = page.path| remove_first: "_" |remove: ".md" |
+		split: "/" %} {% assign curPath = site.baseurl %}
+		<div class="pathList">
+			<a class="path-link" href="{{curPath}}/">/</a>
+			<span class="path-link">></span>
+			{% for path in pathList %} {% assign curPath = curPath | append: "/"
+			| append: path %}
+			<a class="path-link" href="{{curPath}}">{{path}}</a>
+			<span class="path-link">></span>
+			{% endfor %}
+		</div>
+
+		<div class="functionRow">
+			<div class="back-link">
+				{% if page.url != "/" %} {% assign pageTitleUrl = page.title |
+				replace: " ", "%20" %}
+				<a
+					href='{{ site.baseurl | append:page.url | remove: pageTitleUrl | remove: "/.html" }}'
+					>Back</a
+				>
+				{% endif %}
+			</div>
+			<button id="download">Download PDF</button>
+		</div>
+		<script>
+			document
+				.getElementById("download")
+				.addEventListener("click", function () {
+					window.open("{{page.pdf}}");
+				});
+		</script>
+		<div id="pdf-viewer"></div>
+		<script type="module">
+			var { pdfjsLib } = globalThis;
+			// The workerSrc property shall be specified.
+			pdfjsLib.GlobalWorkerOptions.workerSrc =
+				"{{site.baseurl}}/pdf.js/build/pdf.worker.mjs";
+			var url = "{{page.pdf}}";
+
+			var thePdf = null;
+			// var scale = 1;
+			pdfjsLib.getDocument(url).promise.then(function (pdf) {
+				thePdf = pdf;
+				var viewer = document.getElementById("pdf-viewer");
+
+				for (var page = 1; page <= pdf.numPages; page++) {
+					var canvas = document.createElement("canvas");
+					canvas.className = "pdf-page-canvas";
+					viewer.appendChild(canvas);
+					renderPage(page, canvas);
+				}
+			});
+
+			function renderPage(pageNumber, canvas) {
+				thePdf.getPage(pageNumber).then(function (page) {
+					var viewer = document.getElementById("pdf-viewer");
+					var scale =
+						viewer.offsetWidth /
+						page.getViewport({ scale: 1 }).width;
+
+					var viewport = page.getViewport({ scale: scale });
+
+					var viewport = page.getViewport({ scale: scale });
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+					page.render({
+						canvasContext: canvas.getContext("2d"),
+						viewport: viewport,
+					});
+				});
+			}
+		</script>
+	</body>
+</html>
