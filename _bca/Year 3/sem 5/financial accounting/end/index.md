@@ -1,7 +1,0 @@
----
-title: end
-layout: explorer
-entries:
-  - pdf: tbc506_endsem_2022.pdf
-  - pdf: tbc506_endsem_2023.pdf
----

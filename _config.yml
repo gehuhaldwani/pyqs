@@ -17,3 +17,6 @@ collections:
     output: true
   bca:
     output: true
+
+host: localhost
+port: 7000

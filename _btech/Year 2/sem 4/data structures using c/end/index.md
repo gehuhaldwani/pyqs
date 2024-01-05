@@ -1,9 +1,0 @@
----
-title: end
-layout: explorer
-entries:
-  - pdf: tcs410_endsem_2017.pdf
-  - pdf: tcs410_endsem_2018.pdf
-  - pdf: tcs410_endsem_2022.pdf
-  - pdf: tcs410_endsem_2023.pdf
----

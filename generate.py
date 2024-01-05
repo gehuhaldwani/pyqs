@@ -1,14 +1,18 @@
 import os
+import shutil
 
 
 def generate_md_files(root_folder, output_folder):
+    # delete all files in output folder
+    if os.path.exists(output_folder):
+        shutil.rmtree(output_folder)
+
     for foldername, subfolders, filenames in os.walk(root_folder):
         if filenames or subfolders:
             category_path = os.path.relpath(foldername, root_folder)
             # pdfs
             for filename in filenames:
                 if filename.endswith(".pdf"):
-                    pdf_path = os.path.join(foldername, filename)
                     pdf_title = os.path.splitext(filename)[0]
                     md_content = f"""---
 title: {pdf_title}

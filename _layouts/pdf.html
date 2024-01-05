@@ -77,46 +77,31 @@ layout: default
 					window.open("{{page.pdf}}");
 				});
 		</script>
-		<div id="pdf-viewer"></div>
-		<script type="module">
-			var { pdfjsLib } = globalThis;
-			// The workerSrc property shall be specified.
-			pdfjsLib.GlobalWorkerOptions.workerSrc =
-				"{{site.baseurl}}/pdf.js/build/pdf.worker.mjs";
-			var url = "{{page.pdf}}";
-
-			var thePdf = null;
-			// var scale = 1;
-			pdfjsLib.getDocument(url).promise.then(function (pdf) {
-				thePdf = pdf;
-				var viewer = document.getElementById("pdf-viewer");
-
-				for (var page = 1; page <= pdf.numPages; page++) {
-					var canvas = document.createElement("canvas");
-					canvas.className = "pdf-page-canvas";
-					viewer.appendChild(canvas);
-					renderPage(page, canvas);
-				}
-			});
-
-			function renderPage(pageNumber, canvas) {
-				thePdf.getPage(pageNumber).then(function (page) {
-					var viewer = document.getElementById("pdf-viewer");
-					var scale =
-						viewer.offsetWidth /
-						page.getViewport({ scale: 1 }).width;
-
-					var viewport = page.getViewport({ scale: scale });
-
-					var viewport = page.getViewport({ scale: scale });
-					canvas.height = viewport.height;
-					canvas.width = viewport.width;
-					page.render({
-						canvasContext: canvas.getContext("2d"),
-						viewport: viewport,
-					});
-				});
+		<div id="adobe-dc-view" style="width: inherit"></div>
+		<script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
+		<script type="text/javascript">
+			if (window.location.hostname == "localhost") {
+				var apiKey = "60ce395d725a40d39e828d6f74e7d021"; // localhost
+			} else {
+				var apiKey = "3fd1410704ff487695b8429bfb993f81"; // github.io
 			}
+			document.addEventListener("adobe_dc_view_sdk.ready", function () {
+				var adobeDCView = new AdobeDC.View({
+					clientId: apiKey,
+					divId: "adobe-dc-view",
+				});
+				adobeDCView.previewFile(
+					{
+						content: {
+							location: {
+								url: "{{page.pdf}}",
+							},
+						},
+						metaData: { fileName: "{{page.title}}" },
+					},
+					{ embedMode: "IN_LINE" }
+				);
+			});
 		</script>
 	</body>
 </html>
