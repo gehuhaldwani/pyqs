@@ -22,6 +22,8 @@ layout: default
 				color: #242424 !important;
 				padding: 1em;
 				font-size: large;
+				width: inherit;
+				word-wrap: break-word;
 			}
 			.path-link {
 				color: #242424 !important;
@@ -37,8 +39,7 @@ layout: default
 			.region {
 				width: inherit;
 				height: inherit;
-				padding: 0.5em 5em 0.5em 1em;
-				/* margin-bottom: 0.5em; */
+				padding: 0.5em 1em;
 				display: flex;
 				align-items: center;
 				justify-content: left;
@@ -59,6 +60,7 @@ layout: default
 			.tile-view {
 				display: flex;
 				flex-wrap: wrap;
+				justify-content: space-evenly;
 			}
 			.tile-view li {
 				width: 200px;
@@ -72,7 +74,6 @@ layout: default
 			}
 			.tile-view .folder-link {
 				width: 180px;
-				word-wrap: break-word;
 				text-align: center;
 				padding: 0;
 			}
@@ -83,6 +84,22 @@ layout: default
 			.pathList {
 				display: flex;
 				flex-wrap: wrap;
+			}
+			@media only screen and (max-width: 600px) {
+				.tile-view li {
+					width: 150px;
+					height: 150px;
+				}
+				.tile-view .folder-link {
+					width: 120px;
+					text-align: center;
+					padding: 0;
+					font-size: medium;
+				}
+				.tile-view .icon svg {
+					height: 50px;
+					width: 50px;
+				}
 			}
 		</style>
 	</head>
@@ -128,7 +145,7 @@ layout: default
 							xmlns="http://www.w3.org/2000/svg"
 							width="32"
 							height="32"
-							{% if  "OTHERS" == entry.dir%}
+							{% if entry.dir == "OTHERS" or entry.dir == "OLD" %}
 								fill="grey"
 							{% else %}
 								fill="#F5B800"
