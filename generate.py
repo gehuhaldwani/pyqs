@@ -36,9 +36,9 @@ title: {os.path.basename(foldername)}
 layout: explorer
 entries:
 """
-            for subfolder in subfolders:
+            for subfolder in sorted(subfolders):
                 index_md_content += f"  - dir: {subfolder}\n"
-            for filename in filenames:
+            for filename in sorted(filenames):
                 if filename.endswith(".pdf"):
                     index_md_content += f"  - pdf: {filename}\n"
                 else:
