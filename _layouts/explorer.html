@@ -2,195 +2,98 @@
 layout: default
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{{ page.title }}</title>
-		<style>
-			html {
-				overflow-y: scroll;
-			}
-			ul {
-				list-style-type: none;
-				padding: 0;
-				margin: 0;
-				/* width: max-content; */
-			}
-			.folder-link {
-				color: #242424 !important;
-				padding: 1em;
-				font-size: large;
-				width: inherit;
-				word-wrap: break-word;
-			}
-			.path-link {
-				color: #242424 !important;
-				font-size: large;
-				padding: 0 0.2em;
-			}
-			li {
-				-webkit-user-select: none; /* Safari */
-				-ms-user-select: none; /* IE 10 and IE 11 */
-				user-select: none; /* Standard syntax */
-				margin: 0.5em;
-			}
-			.region {
-				width: inherit;
-				height: inherit;
-				padding: 0.5em 1em;
-				display: flex;
-				align-items: center;
-				justify-content: left;
-				border-radius: 0.5em;
-				background-color: rgba(0, 0, 0, 0.025);
-			}
-			.functionRow {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin: 20px 0px;
-			}
-			.icon {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.tile-view {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: space-evenly;
-			}
-			.tile-view li {
-				width: 200px;
-				height: 200px;
-			}
-			.tile-view .region {
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				padding: 0;
-			}
-			.tile-view .folder-link {
-				width: 180px;
-				text-align: center;
-				padding: 0;
-			}
-			.tile-view .icon svg {
-				height: 75px;
-				width: 75px;
-			}
-			.pathList {
-				display: flex;
-				flex-wrap: wrap;
-			}
-			@media only screen and (max-width: 600px) {
-				.tile-view li {
-					width: 150px;
-					height: 150px;
-				}
-				.tile-view .folder-link {
-					width: 120px;
-					text-align: center;
-					padding: 0;
-					font-size: medium;
-				}
-				.tile-view .icon svg {
-					height: 50px;
-					width: 50px;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		{% assign pathList = page.path| remove_first: "_" | remove: "index.md"
-		| split: "/" %} {% assign curPath = site.baseurl %}
-		<div class="pathList">
-			<a class="path-link" href="{{curPath}}/">/</a>
-			<span class="path-link">></span>
-			{% for path in pathList %} {% assign curPath = curPath | append: "/"
-			| append: path %}
-			<a class="path-link" href="{{curPath}}">{{path}}</a>
-			<span class="path-link">></span>
-			{% endfor %}
-		</div>
+<head>
+	<title>{{ page.title }}</title>
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/explorer.css" />
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/pathList.css" />
+</head>
+<body>
+	{% assign pathList = page.path| remove_first: "_" | remove: "index.md" |
+	split: "/" %} {% assign curPath = site.baseurl %}
+	<div class="pathList">
+		<a class="path-link" href="{{curPath}}/">/</a>
+		<span class="path-link">></span>
+		{% for path in pathList %} {% assign curPath = curPath | append: "/" |
+		append: path %}
+		<a class="path-link" href="{{curPath}}">{{path}}</a>
+		<span class="path-link">></span>
+		{% endfor %}
+	</div>
 
-		<div class="functionRow">
-			<div class="back-link">
-				{% if page.url != "/" %} {% assign pageTitleUrl = page.title |
-				replace: " ", "%20" %}
-				<a
-					href='{{ site.baseurl | append:page.url | remove: "/index.html"| remove: pageTitleUrl }}'
-					>Back</a
-				>
-				{% endif %}
-			</div>
-			<button id="toggleView">Toggle View</button>
+	<div class="functionRow">
+		<div class="back-link">
+			{% if page.url != "/" %} {% assign pageTitleUrl = page.title |
+			replace: " ", "%20" %}
+			<a
+				href='{{ site.baseurl | append:page.url | remove: "/index.html"| remove: pageTitleUrl }}'
+				>Back</a
+			>
+			{% endif %}
 		</div>
-		<script>
-			document
-				.getElementById("toggleView")
-				.addEventListener("click", function () {
-					var ul = document.getElementById("fileList");
-					ul.classList.toggle("tile-view");
-				});
-		</script>
-		<ul id="fileList">
-			{% for entry in page.entries %} {% if entry.dir %}
-			<li class="folder">
-				<div class="region">
-					<div class="icon">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="32"
-							height="32"
-							{% if entry.dir == "OTHERS" or entry.dir == "OLD" %}
-								fill="grey"
-							{% else %}
-								fill="#F5B800"
-							{% endif %}
-							viewBox="0 0 16 16"
-						>
-							<path
-								d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"
-							/>
-						</svg>
-					</div>
-					<a
-						class="folder-link"
-						href='{{ site.baseurl | append:page.url | remove: "index.html"| append: entry.dir}}'
-						>{{ entry.dir }}</a
+		<button id="toggleView">Toggle View</button>
+	</div>
+	<script>
+		document
+			.getElementById("toggleView")
+			.addEventListener("click", function () {
+				var ul = document.getElementById("fileList");
+				ul.classList.toggle("tile-view");
+			});
+	</script>
+	<ul id="fileList">
+		{% for entry in page.entries %} {% if entry.dir %}
+		<li class="folder">
+			<div class="region">
+				<div class="icon">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						{% if entry.dir == "OTHERS" or entry.dir == "OLD" %}
+							fill="grey"
+						{% else %}
+							fill="#F5B800"
+						{% endif %}
+						viewBox="0 0 16 16"
 					>
+						<path
+							d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3m-8.322.12q.322-.119.684-.12h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981z"
+						/>
+				</svg>
 				</div>
-			</li>
-			{% elsif entry.pdf %}
-			<li class="pdf">
-				<div class="region">
-					<div class="icon">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="32"
-							height="32"
-							fill="#D65532"
-							viewBox="0 0 16 16"
-						>
-							<path
-								d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"
-							/>
-							<path
-								d="M4.603 12.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.6 11.6 0 0 0-1.997.406 11.3 11.3 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.244.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 5.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z"
-							/>
-						</svg>
-					</div>
-					<a
-						class="folder-link"
-						href='{{ site.baseurl |append: page.url | remove: "index.html"| append: entry.pdf | remove: ".pdf"}}'
-						>{{ entry.pdf }}</a
+				<a
+					class="folder-link"
+					href='{{ site.baseurl | append:page.url | remove: "index.html"| append: entry.dir}}'
+					>{{ entry.dir }}</a
+				>
+			</div>
+		</li>
+		{% elsif entry.pdf %}
+		<li class="pdf">
+			<div class="region">
+				<div class="icon">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						fill="#D65532"
+						viewBox="0 0 16 16"
 					>
+						<path
+							d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"
+						/>
+						<path
+							d="M4.603 12.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.6 11.6 0 0 0-1.997.406 11.3 11.3 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.244.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 5.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z"
+						/>
+					</svg>
 				</div>
-			</li>
-			{% endif %} {% endfor %}
-		</ul>
-	</body>
-</html>
+				<a
+					class="folder-link"
+					href='{{ site.baseurl |append: page.url | remove: "index.html"| append: entry.pdf | remove: ".pdf"}}'
+					>{{ entry.pdf }}</a
+				>
+			</div>
+		</li>
+		{% endif %} {% endfor %}
+	</ul>
+</body>

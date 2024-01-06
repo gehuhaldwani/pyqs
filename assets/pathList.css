@@ -1,0 +1,15 @@
+.path-link {
+	color: #242424 !important;
+	font-size: large;
+	padding: 0 0.2em;
+}
+.functionRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 20px 0px;
+}
+.pathList {
+	display: flex;
+	flex-wrap: wrap;
+}
