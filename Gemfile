@@ -1,9 +1,11 @@
 source "https://rubygems.org"
 
+
+
 if Gem::Platform.local.os == 'mingw' # Windows
   gem "jekyll"
 else
-  gem "github-pages"
+  gem "jekyll-v4-github-pages", group: :jekyll_plugins
 end
 
 gem "jekyll-feed" , group: :jekyll_plugins
