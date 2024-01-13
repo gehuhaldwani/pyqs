@@ -1,14 +1,30 @@
 title: PYQ Archive
-email: lakshyajeetjalal@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   A collection of PYQs for various courses.
 baseurl: "/pyqs"
 url: ""
-twitter_username: Lakshyajeet_J
-github_username: MG-LSJ
 
 # Build settings
-theme: minima
+remote_theme: jekyll/minima
+
+plugins:
+  - jekyll-remote-theme
+
+author:
+  name: Lakshyajeet Jalal
+  email: lakshyajeetjalal@gmail.com
+
+minima:
+  skin: auto
+  social_links:
+    - { platform: github, user_url: "https://github.com/MG-LSJ" }
+    - {
+        platform: linkedin,
+        user_url: "https://www.linkedin.com/in/lakshyajeet-jalal/",
+      }
+header_pages:
+  - about.md
+
 feed:
   disable: true
 
@@ -18,5 +34,5 @@ collections:
   bca:
     output: true
 
-host: localhost
+host: 0.0.0.0
 port: 7000

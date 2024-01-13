@@ -9,3 +9,5 @@ _*/
 
 # Don't ignore these directories
 !/_layouts
+!/_includes
+!/_sass

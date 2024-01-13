@@ -1,11 +1,12 @@
 ---
-layout: default
+layout: base
 ---
 
 <head>
 	<title>{{ page.title }}</title>
-	<link rel="stylesheet" href="{{ site.baseurl }}/assets/explorer.css" />
-	<link rel="stylesheet" href="{{ site.baseurl }}/assets/pathList.css" />
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/explorer.css" />
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/pathList.css" />
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/scrollBar.css" />
 </head>
 <body>
 	{% assign pathList = page.path| remove_first: "_" | remove: "index.md" |
@@ -41,6 +42,7 @@ layout: default
 			});
 	</script>
 	<ul id="fileList">
+		<div>
 		{% for entry in page.entries %} {% if entry.dir %}
 		<li class="folder">
 			<div class="region">
@@ -95,5 +97,6 @@ layout: default
 			</div>
 		</li>
 		{% endif %} {% endfor %}
+		</div>
 	</ul>
 </body>

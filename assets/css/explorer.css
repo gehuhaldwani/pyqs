@@ -1,0 +1,89 @@
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	/* width: max-content; */
+}
+.folder-link {
+	color: #242424 !important;
+	padding: 1em;
+	font-size: large;
+	width: inherit;
+	max-width: 80%;
+	word-wrap: break-word;
+}
+li {
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+	margin: 10px;
+}
+.region {
+	width: inherit;
+	height: inherit;
+	padding: 0.5em 1em;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	border-radius: 0.5em;
+	background-color: rgba(0, 0, 0, 0.025);
+}
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.tile-view {
+	display: flex;
+	justify-content: center;
+}
+.tile-view > div {
+	max-width: 660px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.tile-view li {
+	width: 200px;
+	height: 200px;
+}
+.tile-view .region {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+}
+.tile-view .folder-link {
+	width: 180px;
+	text-align: center;
+	padding: 0;
+}
+.tile-view .icon svg {
+	height: 75px;
+	width: 75px;
+}
+
+@media only screen and (max-width: 600px) {
+	.tile-view li {
+		width: 150px;
+		height: 150px;
+	}
+	.tile-view .folder-link {
+		width: 120px;
+		text-align: center;
+		padding: 0;
+		font-size: medium;
+	}
+	.tile-view .icon svg {
+		height: 50px;
+		width: 50px;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.region {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+	.folder-link {
+		color: #f0f0f0 !important;
+	}
+}

@@ -1,0 +1,35 @@
+header 
+{
+    position: relative !important;
+    width: 100% !important;
+    top: 0 !important;
+    height: $header-size !important;
+    background-color: $header-background-color !important;
+    z-index: 1000 !important;
+}
+body
+{
+}
+.main-content
+{
+    overflow: auto !important;
+    position: absolute !important;
+    
+    top: calc($header-size + 10px) !important ;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    scrollbar-gutter: stable both-edges !important;
+
+    display: flex !important;
+    flex-flow: column !important;
+}
+
+.main-content .page-content
+{
+    flex: 1 1 auto;
+}
+.main-content .page-footer
+{
+    flex: 0 1 auto;
+}
