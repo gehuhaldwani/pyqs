@@ -2,10 +2,6 @@
 <html dir="ltr">
 	<head>
 		{%- include custom-head.html -%}
-		<link
-			rel="stylesheet"
-			href="{{site.baseurl}}/assets/css/scrollBar.css"
-		/>
 
 		<link rel="stylesheet" href="{{site.baseurl}}/pdfjs/web/viewer.css" />
 		<script
@@ -17,7 +13,12 @@
 			type="module"
 		></script>
 	</head>
-
+	<style>
+		#close::before {
+			-webkit-mask-image: url({{site.baseurl}}/assets/close.svg);
+			mask-image: url({{site.baseurl}}/assets/close.svg);
+		}
+	</style>
 	<body tabindex="1">
 		<div id="outerContainer">
 			<div id="sidebarContainer" class="mobileHide">

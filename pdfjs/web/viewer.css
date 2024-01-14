@@ -21,6 +21,7 @@
 	opacity: 0.25;
 	line-height: 1;
 	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
 	text-size-adjust: none;
 	forced-color-adjust: none;
 	transform-origin: 0 0;
@@ -596,7 +597,6 @@
 }
 
 :root {
-	color-scheme: light;
 	--dir-factor: 1;
 	--inline-start: left;
 	--inline-end: right;
@@ -610,49 +610,58 @@
 	--editor-toolbar-base-offset: 105px;
 
 	--icon-size: 20px;
-	--main-color: rgb(12 12 13);
+	color-scheme: light;
+	--main-color: rgb(0, 0, 0);
 	--main-bg-color: rgb(255 255 255);
 	--body-bg-color: #f5f5f5;
+
 	--progressBar-color: rgb(10 132 255);
 	--progressBar-bg-color: rgb(221 221 222);
 	--progressBar-blend-color: rgb(116 177 239);
+
 	--toolbar-icon-bg-color: rgb(0 0 0/0.6);
 	--toolbar-icon-hover-bg-color: rgb(0 0 0/ 1);
-	--sidebar-bg-color: rgb(255 255 255);
+
+	--sidebar-bg-color: var(--main-bg-color);
 	--sidebar-narrow-bg-color: rgb(212 212 215 / 0.9);
 	--sidebar-toolbar-bg-color: rgb(245 246 247);
-	--toolbar-bg-color: rgb(255 255 255);
+
+	--toolbar-bg-color: var(--main-bg-color);
 	--toolbar-border-color: rgb(184 184 184);
 	--toolbar-box-shadow: 0 1px 0 var(--toolbar-border-color);
 	--toolbar-border-bottom: none;
+
 	--toolbarSidebar-box-shadow: inset calc(-1px * var(--dir-factor)) 0 0
 			rgb(0 0 0 / 0.25),
 		0 1px 0 rgb(0 0 0 / 0.15), 0 0 1px rgb(0 0 0 / 0.1);
 	--toolbarSidebar-border-bottom: none;
+
 	--button-hover-color: none;
+
 	--toggled-btn-color: rgb(0 0 0);
 	--toggled-btn-bg-color: #e1e1e1;
 	--toggled-hover-active-btn-color: none;
 	--toggled-hover-btn-outline: none;
-	--dropdown-btn-bg-color: var(--field-bg-color);
+
+	--dropdown-btn-bg-color: var(--toggled-btn-bg-color);
 	--dropdown-btn-border: none;
+
 	--separator-color: rgb(0 0 0 / 0.3);
-	--field-color: rgb(6 6 6);
-	--field-bg-color: #fafafa;
+
+	--field-color: rgb(0 0 0);
+	--field-bg-color: var(--toggled-btn-bg-color);
 	--field-border-color: rgb(187 187 188);
-	--treeitem-color: rgb(0 0 0 / 0.8);
-	--treeitem-bg-color: rgb(0 0 0 / 0.15);
-	--treeitem-hover-color: rgb(0 0 0 / 0.9);
-	--treeitem-selected-color: rgb(0 0 0 / 0.9);
-	--treeitem-selected-bg-color: rgb(0 0 0 / 0.25);
+
 	--thumbnail-color: rgb(0 0 0 / 0.2);
 	--thumbnail-hover-color: rgb(0 0 0 / 0.5);
-	--thumbnail-selected-color: #3571de;
-	--doorhanger-bg-color: rgb(255 255 255);
-	--doorhanger-border-color: rgb(12 12 13 / 0.2);
-	--doorhanger-hover-color: rgb(12 12 13);
+	--thumbnail-selected-color: var(--progressBar-color);
+
+	--doorhanger-bg-color: var(--main-bg-color);
+	--doorhanger-border-color: rgb(0 0 0 / 0.2);
+	--doorhanger-hover-color: rgb(0 0 0);
 	--doorhanger-hover-bg-color: rgb(237 237 237);
 	--doorhanger-separator-color: rgb(222 222 222);
+
 	--dialog-button-border: none;
 	--dialog-button-bg-color: rgb(12 12 13 / 0.1);
 	--dialog-button-hover-bg-color: rgb(12 12 13 / 0.3);
@@ -693,6 +702,139 @@
 	--dir-factor: -1;
 	--inline-start: right;
 	--inline-end: left;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:where(:not(.is-light)) {
+		color-scheme: dark;
+		--main-color: rgb(255, 255, 255);
+		--main-bg-color: #3b3b3b;
+		--body-bg-color: #333333;
+
+		--progressBar-color: rgb(0 96 223);
+		--progressBar-bg-color: rgb(40 40 43);
+		--progressBar-blend-color: rgb(20 68 133);
+
+		--toolbar-icon-bg-color: rgb(255 255 255 / 0.6);
+		--toolbar-icon-hover-bg-color: rgb(255 255 255 /1);
+
+		--sidebar-bg-color: var(--main-bg-color);
+		--sidebar-narrow-bg-color: rgb(42 42 46 / 0.9);
+		--sidebar-toolbar-bg-color: rgb(50 50 52);
+
+		--toolbar-bg-color: var(--main-bg-color);
+		--toolbar-border-color: rgb(12 12 13);
+		--toolbar-box-shadow: 0 1px 0 var(--toolbar-border-color);
+		--toolbar-border-bottom: none;
+
+		--toolbarSidebar-box-shadow: inset calc(-1px * var(--dir-factor)) 0 0
+				rgb(155 255 255 / 0.25),
+			0 1px 0 rgb(255 255 255 / 0.15), 0 0 1px rgb(255 255 255 / 0.1);
+		--toolbarSidebar-border-bottom: none;
+
+		--button-hover-color: none;
+
+		--toggled-btn-color: rgb(255 255 255);
+		--toggled-btn-bg-color: #555555;
+		--toggled-hover-active-btn-color: none;
+		--toggled-hover-btn-outline: none;
+
+		--dropdown-btn-bg-color: var(--toggled-btn-bg-color);
+		--dropdown-btn-border: none;
+
+		--separator-color: rgb(255 255 255 / 0.3);
+
+		--field-color: rgb(250 250 250);
+		--field-bg-color: var(--toggled-btn-bg-color);
+		--field-border-color: rgb(115 115 115);
+
+		--thumbnail-color: rgb(255 255 255 / 0.2);
+		--thumbnail-hover-color: rgb(255 255 255 / 0.1);
+		--thumbnail-selected-color: var(--progressBar-color);
+
+		--doorhanger-bg-color: var(--main-bg-color);
+		--doorhanger-border-color: rgb(255 255 255 / 0.2);
+		--doorhanger-hover-color: rgb(255 255 255);
+		--doorhanger-hover-bg-color: #4a4a4a;
+		--doorhanger-separator-color: rgb(92 92 97);
+
+		--dialog-button-border: none;
+		--dialog-button-bg-color: rgb(92 92 97);
+		--dialog-button-hover-bg-color: rgb(115 115 115);
+	}
+
+	:where(html:not(.is-light)) ::-webkit-scrollbar-thumb {
+		background-color: #7f7f7f !important;
+	}
+	:where(html:not(.is-light)) ::-webkit-scrollbar-thumb:hover {
+		background-color: #c1c1c1 !important;
+	}
+}
+
+:root:where(.is-dark) {
+	color-scheme: dark;
+	--main-color: rgb(255, 255, 255);
+	--main-bg-color: #3b3b3b;
+	--body-bg-color: #333333;
+
+	--progressBar-color: rgb(0 96 223);
+	--progressBar-bg-color: rgb(40 40 43);
+	--progressBar-blend-color: rgb(20 68 133);
+
+	--toolbar-icon-bg-color: rgb(255 255 255 / 0.6);
+	--toolbar-icon-hover-bg-color: rgb(255 255 255 /1);
+
+	--sidebar-bg-color: var(--main-bg-color);
+	--sidebar-narrow-bg-color: rgb(42 42 46 / 0.9);
+	--sidebar-toolbar-bg-color: rgb(50 50 52);
+
+	--toolbar-bg-color: var(--main-bg-color);
+	--toolbar-border-color: rgb(12 12 13);
+	--toolbar-box-shadow: 0 1px 0 var(--toolbar-border-color);
+	--toolbar-border-bottom: none;
+
+	--toolbarSidebar-box-shadow: inset calc(-1px * var(--dir-factor)) 0 0
+			rgb(155 255 255 / 0.25),
+		0 1px 0 rgb(255 255 255 / 0.15), 0 0 1px rgb(255 255 255 / 0.1);
+	--toolbarSidebar-border-bottom: none;
+
+	--button-hover-color: none;
+
+	--toggled-btn-color: rgb(255 255 255);
+	--toggled-btn-bg-color: #555555;
+	--toggled-hover-active-btn-color: none;
+	--toggled-hover-btn-outline: none;
+
+	--dropdown-btn-bg-color: var(--toggled-btn-bg-color);
+	--dropdown-btn-border: none;
+
+	--separator-color: rgb(255 255 255 / 0.3);
+
+	--field-color: rgb(250 250 250);
+	--field-bg-color: var(--toggled-btn-bg-color);
+	--field-border-color: rgb(115 115 115);
+
+	--thumbnail-color: rgb(255 255 255 / 0.2);
+	--thumbnail-hover-color: rgb(255 255 255 / 0.1);
+	--thumbnail-selected-color: var(--progressBar-color);
+
+	--doorhanger-bg-color: var(--main-bg-color);
+	--doorhanger-border-color: rgb(255 255 255 / 0.2);
+	--doorhanger-hover-color: rgb(255 255 255);
+	--doorhanger-hover-bg-color: #4a4a4a;
+	--doorhanger-separator-color: rgb(92 92 97);
+
+	--dialog-button-border: none;
+	--dialog-button-bg-color: rgb(92 92 97);
+	--dialog-button-hover-bg-color: rgb(115 115 115);
+}
+
+:where(html.is-dark) ::-webkit-scrollbar-thumb {
+	background-color: #7f7f7f !important;
+}
+
+:where(html.is-dark) ::-webkit-scrollbar-thumb:hover {
+	background-color: #c1c1c1 !important;
 }
 
 @media screen and (forced-colors: active) {
@@ -1551,8 +1693,9 @@ a:is(.toolbarButton, .secondaryToolbarButton)[href="#"] {
 
 #thumbnailView {
 	position: absolute;
-	width: auto;
+	height: -moz-fit-content;
 	height: fit-content;
+	width: auto;
 	inset-block: 0;
 	width: 90%;
 	padding: 5%;

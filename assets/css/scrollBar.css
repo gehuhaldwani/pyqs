@@ -14,11 +14,12 @@
 	-webkit-transition: ease-in-out 0.2s;
 	transition: ease-in-out 0.2s;
 }
+
 @media (prefers-color-scheme: dark) {
 	::-webkit-scrollbar-thumb {
-		background-color: #242424;
+		background-color: #7f7f7f !important;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background-color: #7f7f7f;
+		background-color: #c1c1c1 !important;
 	}
 }
