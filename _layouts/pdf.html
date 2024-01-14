@@ -3,20 +3,24 @@
 	<head>
 		{%- include custom-head.html -%}
 
-		<link rel="stylesheet" href="{{site.baseurl}}/pdfjs/web/viewer.css" />
+		<link
+			rel="stylesheet"
+			href="{{site.baseurl}}/vendor/pdfjs/web/viewer.css"
+		/>
 		<script
-			src="{{site.baseurl}}/pdfjs/build/pdf.mjs"
+			src="{{site.baseurl}}/vendor/pdfjs/build/pdf.mjs"
 			type="module"
 		></script>
 		<script
-			src="{{site.baseurl}}/pdfjs/web/viewer.mjs"
+			src="{{site.baseurl}}/vendor/pdfjs/web/viewer.mjs"
 			type="module"
 		></script>
 	</head>
 	<style>
+		--close-icon: url({{site.baseurl}}/assets/icons/close.svg);
 		#close::before {
-			-webkit-mask-image: url({{site.baseurl}}/assets/close.svg);
-			mask-image: url({{site.baseurl}}/assets/close.svg);
+			-webkit-mask-image: var(--close-icon);
+			mask-image: var(--close-icon);
 		}
 	</style>
 	<body tabindex="1">
@@ -556,6 +560,6 @@
 			window.location.href =
 				"{{ site.baseurl | append:page.url | remove: pageTitleUrl | remove: '/.html' }}";
 		}
-		let PDF_JS_PATH = "{{site.baseurl}}/pdfjs";
+		let PDF_JS_PATH = "{{site.baseurl}}/vendor/pdfjs";
 	</script>
 </html>

@@ -1,13 +1,12 @@
 source "https://rubygems.org"
 
-
-
 if Gem::Platform.local.os == 'mingw' # Windows
   gem "jekyll"
 else
   gem "jekyll-v4-github-pages", group: :jekyll_plugins
 end
 
+gem 'jekyll-include-cache', group: :jekyll_plugins
 gem "jekyll-feed" , group: :jekyll_plugins
 gem "jekyll-seo-tag", group: :jekyll_plugins
 gem "jekyll-remote-theme", group: :jekyll_plugins

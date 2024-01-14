@@ -3,11 +3,13 @@ description: >- # this means to ignore newlines until "baseurl:"
   A collection of PYQs for various courses.
 baseurl: "/pyqs"
 url: ""
-
+logo: "/assets/images/logo.png"
 # Build settings
 remote_theme: jekyll/minima
 
 plugins:
+  - jekyll-seo-tag
+  - jekyll-include-cache
   - jekyll-remote-theme
 
 author:
@@ -26,13 +28,11 @@ header_pages:
   - about.md
 
 feed:
-  disable: true
-
-collections:
-  btech:
-    output: true
-  bca:
-    output: true
 
 host: 0.0.0.0
 port: 7000
+
+collections:
+  pyqs:
+    output: true
+    permalink: /:path

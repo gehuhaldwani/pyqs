@@ -1,12 +1,9 @@
+from operator import ne
 import os
 import shutil
 
 
 def generate_md_files(root_folder, output_folder):
-    # delete all files in output folder
-    if os.path.exists(output_folder):
-        shutil.rmtree(output_folder)
-
     for foldername, subfolders, filenames in os.walk(root_folder):
         if filenames or subfolders:
             category_path = os.path.relpath(foldername, root_folder)
@@ -22,6 +19,7 @@ layout: pdf
 """
                     md_filename = os.path.join(
                         output_folder,
+                        root_folder,
                         category_path,
                         f'{pdf_title.lower().replace(" ", "_")}.md',
                     )
@@ -46,7 +44,9 @@ entries:
 
             index_md_content += "---\n"
 
-            index_md_filename = os.path.join(output_folder, category_path, "index.md")
+            index_md_filename = os.path.join(
+                output_folder, root_folder, category_path, "index.md"
+            )
 
             os.makedirs(os.path.dirname(index_md_filename), exist_ok=True)
 
@@ -55,11 +55,18 @@ entries:
 
 
 if __name__ == "__main__":
-    dir = {
-        "./btech": "./_btech",
-        "./bca": "./_bca",
-    }
-    for root_folder, output_folder in dir.items():
-        generate_md_files(root_folder, output_folder)
+    output_folder = "./_pyqs"
+    # remove output folder if exists
+    if os.path.exists(output_folder):
+        shutil.rmtree(output_folder)
+
+    # for folder in current directory
+    for folder in os.listdir():
+        if (
+            os.path.isdir(folder)
+            and folder[0].isalpha()
+            and folder not in ["assets", "vendor"]
+        ):
+            generate_md_files(folder, output_folder)
 
     print("Markdown files generated successfully.")

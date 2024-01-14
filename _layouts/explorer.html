@@ -25,7 +25,7 @@ layout: base
 			{% if page.url != "/" %} {% assign pageTitleUrl = page.title |
 			replace: " ", "%20" %}
 			<a
-				href='{{ site.baseurl | append:page.url | remove: "/index.html"| remove: pageTitleUrl }}'
+				href='{{ site.baseurl | append:page.url | remove: "/index" | remove: ".html" | remove: pageTitleUrl }}'
 				>Back</a
 			>
 			{% endif %}
@@ -64,7 +64,7 @@ layout: base
 				</div>
 				<a
 					class="folder-link"
-					href='{{ site.baseurl | append:page.url | remove: "index.html"| append: entry.dir}}'
+					href='{{ site.baseurl | append:page.url | remove: "index" | remove: ".html" | append: entry.dir}}'
 					>{{ entry.dir }}</a
 				>
 			</div>
@@ -90,7 +90,7 @@ layout: base
 				</div>
 				<a
 					class="folder-link"
-					href='{{ site.baseurl |append: page.url | remove: "index.html"| append: entry.pdf | remove: ".pdf"}}'
+					href='{{ site.baseurl | append: page.url | remove: "index" | remove: ".html" | append: entry.pdf | remove: ".pdf"}}'
 					>{{ entry.pdf }}</a
 				>
 			</div>
