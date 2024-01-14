@@ -2,12 +2,14 @@
 .jekyll-cache
 .jekyll-metadata
 .vscode
-vendor
 
 # Ignore all directories starting with '_'
 _*/
 
 # Don't ignore these directories
-!/_layouts
+!/_drafts
 !/_includes
+!/_layouts
+!/_posts
+!/_data
 !/_sass
