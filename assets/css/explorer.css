@@ -42,6 +42,12 @@ li {
 	justify-content: left;
 	border-radius: 0.5em;
 	background-color: var(--highlight-color);
+	transition: 0.2s;
+}
+.region:hover {
+	background-color: var(--highlight-hover-color);
+	cursor: pointer;
+	transform: scale(1.025);
 }
 .icon {
 	display: flex;

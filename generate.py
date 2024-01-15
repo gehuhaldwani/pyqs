@@ -21,7 +21,7 @@ layout: pdf
                         output_folder,
                         root_folder,
                         category_path,
-                        f'{pdf_title.replace(" ", "_")}.md',
+                        f"{pdf_title}.md",
                     )
 
                     os.makedirs(os.path.dirname(md_filename), exist_ok=True)
