@@ -1,7 +1,6 @@
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
-.vscode
 
 # Ignore all directories starting with '_'
 _*/

@@ -1,3 +1,21 @@
+:root {
+	--text-color: #242424;
+	--highlight-color: rgba(0, 0, 0, 0.025);
+	--highlight-hover-color: rgba(0, 0, 0, 0.05);
+
+	--icon-up: url("../icons/up.svg");
+	--icon-grid_view: url("../icons/grid_view.svg");
+	--icon-list_view: url("../icons/list_view.svg");
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #f0f0f0;
+		--highlight-color: rgba(255, 255, 255, 0.05);
+		--highlight-hover-color: rgba(255, 255, 255, 0.1);
+	}
+}
+
 ul {
 	list-style-type: none;
 	padding: 0;
@@ -5,7 +23,7 @@ ul {
 	/* width: max-content; */
 }
 .folder-link {
-	color: #242424 !important;
+	color: var(--text-color) !important;
 	padding: 1em;
 	font-size: large;
 	width: inherit;
@@ -13,9 +31,6 @@ ul {
 	word-wrap: break-word;
 }
 li {
-	-webkit-user-select: none; /* Safari */
-	-ms-user-select: none; /* IE 10 and IE 11 */
-	user-select: none; /* Standard syntax */
 	margin: 10px;
 }
 .region {
@@ -26,64 +41,158 @@ li {
 	align-items: center;
 	justify-content: left;
 	border-radius: 0.5em;
-	background-color: rgba(0, 0, 0, 0.025);
+	background-color: var(--highlight-color);
 }
 .icon {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
-.tile-view {
-	display: flex;
-	justify-content: center;
-}
-.tile-view > div {
-	max-width: 660px;
-	display: flex;
-	flex-wrap: wrap;
-}
-.tile-view li {
-	width: 200px;
-	height: 200px;
-}
-.tile-view .region {
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 0;
-}
-.tile-view .folder-link {
-	width: 180px;
-	text-align: center;
-	padding: 0;
-}
-.tile-view .icon svg {
-	height: 75px;
-	width: 75px;
-}
 
-@media only screen and (max-width: 600px) {
-	.tile-view li {
-		width: 150px;
-		height: 150px;
+.gridView {
+	#fileList {
+		display: flex;
+		justify-content: center;
 	}
-	.tile-view .folder-link {
-		width: 120px;
+	#fileList > div {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 660px;
+	}
+	#fileList li {
+		width: 200px;
+		height: 200px;
+	}
+	#fileList .region {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+	}
+	#fileList .folder-link {
+		width: 180px;
 		text-align: center;
 		padding: 0;
 		font-size: medium;
 	}
-	.tile-view .icon svg {
-		height: 50px;
-		width: 50px;
+	#fileList .icon svg {
+		height: 75px;
+		width: 75px;
 	}
 }
 
-@media (prefers-color-scheme: dark) {
-	.region {
-		background-color: rgba(255, 255, 255, 0.05);
+@media only screen and (max-width: 600px) {
+	.gridView {
+		#fileList li {
+			width: 150px;
+			height: 150px;
+		}
+		#fileList .folder-link {
+			width: 120px;
+			text-align: center;
+			padding: 0;
+			font-size: medium;
+		}
+		#fileList .icon svg {
+			height: 50px;
+			width: 50px;
+		}
 	}
-	.folder-link {
-		color: #f0f0f0 !important;
-	}
+}
+
+.path-link {
+	color: var(--text-color) !important;
+	font-size: large;
+	padding: 0 0.2em;
+	text-decoration: none;
+}
+.path-link:hover {
+	text-decoration: none;
+}
+.path-link[href]:hover {
+	text-decoration: underline;
+}
+
+#functionRow {
+	display: flex;
+	width: 100%;
+	margin: 20px 0px;
+	flex-flow: row;
+}
+#functionRow > div {
+	margin: 10px;
+}
+#backButtonContainer {
+	flex: 0 0 auto;
+}
+#toggleButtonContainer {
+	flex: 0 0 auto;
+}
+#pathList {
+	flex: 1 1 auto;
+	display: block;
+}
+
+.functionRowButton {
+	min-width: 16px;
+	border: none;
+	border-radius: 0.25em;
+	font-size: 12px;
+	line-height: 14px;
+	cursor: pointer;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition-duration: 0.4s;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	margin: 0;
+	background-color: var(--highlight-color);
+}
+
+.functionRowButton[disabled] {
+	cursor: default;
+	pointer-events: none;
+	opacity: 0.5;
+	background-color: transparent;
+}
+
+.functionRowButton:hover {
+	background-color: var(--highlight-hover-color);
+}
+
+.functionRowButton::before {
+	position: absolute;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	content: "";
+	background-color: var(--text-color);
+	-webkit-mask-size: cover;
+	mask-size: cover;
+	transition: 0.2s;
+}
+
+.functionRowButton > span {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+#backButton::before {
+	-webkit-mask-image: var(--icon-up);
+	mask-image: var(--icon-up);
+}
+
+#toggleButton::before {
+	-webkit-mask-image: var(--icon-grid_view);
+	mask-image: var(--icon-grid_view);
+}
+
+.gridView #toggleButton::before {
+	-webkit-mask-image: var(--icon-list_view);
+	mask-image: var(--icon-list_view);
 }

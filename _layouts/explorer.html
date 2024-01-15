@@ -5,43 +5,45 @@ layout: base
 <head>
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/explorer.css" />
-    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/pathList.css" />
 </head>
 
 <body>
-    {% assign pathList = page.path | remove: "_pyqs/" | remove: "index.md" |
-    split: "/" %} {% assign curPath = site.baseurl %}
-    <div class="pathList">
-        <a class="path-link" href="{{site.baseurl}}/">
-            /
-        </a>
-        <span class="path-link">></span>
-        {% for path in pathList %}
-        {% assign curPath = curPath | append: "/" |
-        append: path %}
-        <a class="path-link" href="{{curPath}}">{{ path }}</a>
-        <span class="path-link">></span>
-        {% endfor %}
-    </div>
-
-    <div class="functionRow">
-        <div class="back-link">
-            {% if page.url != "/" %}
-            {% assign pageTitleUrl = page.title |
-            replace: " ", "%20" %}
-            <a
-                href='{{ site.baseurl | append:page.url | remove: "/index" | remove: ".html" | remove: pageTitleUrl }}'>Back</a>
-            {% endif %}
+    {% assign pagePath = page.path | remove: "_pyqs/" | remove: "index.md" %}
+    {% assign pathList = pagePath | split: "/" %}
+    {% assign curPath = site.baseurl %}
+    <div id="functionRow">
+        <div id="backButtonContainer">
+            {% assign pageTitleUrlEncoded = "/" | append: page.title | replace: " ", "%20" %}
+            {% assign backLink = site.baseurl | append:page.url | remove: "/index" | remove: ".html" | remove:
+            pageTitleUrlEncoded%}
+            <button id="backButton" class="functionRowButton" title="Back" onclick="goTo('{{backLink}}/')" {% if
+                pagePath=="" %} disabled {% endif %}>
+            </button>
         </div>
-        <button id="toggleView">Toggle View</button>
+        <div id="pathList">
+            <a class="path-link" {% if pagePath !="" %} href="{{site.baseurl}}/" {% endif %}>
+                /
+            </a>
+            {% for path in pathList %}
+            {% assign curPath = curPath | append: "/" |
+            append: path %}
+            <span class="path-link">></span>
+            <a class="path-link" {% if path !=page.title %} href="{{curPath}}" {%endif%}>{{ path }}</a>
+            {% endfor %}
+        </div>
+        <div id="toggleButtonContainer">
+            <button id="toggleButton" class="functionRowButton" onclick="toggleView()">
+            </button>
+        </div>
+
     </div>
     <script>
-        document
-            .getElementById("toggleView")
-            .addEventListener("click", function () {
-                var ul = document.getElementById("fileList");
-                ul.classList.toggle("tile-view");
-            });
+        function goTo(url) {
+            window.location.href = url;
+        }
+        function toggleView() {
+            document.body.classList.toggle("gridView");
+        }
     </script>
     <ul id="fileList">
         <div>
