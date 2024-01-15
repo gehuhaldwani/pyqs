@@ -21,7 +21,7 @@ layout: pdf
                         output_folder,
                         root_folder,
                         category_path,
-                        f'{pdf_title.lower().replace(" ", "_")}.md',
+                        f'{pdf_title.replace(" ", "_")}.md',
                     )
 
                     os.makedirs(os.path.dirname(md_filename), exist_ok=True)
@@ -35,12 +35,12 @@ layout: explorer
 entries:
 """
             for subfolder in sorted(subfolders):
-                index_md_content += f"  - dir: {subfolder}\n"
+                index_md_content += f"    - dir: {subfolder}\n"
             for filename in sorted(filenames):
                 if filename.endswith(".pdf"):
-                    index_md_content += f"  - pdf: {filename}\n"
+                    index_md_content += f"    - pdf: {filename}\n"
                 else:
-                    index_md_content += f"  - file: {filename}\n"
+                    index_md_content += f"    - file: {filename}\n"
 
             index_md_content += "---\n"
 
@@ -56,6 +56,11 @@ entries:
 
 if __name__ == "__main__":
     output_folder = "./_pyqs"
+    home_index_md_content = f"""---
+title: Home
+layout: explorer
+entries:
+"""
     # remove output folder if exists
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder)
@@ -68,5 +73,10 @@ if __name__ == "__main__":
             and folder not in ["assets", "vendor"]
         ):
             generate_md_files(folder, output_folder)
+            home_index_md_content += f"    - dir: {folder}\n"
+
+    home_index_md_content += "---\n"
+    with open(os.path.join(output_folder, "index.md"), "w") as home_index_md_file:
+        home_index_md_file.write(home_index_md_content)
 
     print("Markdown files generated successfully.")

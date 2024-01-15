@@ -3,46 +3,42 @@ layout: base
 ---
 
 <head>
-	<title>{{ page.title }}</title>
-	<link rel="stylesheet" href="{{ site.baseurl }}/assets/pathList.css" />
-	<link rel="stylesheet" href="main.css" />
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/pathList.css" />
+    <link rel="stylesheet" href="main.css" />
 </head>
-<body>
-	{% assign pathList = page.path| remove_first: "_" |remove: ".md" | split:
-	"/" %} {% assign curPath = site.baseurl %}
-	<div class="pathList">
-		<a class="path-link" href="{{curPath}}/">/</a>
-		<span class="path-link">></span>
-		{% for path in pathList %} {% assign curPath = curPath | append: "/" |
-		append: path %}
-		<a class="path-link" href="{{curPath}}">{{path}}</a>
-		<span class="path-link">></span>
-		{% endfor %}
-	</div>
 
-	<div class="functionRow">
-		<div class="back-link">
-			{% if page.url != "/" %} {% assign pageTitleUrl = page.title |
-			replace: " ", "%20" %}
-			<a
-				href='{{ site.baseurl | append:page.url | remove: pageTitleUrl | remove: "/.html" }}'
-				>Back</a
-			>
-			{% endif %}
-		</div>
-		<button id="download">Download PDF</button>
-	</div>
-	<script>
-		document
-			.getElementById("download")
-			.addEventListener("click", function () {
-				window.open("{{page.pdf}}");
-			});
-	</script>
-	<iframe
-		title="pdf"
-		src="{{site.baseurl}}/pdfjs/web/viewer.html?file={{page.pdf | remove: './'}}&relpath=true"
-		width="100%"
-		height="fit-content"
-	></iframe>
+<body>
+    {% assign pathList = page.path | remove_first: "_" | remove: ".md" | split:
+    "/" %} {% assign curPath = site.baseurl %}
+    <div class="pathList">
+        <a>/</a>
+        <span class="path-link">></span>
+        {% for path in pathList %}
+        {% assign curPath = curPath | append: "/" |
+        append: path %}
+        <a class="path-link" href="{{curPath}}">{{ path }}</a>
+        <span class="path-link">></span>
+        {% endfor %}
+    </div>
+
+    <div class="functionRow">
+        <div class="back-link">
+            {% if page.url != "/" %}
+            {% assign pageTitleUrl = page.title |
+            replace: " ", "%20" %}
+            <a href='{{ site.baseurl | append:page.url | remove: pageTitleUrl | remove: "/.html" }}'>Back</a>
+            {% endif %}
+        </div>
+        <button id="download">Download PDF</button>
+    </div>
+    <script>
+        document
+            .getElementById("download")
+            .addEventListener("click", function () {
+                window.open("{{page.pdf}}");
+            });
+    </script>
+    <iframe title="pdf" src="{{site.baseurl}}/pdfjs/web/viewer.html?file={{page.pdf | remove: './'}}&relpath=true"
+        width="100%" height="fit-content"></iframe>
 </body>
