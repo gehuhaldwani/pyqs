@@ -261,7 +261,7 @@
                 </div>
             </div>
 
-            <div id="viewerContainer" tabindex="0">
+            <div id="viewerContainer" tabindex="0" style="view-transition-name: {{page.title}};">
                 <div id="fnf" class="hidden">
                     <span>File Not Found</span>
                 </div>
@@ -295,7 +295,13 @@
 <script>
     let FILE_PATH = "{{ page.pdf | remove: './' }}";
     function downloadPDF() {
-        window.open(FILE_PATH);
+        var element = document.createElement('a');
+        element.setAttribute('download', FILE_PATH);
+        element.setAttribute('href', FILE_PATH);
+
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
     let backUrl =
         "{{ site.baseurl | append:page.url | remove: pageTitleUrl | remove: '/.html' }}";

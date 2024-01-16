@@ -42,7 +42,7 @@ li {
 	justify-content: left;
 	border-radius: 0.5em;
 	background-color: var(--highlight-color);
-	transition: 0.2s;
+	transition: transform 0.2s;
 }
 .region:hover {
 	background-color: var(--highlight-hover-color);
@@ -201,4 +201,17 @@ li {
 .gridView #toggleButton::before {
 	-webkit-mask-image: var(--icon-list_view);
 	mask-image: var(--icon-list_view);
+}
+
+/* View Transitions */
+#functionRow {
+	view-transition-name: functionRow;
+}
+#pathList {
+	view-transition-name: pathList;
+}
+
+::view-transition-old(pathList),
+::view-transition-new(pathList) {
+	mix-blend-mode: normal;
 }

@@ -5,12 +5,10 @@ baseurl: "/pyqs"
 url: ""
 logo: "/assets/images/logo.png"
 # Build settings
-remote_theme: jekyll/minima
 
 plugins:
   - jekyll-seo-tag
   - jekyll-include-cache
-  - jekyll-remote-theme
 
 author:
   name: Lakshyajeet Jalal

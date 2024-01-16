@@ -1,4 +1,14 @@
 .page-content {
+	view-transition-name: content;
+}
+.site-footer {
+	view-transition-name: footer;
+}
+.site-header {
+	view-transition-name: header;
+}
+
+.page-content {
 	-webkit-user-select: none; /* Safari */
 	-ms-user-select: none; /* IE 10 and IE 11 */
 	user-select: none; /* Standard syntax */

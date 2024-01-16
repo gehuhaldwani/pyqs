@@ -5,6 +5,7 @@ layout: base
 <head>
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/explorer.css" />
+    <script src="{{ site.baseurl }}/assets/js/explorer.js"></script>
 </head>
 
 <body>
@@ -16,7 +17,7 @@ layout: base
             {% assign pageTitleUrlEncoded = "/" | append: page.title | replace: " ", "%20" %}
             {% assign backLink = site.baseurl | append:page.url | remove: "/index" | remove: ".html" | remove:
             pageTitleUrlEncoded%}
-            <button id="backButton" class="functionRowButton" title="Back" onclick="goTo('{{backLink}}/')" {% if
+            <button id="backButton" class="functionRowButton" title="Back" onclick="goToUrl('{{backLink}}/')" {% if
                 pagePath=="" %} disabled {% endif %}>
             </button>
         </div>
@@ -37,21 +38,13 @@ layout: base
         </div>
 
     </div>
-    <script>
-        function goTo(url) {
-            window.location.href = url;
-        }
-        function toggleView() {
-            document.body.classList.toggle("gridView");
-        }
-    </script>
-    <ul id="fileList">
+    <ul id="fileList" style="view-transition-name: {{page.title}};">
         <div>
             {% for entry in page.entries %}
             {% if entry.dir or entry.pdf %}
-            <li>
-                <div class="region" {% if entry.dir %} onclick="goTo('{{ site.baseurl | append:page.url | 
-                    remove: 'index' | remove: '.html' | append: entry.dir}}')">
+            <li>{% if entry.dir %}
+                <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
+                    remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir}}')">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" {% if entry.dir=="OTHERS" or
                             entry.dir=="OLD" %} fill="grey" {% else %} fill="#F5B800" {% endif %} viewBox="0 0 16 16">
@@ -60,10 +53,10 @@ layout: base
                         </svg>
                     </div>
                     <span class="folder-link">{{ entry.dir }}</span>
-                    {% elsif entry.pdf %}
-
-                    onclick="goTo('{{ site.baseurl | append: page.url | remove: 'index' | remove: '.html' | append:
-                    entry.pdf | remove: ".pdf"}}')">
+                </div>
+                {% elsif entry.pdf %}
+                <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
+                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf}}' )">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#D65532"
                             viewBox="0 0 16 16">
@@ -74,8 +67,9 @@ layout: base
                         </svg>
                     </div>
                     <span class="folder-link">{{ entry.pdf }}</span>
-                    {% endif %}
                 </div>
+                {% endif %}
+
             </li>
             {% endif %}
             {% endfor %}

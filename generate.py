@@ -66,7 +66,7 @@ entries:
         shutil.rmtree(output_folder)
 
     # for folder in current directory
-    for folder in os.listdir():
+    for folder in sorted(os.listdir()):
         if (
             os.path.isdir(folder)
             and folder[0].isalpha()
