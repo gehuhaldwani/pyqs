@@ -4,13 +4,13 @@ npm i minify -g
 apt-get update
 apt-get -y install moreutils
 
-echo "Minifying HTML, JS, and CSS files in ${GITHUB_WORKSPACE}\n"
+cd ${INPUT_DIRECTORY}
+echo "Minifying HTML, JS, and CSS files in"
 pwd
-cd ${GITHUB_WORKSPACE}
-pwd
-cd /_site
-pwd
+
 find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
-    do
-    minify ${fname} | sponge ${fname}
-    done
+    if minify ${fname} | sponge ${fname}; then
+    echo "Minified ${fname}"
+  else
+    echo "Error minifying ${fname}"
+  fi
