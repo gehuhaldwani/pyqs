@@ -34,17 +34,13 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build with Jekyll v4
-        # uses: actions/jekyll-build-pages@v1
         uses: dunkmann00/jekyll-v4-build-pages@v2
         with:
           source: "./"
           destination: "./_site"
 
       - name: Minify CSS and JS
-        uses: nizarmah/auto-minify@v2.1
-        with:
-          overwrite: true
-          directory: "./_site"
+        uses: ./github/actions/minify
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
