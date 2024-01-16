@@ -11,5 +11,6 @@ pwd
 
 find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
     do
+    echo "Minifying ${fname}"
     minify "${fname}" | sponge "${fname}"
     done
