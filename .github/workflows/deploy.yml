@@ -41,6 +41,8 @@ jobs:
 
       - name: Minify CSS and JS
         uses: ./.github/actions/minify
+        with:
+          directory: "./_site"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
