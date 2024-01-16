@@ -4,9 +4,9 @@ npm i minify -g
 apt-get update
 apt-get -y install moreutils
 
-cd /github/workspace/_site
+pwd
 
-find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
-    do
-    minify ${fname} | sponge ${fname}
-    done
+# find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
+#     do
+#     minify ${fname} | sponge ${fname}
+#     done
