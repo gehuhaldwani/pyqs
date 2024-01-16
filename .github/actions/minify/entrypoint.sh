@@ -10,8 +10,9 @@ pwd
 
 find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
 do
-    if minify ${fname} | sponge ${fname}; then
+  if minify ${fname} | sponge ${fname}; then
     echo "Minified ${fname}"
   else
     echo "Error minifying ${fname}"
   fi
+done
