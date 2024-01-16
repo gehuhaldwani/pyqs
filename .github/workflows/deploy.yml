@@ -40,7 +40,7 @@ jobs:
           destination: "./_site"
 
       - name: Minify CSS and JS
-        uses: ./github/actions/minify
+        uses: ./.github/actions/minify
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
