@@ -22,6 +22,7 @@ minima:
         platform: linkedin,
         user_url: "https://www.linkedin.com/in/lakshyajeet-jalal/",
       }
+
 header_pages:
   - about.md
 
@@ -34,3 +35,17 @@ collections:
   pyqs:
     output: true
     permalink: /:path
+
+liquid:
+  error_mode: strict
+
+sass:
+  implementation: sassc
+  style: compact
+  sass_dir: _sass
+  line_comments: false
+  sourcemap: always
+
+exclude:
+  - "generate.py"
+  - "run.bat"

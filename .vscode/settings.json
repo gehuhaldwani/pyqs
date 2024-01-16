@@ -1,7 +1,7 @@
 {
 	"yaml.schemas": {
-		"https://json.schemastore.org/github-action.json": "file:///c%3A/Users/laksh/Documents/programming/pyqs/.github/workflows/deploy.yml",
-		"https://json.schemastore.org/jekyll.json": "file:///c%3A/Users/laksh/Documents/programming/pyqs/_config.yml"
+		"https://json.schemastore.org/jekyll.json": "file:///c%3A/Users/laksh/Documents/programming/pyqs/_config.yml",
+		"https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/laksh/Documents/programming/pyqs/.github/workflows/deploy.yml"
 	},
 	"files.associations": {
 		"*.html": "liquid"

@@ -6,7 +6,26 @@ layout: base
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/explorer.css" />
     <script src="{{ site.baseurl }}/assets/js/explorer.js"></script>
+    {% for entry in page.entries %}
+    {% if entry.dir%}
+    <link rel="prefetch" href="{{ entry.dir }}/" as="document">
+    {%endif%}
+    {% if entry.pdf%}
+    <link rel="prefetch" href="{{ entry.pdf }}/" as="document">
+    {%endif%}
+    {% endfor %}
 </head>
+<script type="speculationrules">
+  {
+    "prefetch": [
+      {
+        "source": "list",
+        "urls": [{% for entry in page.entries %} {% if entry.dir%}"{{entry.dir}}/",{%endif%} {% endfor %}
+        {% for entry in page.entries %} {% if entry.pdf%}"{{entry.pdf}}/",{%endif%} {% endfor %}""]
+      }
+    ]
+  }
+</script>
 
 <body>
     {% assign pagePath = page.path | remove: "_pyqs/" | remove: "index.md" %}

@@ -1,5 +1,4 @@
-name: Deploy Jekyll with python script prerun
-
+name: Deploy Site
 on:
   push:
     branches: ["gh-pages"]
@@ -40,6 +39,12 @@ jobs:
         with:
           source: "./"
           destination: "./_site"
+
+      - name: Minify CSS and JS
+        uses: nizarmah/auto-minify@v2.1
+        with:
+          overwrite: true
+          directory: "./_site"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
