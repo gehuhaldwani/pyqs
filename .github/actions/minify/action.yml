@@ -3,3 +3,9 @@ description: "Minify js, css, and html files pushed to a branch"
 runs:
   using: "docker"
   image: "Dockerfile"
+
+inputs:
+  directory:
+    description: "Directory to minify"
+    required: true
+    default: "./_site"
