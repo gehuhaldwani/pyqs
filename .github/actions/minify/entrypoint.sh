@@ -8,18 +8,17 @@ cd _site
 echo "Minifying HTML, JS, and CSS files in "
 pwd
 
-
-find . -type f \( -iname \*.html -o -iname \*.js -o -iname \*.css \) | while read fname
-    do
+find . -type f \( -iname \*.html \) | while read fname; do
     echo "Minifying ${fname}"
-    if [[ ${fname: -4} == ".css" ]]
-    then
-        lightningcss --minify --bundle --targets '>= 0.25%' "${fname}" | sponge "${fname}"
-    elif [[ ${fname: -3} == ".js" ]]
-    then
-        uglifyjs "${fname}" | sponge "${fname}"
-    elif [[ ${fname: -5} == ".html" ]]
-    then
-        prettydiff minify "${fname}" | sponge "${fname}"
-    fi
-    done
+    prettydiff minify "${fname}" | sponge "${fname}"
+done
+
+find . -type f \( -iname \*.js \) | while read fname; do
+    echo "Minifying ${fname}"
+    uglifyjs "${fname}" | sponge "${fname}"
+done
+
+find . -type f \( -iname \*.css \) | while read fname; do
+    echo "Minifying ${fname}"
+    lightningcss --minify --bundle --targets '>= 0.25%' "${fname}" | sponge "${fname}"
+done
