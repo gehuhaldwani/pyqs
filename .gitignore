@@ -2,6 +2,7 @@
 .jekyll-cache
 .jekyll-metadata
 run.bat
+
 # Ignore all directories starting with '_'
 _*/
 
@@ -12,3 +13,5 @@ _*/
 !/_posts
 !/_data
 !/_sass
+!/assets
+!/vendor

@@ -39,7 +39,7 @@ jobs:
           source: "./"
           destination: "./_site"
 
-      - name: Minify CSS and JS
+      - name: Minify HTML,CSS and JS
         uses: ./.github/actions/minify
         with:
           directory: "./_site"
