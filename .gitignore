@@ -2,6 +2,8 @@
 .jekyll-cache
 .jekyll-metadata
 run.bat
+Gemfile
+Gemfile.lock
 
 # Ignore all directories starting with '_'
 _*/
