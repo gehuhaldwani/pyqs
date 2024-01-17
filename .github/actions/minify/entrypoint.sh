@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-npm i lightningcss uglify-js prettydiff -g
+npm i -g lightningcss-cli uglify-js prettydiff
 apt-get update
 apt-get -y install moreutils
 
@@ -20,5 +20,5 @@ done
 
 find . -type f \( -iname \*.css \) | while read fname; do
     echo "Minifying ${fname}"
-    lightningcss --minify --bundle --targets '>= 0.25%' "${fname}" | sponge "${fname}"
+    lightningcss --minify --bundle --targets ">= 0.25%" "${fname}" | sponge "${fname}"
 done
