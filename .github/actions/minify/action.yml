@@ -1,5 +1,7 @@
 name: "Minify Action"
-description: "Minify js, css, and html files pushed to a branch"
+author: "Lakshyajeet Jalal"
+description: "Minify js, css, and html files"
+
 runs:
   using: "docker"
   image: "Dockerfile"

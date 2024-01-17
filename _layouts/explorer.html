@@ -21,7 +21,7 @@ layout: base
       {
         "source": "list",
         "urls": [{% for entry in page.entries %} {% if entry.dir%}"{{entry.dir}}/",{%endif%} {% endfor %}
-        {% for entry in page.entries %} {% if entry.pdf%}"{{entry.pdf}}/",{%endif%} {% endfor %}""]
+        {% for entry in page.entries %} {% if entry.pdf%}"{{entry.pdf}}/",{%endif%} {% endfor %}"{{site.baseurl}}/"]
       }
     ]
   }
@@ -57,13 +57,13 @@ layout: base
         </div>
 
     </div>
-    <ul id="fileList" style="view-transition-name: {{page.title}};">
+    <ul id="fileList" style="view-transition-name: {{page.title |  replace: ' ', '_' }};">
         <div>
             {% for entry in page.entries %}
             {% if entry.dir or entry.pdf %}
             <li>{% if entry.dir %}
                 <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
-                    remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir}}')">
+                    remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir |  replace: ' ', '_' }}')">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" {% if entry.dir=="OTHERS" or
                             entry.dir=="OLD" %} fill="grey" {% else %} fill="#F5B800" {% endif %} viewBox="0 0 16 16">
@@ -74,8 +74,9 @@ layout: base
                     <span class="folder-link">{{ entry.dir }}</span>
                 </div>
                 {% elsif entry.pdf %}
-                <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
-                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf}}' )">
+                <div class="region"
+                    onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
+                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf |  replace: ' ', '_' }}' )">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#D65532"
                             viewBox="0 0 16 16">

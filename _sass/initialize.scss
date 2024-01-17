@@ -17,7 +17,7 @@ $spacing-unit: 30px !default;
 $table-text-align: left !default;
 
 // Width of the content area
-$content-width: 800px !default;
+$content-width: 1000px !default;
 
 $on-palm: 600px !default;
 $on-laptop: 800px !default;
@@ -44,12 +44,4 @@ $on-large: $on-laptop !default;
 	font-size: #{$ratio}rem;
 }
 
-// Import pre-styling-overrides hook and style-partials.
-@import "custom-variables",
-	// Hook to override predefined variables.
-	"base",
-	// Defines element resets.
-	"layout",
-	// Defines structure and style based on CSS selectors.
-	"custom-styles" // Hook to override existing styles.
-;
+@import "base", "layout";

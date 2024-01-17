@@ -261,7 +261,7 @@
                 </div>
             </div>
 
-            <div id="viewerContainer" tabindex="0" style="view-transition-name: {{page.title}};">
+            <div id="viewerContainer" tabindex="0" style="view-transition-name: {{page.title |  replace: ' ', '_' }};">
                 <div id="fnf" class="hidden">
                     <span>File Not Found</span>
                 </div>

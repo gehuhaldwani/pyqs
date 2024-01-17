@@ -1,7 +1,9 @@
 :root {
 	--text-color: #242424;
-	--highlight-color: rgba(0, 0, 0, 0.025);
-	--highlight-hover-color: rgba(0, 0, 0, 0.05);
+	--highlight-color: #f7f7f7;
+	--highlight-hover-color: #f0f0f0;
+	--box-shadow: 0rem 0.125rem 0.375rem rgba(0, 0, 0, 0.1),
+		0rem 0.5rem 1rem rgba(0, 0, 0, 0.08);
 
 	--icon-up: url("../icons/up.svg");
 	--icon-grid_view: url("../icons/grid_view.svg");
@@ -10,9 +12,10 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--text-color: #f0f0f0;
-		--highlight-color: rgba(255, 255, 255, 0.05);
-		--highlight-hover-color: rgba(255, 255, 255, 0.1);
+		--text-color: var(--minima-text-color);
+		--highlight-color: #2d2d2d;
+		--highlight-hover-color: #333333;
+		--box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 	}
 }
 
@@ -48,6 +51,7 @@ li {
 	background-color: var(--highlight-hover-color);
 	cursor: pointer;
 	transform: scale(1.025);
+	box-shadow: var(--box-shadow);
 }
 .icon {
 	display: flex;
@@ -105,18 +109,39 @@ li {
 		}
 	}
 }
-
+#pathList {
+	flex: 1 1 auto;
+	display: inline-block;
+	line-height: 40px;
+}
 .path-link {
+	display: inline;
+	height: 32px;
+	line-height: 32px;
+	vertical-align: top;
 	color: var(--text-color) !important;
-	font-size: large;
-	padding: 0 0.2em;
+	font-size: larger;
 	text-decoration: none;
+	padding: 0 0.25em;
+	transition: transform 0.2s;
+}
+
+a.path-link {
+	opacity: 1;
+	padding: 0 0.5em;
+	font-weight: bold;
 }
 .path-link:hover {
 	text-decoration: none;
 }
+.path-link[href] {
+	opacity: 0.75;
+	font-weight: normal;
+}
 .path-link[href]:hover {
-	text-decoration: underline;
+	opacity: 1;
+	border-radius: 0.25em;
+	background-color: var(--highlight-color);
 }
 
 #functionRow {
@@ -134,10 +159,6 @@ li {
 #toggleButtonContainer {
 	flex: 0 0 auto;
 }
-#pathList {
-	flex: 1 1 auto;
-	display: block;
-}
 
 .functionRowButton {
 	min-width: 16px;
@@ -150,23 +171,24 @@ li {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition-duration: 0.4s;
 	width: 32px;
 	height: 32px;
 	padding: 0;
 	margin: 0;
 	background-color: var(--highlight-color);
+	transition: transform 0.2s;
 }
-
+.functionRowButton:hover {
+	transform: scale(1.1);
+	background-color: var(--highlight-hover-color);
+	box-shadow: var(--box-shadow);
+}
 .functionRowButton[disabled] {
 	cursor: default;
 	pointer-events: none;
 	opacity: 0.5;
 	background-color: transparent;
-}
-
-.functionRowButton:hover {
-	background-color: var(--highlight-hover-color);
+	box-shadow: none;
 }
 
 .functionRowButton::before {
