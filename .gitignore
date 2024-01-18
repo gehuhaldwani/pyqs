@@ -1,19 +1,1 @@
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-run.bat
-Gemfile
-Gemfile.lock
 
-# Ignore all directories starting with '_'
-_*/
-
-# Don't ignore these directories
-!/_drafts
-!/_includes
-!/_layouts
-!/_posts
-!/_data
-!/_sass
-!/assets
-!/vendor
