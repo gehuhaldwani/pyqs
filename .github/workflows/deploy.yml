@@ -17,20 +17,20 @@ concurrency:
 jobs:
   # Build job
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+      # - name: Set up python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.10"
 
-      - name: Set up node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "latest"
+      # - name: Set up node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "latest"
 
       - name: Generate .md with python
         run: python generate.py
