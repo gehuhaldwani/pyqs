@@ -1,7 +1,6 @@
 #!/bin/sh -l
 
 npm i -g lightningcss-cli uglify-js prettydiff
-apt-get update
 apt-get -y install moreutils
 
 cd _site
