@@ -12,17 +12,27 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          clean: false
+          path: main
+
+      - name: Remove .git from main and move files to root
+        run: rm -rf main/.git && mv main/* .
 
       - name: Set up python
         uses: actions/setup-python@v5

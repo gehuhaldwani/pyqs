@@ -4,7 +4,9 @@
 run.bat
 Gemfile
 Gemfile.lock
-
+btech
+bca
+pyqs
 # Ignore all directories starting with '_'
 _*/
 
