@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 npm i -g lightningcss-cli uglify-js prettydiff
-apt-get -y install moreutils
+sudo apt-get -y install moreutils
 
 cd _site
 echo "Minifying HTML, JS, and CSS files in "
