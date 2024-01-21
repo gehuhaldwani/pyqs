@@ -2,8 +2,6 @@
 .jekyll-cache
 .jekyll-metadata
 run.bat
-Gemfile
-Gemfile.lock
 btech
 bca
 pyqs
