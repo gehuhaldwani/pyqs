@@ -17,6 +17,7 @@ author:
 minima:
   skin: auto
   social_links:
+    - { platform: telegram, user_url: "https://t.me/mglsj" }
     - { platform: github, user_url: "https://github.com/MG-LSJ" }
     - {
         platform: linkedin,
