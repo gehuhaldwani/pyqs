@@ -19,15 +19,19 @@
                 {%- endif %}
             </div>
             <div class="footer-col">
-                <p align="center"> <a href="https://github.com/gehuhaldwani/pyqs">View Source</a></p>
+                <p align="center"> <a href="https://github.com/gehuhaldwani/pyqs">View Source Code</a></p>
+
             </div>
             <div class="footer-col">
                 <p>{{ site.description | escape }}</p>
             </div>
         </div>
-        </script>
+
+        <p align="center">This site was last updated at {{site.time | date: '%H:%M %B %d, %Y'}}</p>
+
         <div class="social-links">
             {%- include social.html -%}
+
         </div>
     </div>
 </footer>
