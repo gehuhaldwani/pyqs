@@ -1,6 +1,6 @@
 title: PYQ Archive
 description: >- # this means to ignore newlines until "baseurl:"
-  A collection of PYQs for various courses.
+  A collection of PYQs for various courses. Check about page for contribution and notes.
 baseurl: "/pyqs"
 url: ""
 logo: "/assets/images/logo.png"
@@ -12,7 +12,7 @@ plugins:
 
 author:
   name: Lakshyajeet Jalal
-  email: lakshyajeetjalal@gmail.com
+  email: lakshyajeetjalal@duck.com
 
 minima:
   skin: auto

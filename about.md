@@ -6,7 +6,7 @@ permalink: /about/
 
 This GEHU PYQs Archieve website was created by Lakshyajeet Jalal.
 
-PYQs from Bhimtal Library [GDrive](https://drive.google.com/drive/folders/1pRpVF6vs7-EFgUBcVXgcxmHswz1MeM7a) and other contributers. Contact me if you want to contribute.
+PYQs from Bhimtal Library [GDrive](https://drive.google.com/drive/folders/1pRpVF6vs7-EFgUBcVXgcxmHswz1MeM7a) and other contributers. Contact me if you want to contribute, or submit on github.
 
 Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT License)
 
@@ -21,6 +21,11 @@ Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT Li
 -   [Linkedin](https://www.linkedin.com/in/lakshyajeet-jalal/)
 
 -   [Steam](https://steamcommunity.com/id/MasterGamerLSJ/)
+
+## Notes
+
+-   B.Tech CSE Notes [Drive Link](https://bit.ly/btechcsenotes)
+-   [Notes WhatsApp Group](https://whatsapp.com/channel/0029VaF8dCJAu3aFznmMXb2r)
 
 ## Also Check Out
 
