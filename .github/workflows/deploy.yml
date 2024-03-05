@@ -1,79 +1,79 @@
 name: Deploy Site
 on:
-    push:
-        branches:
-            - "gh-pages"
-            - "main"
+  push:
+    branches:
+      - "gh-pages"
+      - "main"
 
-    workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
-    contents: read
-    pages: write
-    id-token: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-    group: "pages"
-    cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-    # Build job
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout gh-pages branch
-              uses: actions/checkout@v4
-              with:
-                  ref: gh-pages
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
 
-            - name: Checkout main branch
-              uses: actions/checkout@v4
-              with:
-                  ref: main
-                  clean: false
-                  path: main
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          clean: false
+          path: main
 
-            - name: Remove .git from main and move files to root
-              run: rm -rf main/.git && mv main/* . && rm -rf main
+      - name: Remove .git from main and move files to root
+        run: rm -rf main/.git && mv main/* . && rm -rf main
 
-            - name: Set up python
-              uses: actions/setup-python@v5
-              with:
-                  python-version: "3.10"
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-            - name: Set up node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "latest"
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "latest"
 
-            - name: Generate .md with python
-              run: python generate.py
+      - name: Generate .md with python
+        run: python generate.py
 
-            - name: Setup Pages
-              uses: actions/configure-pages@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-            - name: Build with Jekyll v4
-              uses: dunkmann00/jekyll-v4-build-pages@v2
-              with:
-                  source: "./"
-                  destination: "./_site"
+      - name: Build with Jekyll v4
+        uses: dunkmann00/jekyll-v4-build-pages@v2
+        with:
+          source: "./"
+          destination: "./_site"
 
-            - name: Minify HTML,CSS and JS
-              run: bash .github/workflows/minify.sh
+      - name: Minify HTML,CSS and JS
+        run: bash minify.sh
 
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: "./_site"
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./_site"
 
-    # Deployment job
-    deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
-        needs: build
-        steps:
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v4
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
