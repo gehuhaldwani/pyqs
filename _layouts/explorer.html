@@ -60,7 +60,7 @@ layout: base
     <ul id="fileList" style="view-transition-name: {{page.title |  replace: ' ', '_' }};">
         <div>
             {% for entry in page.entries %}
-            {% if entry.dir or entry.pdf %}
+            {% if entry.dir or entry.url or entry.pdf %}
             <li>{% if entry.dir %}
                 <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
                     remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir |  replace: ' ', '_' }}')">
@@ -76,7 +76,7 @@ layout: base
                 {% elsif entry.pdf %}
                 <div class="region"
                     onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
-                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf |  replace: ' ', '_' }}' )">
+                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf |  replace: ' ', '_' }}')">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#D65532"
                             viewBox="0 0 16 16">
@@ -88,8 +88,21 @@ layout: base
                     </div>
                     <span class="folder-link">{{ entry.pdf }}</span>
                 </div>
+                {% elsif entry.url %}
+                {% assign urlList = entry.url | split: "::"%}
+                {% assign urlName = urlList[0] | remove: '.url' %}
+                {% assign url = urlList[1] %}
+                <div class="region" onclick="goToFolder(this, '{{ url }}','{{ urlName }}', true)">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" fill="#7e9cf8"
+                            viewBox="0 -960 960 960">
+                            <path
+                                d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z" />
+                        </svg>
+                    </div>
+                    <span class="folder-link">{{ urlName }}</span>
+                </div>
                 {% endif %}
-
             </li>
             {% endif %}
             {% endfor %}

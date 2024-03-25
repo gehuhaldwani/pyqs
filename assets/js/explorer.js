@@ -22,11 +22,15 @@ if (gridView) {
 }
 
 // Go To
-function goToFolder(ele, url, name) {
+function goToFolder(ele, url, name, newTab = false) {
 	ele.setAttribute("style", `view-transition-name: ${name};`);
-	goToUrl(url);
+	goToUrl(url, newTab);
 }
 
-function goToUrl(url) {
-	window.location.href = url;
+function goToUrl(url = "", newTab = false) {
+	if (newTab) {
+		window.open(url, "_blank").focus();
+	} else {
+		window.location.href = url;
+	}
 }

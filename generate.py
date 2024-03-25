@@ -1,6 +1,9 @@
 from operator import ne
 import os
 import shutil
+import configparser
+
+config = configparser.ConfigParser()
 
 
 def generate_md_files(root_folder, output_folder):
@@ -39,6 +42,10 @@ entries:
             for filename in sorted(filenames):
                 if filename.endswith(".pdf"):
                     index_md_content += f"    - pdf: {filename}\n"
+                elif filename.endswith(".url"):
+                    config.read(os.path.join(foldername, filename))
+                    url = config["InternetShortcut"]["URL"]
+                    index_md_content += f"    - url: {filename}::{url} \n"
                 else:
                     index_md_content += f"    - file: {filename}\n"
 
