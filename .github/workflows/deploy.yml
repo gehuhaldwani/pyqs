@@ -2,8 +2,7 @@ name: Deploy Site
 on:
   push:
     branches:
-      - "gh-pages"
-      - "main"
+      - main
 
   workflow_dispatch:
 
@@ -64,7 +63,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: site_files
           path: "./_site"
+
+      - name: Clear build artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: site_files
 
   # Deployment job
   deploy:
