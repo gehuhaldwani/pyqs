@@ -66,11 +66,6 @@ jobs:
           name: github-pages
           path: "./_site"
 
-      - name: Clear build artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: github-pages
-
   # Deployment job
   deploy:
     environment:
@@ -82,3 +77,8 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Clear build artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: github-pages
