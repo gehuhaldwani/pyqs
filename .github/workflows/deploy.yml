@@ -63,13 +63,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: site_files
+          name: github-pages
           path: "./_site"
 
       - name: Clear build artifacts
         uses: geekyeggo/delete-artifact@v5
         with:
-          name: site_files
+          name: github-pages
 
   # Deployment job
   deploy:
