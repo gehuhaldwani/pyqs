@@ -58,7 +58,7 @@ jobs:
           destination: "./_site"
 
       - name: Move all files and folders from /_site/pyqs to /_site
-        run: sudo mv -f _site/pyqs/* _site/
+        run: sudo rsync -a _site/pyqs/ _site/ && sudo rm -r _site/pyqs/*
 
       - name: Minify HTML,CSS and JS
         run: bash minify.sh
