@@ -62,7 +62,9 @@ layout: base
             {% for entry in page.entries %}
             {% if entry.dir or entry.url or entry.pdf %}
             <li>{% if entry.dir %}
-                <div class="region" onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
+                <div class="region" onclick="goToFolder(this, '{{ site.baseurl | append: page.url | 
+                    remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir |  replace: ' ', '_' }}')"
+                    onauxclick="handleAuxClickToFolder(event, this, '{{ site.baseurl | append: page.url | 
                     remove: 'index' | remove: '.html' | append: entry.dir}}', '{{entry.dir |  replace: ' ', '_' }}')">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" {% if entry.dir=="OTHERS" or
@@ -76,6 +78,8 @@ layout: base
                 {% elsif entry.pdf %}
                 <div class="region"
                     onclick="goToFolder(this,'{{ site.baseurl | append: page.url | 
+                    remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf |  replace: ' ', '_' }}')"
+                    onauxclick="handleAuxClickToFolder(event,this,'{{ site.baseurl | append: page.url | 
                     remove: 'index' | remove: '.html' | append: entry.pdf | remove: '.pdf'}}', '{{entry.pdf |  replace: ' ', '_' }}')">
                     <div class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#D65532"

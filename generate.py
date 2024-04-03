@@ -1,13 +1,17 @@
-from operator import ne
 import os
 import shutil
 import configparser
 
-config = configparser.ConfigParser()
+ROOT_FOLDER = "pyqs"
 
 
 def generate_md_files(root_folder, output_folder):
+    config = configparser.ConfigParser()
     for foldername, subfolders, filenames in os.walk(root_folder):
+
+        # ignore hidden folders
+        subfolders[:] = [s for s in subfolders if not s.startswith(".")]
+
         if filenames or subfolders:
             category_path = os.path.relpath(foldername, root_folder)
             # pdfs
@@ -22,7 +26,6 @@ layout: pdf
 """
                     md_filename = os.path.join(
                         output_folder,
-                        root_folder,
                         category_path,
                         f"{pdf_title}.md",
                     )
@@ -52,7 +55,9 @@ entries:
             index_md_content += "---\n"
 
             index_md_filename = os.path.join(
-                output_folder, root_folder, category_path, "index.md"
+                output_folder,
+                category_path,
+                "index.md",
             )
 
             os.makedirs(os.path.dirname(index_md_filename), exist_ok=True)
@@ -62,28 +67,11 @@ entries:
 
 
 if __name__ == "__main__":
-    output_folder = "./_pyqs"
-    home_index_md_content = f"""---
-title: Home
-layout: explorer
-entries:
-"""
+    folder = ROOT_FOLDER
+    output_folder = "_" + folder
     # remove output folder if exists
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder)
-
-    # for folder in current directory
-    for folder in sorted(os.listdir()):
-        if (
-            os.path.isdir(folder)
-            and folder[0].isalpha()
-            and folder not in ["assets", "vendor"]
-        ):
-            generate_md_files(folder, output_folder)
-            home_index_md_content += f"    - dir: {folder}\n"
-
-    home_index_md_content += "---\n"
-    with open(os.path.join(output_folder, "index.md"), "w") as home_index_md_file:
-        home_index_md_file.write(home_index_md_content)
+    generate_md_files(folder, output_folder)
 
     print("Markdown files generated successfully.")

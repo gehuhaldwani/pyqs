@@ -2,8 +2,6 @@
 .jekyll-cache
 .jekyll-metadata
 run.bat
-btech
-bca
 pyqs
 # Ignore all directories starting with '_'
 _*/

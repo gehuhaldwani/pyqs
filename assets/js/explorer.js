@@ -34,3 +34,9 @@ function goToUrl(url = "", newTab = false) {
 		window.location.href = url;
 	}
 }
+
+function handleAuxClickToFolder(e, ele, url, name) {
+	if (e.button === 1) {
+		goToFolder(ele, url, name, true);
+	}
+}
