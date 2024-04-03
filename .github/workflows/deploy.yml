@@ -32,8 +32,8 @@ jobs:
           clean: false
           path: pyqs
 
-      - name: Remove all files and folders starting with .  in pyqs
-        run: sudo find pyqs -mindepth 1 -name ".*" -prune -exec rm -rf {} \; sudo find pyqs -mindepth 1 -name "_*" -prune -exec rm -rf {} \;
+      - name: Remove all files and folders starting with . or _ in pyqs
+        run: sudo find pyqs -mindepth 1 -name ".*" -prune -exec rm -rf {} \; && sudo find pyqs -mindepth 1 -name "_*" -prune -exec rm -rf {} \;
 
       - name: Remove all files (not folders) directly in pyqs
         run: sudo find pyqs -maxdepth 1 -type f -exec rm -f {} \;
