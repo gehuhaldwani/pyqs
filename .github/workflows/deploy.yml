@@ -20,23 +20,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout gh-pages branch
+      - name: Checkout gh-pages branch to root
         uses: actions/checkout@v4
         with:
           ref: gh-pages
 
-      - name: Checkout main branch
+      - name: Checkout main branch to pyqs
         uses: actions/checkout@v4
         with:
           ref: main
           clean: false
           path: pyqs
 
-      - name: Remove all files and folders starting with . or _ in pyqs
-        run: sudo find pyqs -mindepth 1 -name ".*" -prune -exec rm -rf {} \; && sudo find pyqs -mindepth 1 -name "_*" -prune -exec rm -rf {} \;
-
-      - name: Remove all files (not folders) directly in pyqs
-        run: sudo find pyqs -maxdepth 1 -type f -exec rm -f {} \;
+      - name: Remove hidden files and directories from pyqs directory
+        run: sudo find pyqs -mindepth 1 -name ".*" -prune -exec rm -rf {} \; && sudo find pyqs -mindepth 1 -name "_*" -prune -exec rm -rf {} \; && sudo find pyqs -maxdepth 1 -type f -exec rm -f {} \;
 
       - name: Set up python
         uses: actions/setup-python@v5
@@ -59,6 +56,9 @@ jobs:
         with:
           source: "./"
           destination: "./_site"
+
+      - name: Move all files and folders from /_site/pyqs to /_site
+        run: mv _site/pyqs/* _site/
 
       - name: Minify HTML,CSS and JS
         run: bash minify.sh
