@@ -33,10 +33,10 @@ jobs:
           path: pyqs
 
       - name: Remove all files and folders starting with . or _ in pyqs
-        run: rm -rf pyqs/.*/ pyqs/_*/
+        run: sudo rm -rf pyqs/.*/ pyqs/_*/
 
       - name: Remove all files (not folders) directly in pyqs
-        run: find pyqs -maxdepth 1 -type f -exec rm -f {} \;
+        run: sudo find pyqs -maxdepth 1 -type f -exec rm -f {} \;
 
       - name: Set up python
         uses: actions/setup-python@v5
