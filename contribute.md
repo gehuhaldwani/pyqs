@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Contribution
+title: Contribute
 permalink: /contribute/
 ---
 

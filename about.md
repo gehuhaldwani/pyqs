@@ -8,13 +8,25 @@ This GEHU PYQs Archieve website was created by Lakshyajeet Jalal.
 
 ### Sources
 
-PYQs from Bhimtal Library [GDrive](https://drive.google.com/drive/folders/1pRpVF6vs7-EFgUBcVXgcxmHswz1MeM7a) and other contributers.
-
 -   Made with Ruby, Jekyll and Python
 -   Hosted on GitHub Pages
 -   pdfJs by Mozilla
 
 Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT License)
+
+### PYQ Contributers
+
+-   PYQs from Bhimtal Library [GDrive](https://drive.google.com/drive/folders/1pRpVF6vs7-EFgUBcVXgcxmHswz1MeM7a)
+-   Lakshyajeet Jalal (BTech CSE 2026)
+-   Kunal Pathak (BCA 2025)
+-   Nikhil Bisht (BTech CSE 2025)
+-   Mihir Sha (BTech CSE 2025)
+-   Sujal Rajpoot (BTech CSE 2027)
+-   Mansih Paneru (BCA 2026)
+-   Mukul Metha (BCA 2026)
+-   Jai Mer (BCA 2026)
+
+Consider contributing to this project by submitting your question papers.
 
 # Also Check Out
 
@@ -32,7 +44,7 @@ Best programming course for beginners with free certificate.
 -   [youtube](https://www.youtube.com/playlist?list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4)
 -   [website](https://cs50.harvard.edu/x/2024/)
 
-# Contact
+# Personal Contact
 
 -   [Telegram](https://t.me/mglsj)
 -   [WhatsApp](https://wa.me/9412130016)
