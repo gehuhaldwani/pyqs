@@ -28,12 +28,10 @@
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
             </div>
             <div class="footer-col">
-                <p>{{ site.description | escape }}</p>
+                <p>This site was last updated at {{site.time | date: '%H:%M %B %d, %Y'}}</p>
             </div>
         </div>
-
-        <p align="center">This site was last updated at {{site.time | date: '%H:%M %B %d, %Y'}}</p>
-
+        <p align="center">{{ site.description | escape }}</p>
         <div class="social-links">
             {%- include social.html -%}
 
