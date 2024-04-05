@@ -1,6 +1,7 @@
 title: PYQ Archive
 description: >- # this means to ignore newlines until "baseurl:"
-  A collection of previous year question papers for Graphic Era Hill University semester examinations.
+  A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations. 
+  This is a community driven project and we encourage you to contribute to the project by adding more question papers.
 baseurl: "/pyqs"
 url: ""
 logo: "/assets/images/logo.png"
