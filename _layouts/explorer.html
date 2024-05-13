@@ -11,7 +11,7 @@ layout: base
     <link rel="prefetch" href="{{ entry.dir }}/" as="document">
     {%endif%}
     {% if entry.pdf%}
-    <link rel="prefetch" href="{{ entry.pdf }}/" as="document">
+    <link rel="prefetch" href="{{ entry.pdf | replace: 'pdf', 'html' }}" as="document">
     {%endif%}
     {% endfor %}
 </head>
@@ -21,7 +21,7 @@ layout: base
       {
         "source": "list",
         "urls": [{% for entry in page.entries %} {% if entry.dir%}"{{entry.dir}}/",{%endif%} {% endfor %}
-        {% for entry in page.entries %} {% if entry.pdf%}"{{entry.pdf}}/",{%endif%} {% endfor %}"{{site.baseurl}}/"]
+        {% for entry in page.entries %} {% if entry.pdf%}"{{entry.pdf|  replace: 'pdf', 'html' }}",{%endif%} {% endfor %}"{{site.baseurl}}/"]
       }
     ]
   }

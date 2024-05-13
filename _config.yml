@@ -58,3 +58,4 @@ sass:
 exclude:
   - "generate.py"
   - "run.bat"
+  - "pyqs"

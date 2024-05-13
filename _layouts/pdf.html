@@ -293,7 +293,8 @@
 </body>
 {% assign pageTitleUrl = page.title | replace: " ", "%20" %}
 <script>
-    let FILE_PATH = "{{ page.pdf | remove: './' }}";
+    // let FILE_PATH = "{{ page.pdf | remove: './' }}";
+    let FILE_PATH = "https://raw.githubusercontent.com/gehuhaldwani/pyqs/main/{{ page.url | remove: pageTitleUrl | remove: '/.html' }}{{ page.pdf | remove: './' }}"
     function downloadPDF() {
         var element = document.createElement('a');
         element.setAttribute('download', FILE_PATH);
