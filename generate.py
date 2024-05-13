@@ -11,6 +11,10 @@ def generate_md_files(root_folder, output_folder):
 
         # ignore hidden folders
         subfolders[:] = [s for s in subfolders if not s.startswith(".")]
+        # ignore hidden files
+        filenames = [
+            f for f in filenames if not f.startswith(".") or not f.contains(".")
+        ]
 
         if filenames or subfolders:
             category_path = os.path.relpath(foldername, root_folder)
