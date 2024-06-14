@@ -4,9 +4,13 @@ title: About
 permalink: /about/
 ---
 
-This GEHU PYQs Archieve website was created by Lakshyajeet Jalal.
+This GEHU PYQs Archieve website was created by Lakshyajeet Jalal, a B.Tech CSE student of GEHU Haldwani Campus.
 
-### Sources
+#### Why this website?
+
+If you are using this site, then you know why.
+
+### Source
 
 -   Made with Ruby, Jekyll and Python
 -   Hosted on GitHub Pages
@@ -14,7 +18,7 @@ This GEHU PYQs Archieve website was created by Lakshyajeet Jalal.
 
 Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT License)
 
-### PYQ Contributers
+## PYQ Contributers
 
 -   PYQs from Bhimtal Library [GDrive](https://drive.google.com/drive/folders/1pRpVF6vs7-EFgUBcVXgcxmHswz1MeM7a)
 -   Lakshyajeet Jalal (BTech CSE 2026)

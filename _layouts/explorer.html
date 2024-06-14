@@ -28,6 +28,11 @@ layout: base
 </script>
 
 <body>
+    {% if page.title == "pyqs" %}
+    <div>
+        <h1>Note: This site is maintained by Students of GEHU Haldwani and is not an official GEHU website.</h1>
+    </div>
+    {% endif %}
     {% assign pagePath = page.path | remove: "_pyqs/" | remove: "index.md" %}
     {% assign pathList = pagePath | split: "/" %}
     {% assign curPath = site.baseurl %}
