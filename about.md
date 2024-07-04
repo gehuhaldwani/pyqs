@@ -29,6 +29,7 @@ Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT Li
 -   Mansih Paneru (BCA 2026)
 -   Mukul Metha (BCA 2026)
 -   Jai Mer (BCA 2026)
+-   Sanjana (BTech CSE 2027)
 
 Consider contributing to this project by submitting your question papers.
 
