@@ -1,0 +1,79 @@
+---
+interface Props {
+	path: string;
+}
+
+const { path } = Astro.props;
+
+type Path = {
+	title: string;
+	path: string;
+};
+
+var curPath = "/";
+var pathList: Path[] = [];
+
+for (var p of path.split("/")) {
+	if (p) {
+		curPath += p + "/";
+		pathList.push({
+			title: p,
+			path: curPath,
+		});
+	}
+}
+---
+
+<div class="pathList">
+	{
+		pathList.map((p) => (
+			p.path === curPath ? 
+				<a class="path-link">
+					{p.title}
+				</a>
+			 :
+			<a class="path-link" href={p.path}>
+				{p.title}
+			</a>
+			<span class="path-link">></span>
+		))
+	}
+</div>
+
+<style>
+	.pathList {
+		flex: 1 1 auto;
+		display: inline-block;
+		line-height: 40px;
+	}
+	.path-link {
+		display: inline;
+		height: 32px;
+		line-height: 32px;
+		vertical-align: top;
+		color: var(--text-color) !important;
+		font-size: larger;
+		text-decoration: none;
+		padding: 0 0.25em;
+		transition: transform 0.2s;
+	}
+
+	a.path-link {
+		opacity: 1;
+		padding: 0 0.5em;
+		font-weight: bold;
+		text-align: center;
+	}
+	.path-link:hover {
+		text-decoration: none;
+	}
+	.path-link[href] {
+		opacity: 0.75;
+		font-weight: normal;
+	}
+	.path-link[href]:hover {
+		opacity: 1;
+		border-radius: 0.25em;
+		background-color: var(--highlight-color);
+	}
+</style>

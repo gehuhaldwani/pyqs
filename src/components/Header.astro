@@ -1,0 +1,45 @@
+---
+import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
+import ThemeIcon from "components/ThemeIcon.astro";
+import { SITE_TITLE } from "consts";
+import { SITE_BASE } from "consts";
+---
+
+<header
+	class="sticky z-50 top-0 bg-neutral-100 dark:bg-stone-950 dark:text-neutral-300 transition-colors duration-300"
+>
+	<div
+		class="w-full mx-auto lg:flex py-4 pt-2 px-4 sm:px-6 xl:px-10 md:pt-5 gap-5 mb-10 lg:mb-28 w-full"
+	>
+		<Astronav>
+			<div
+				class="flex w-full justify-between items-end border-b lg:border-none pb-4 lg:pb-0"
+			>
+				<a
+					class="font-semibold text-2xl flex gap-2 items-center group"
+					href={SITE_BASE}>{SITE_TITLE}</a
+				>
+				<div class="lg:hidden flex items-center justify-center gap-4">
+					<MenuIcon
+						class="w-4 h-4 text-gray-800 dark:text-neutral-300"
+					/>
+					<ThemeIcon class="w-10" />
+				</div>
+			</div>
+			<MenuItems class="hidden lg:flex">
+				<ul
+					class="flex flex-col lg:flex-row lg:gap-5 gap-3 mt-3 lg:mt-0 pb-4 lg:pb-0 border-b border-neutral-400 lg:border-b-0"
+				>
+					<li class="flex items-center">
+						<a href={SITE_BASE + "/contribute"}>Contribute</a>
+					</li>
+					<li class="flex items-center">
+						<a href={SITE_BASE + "/about"}>About</a>
+					</li>
+
+					<ThemeIcon class="w-10 hidden lg:flex" />
+				</ul>
+			</MenuItems>
+		</Astronav>
+	</div>
+</header>

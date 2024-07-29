@@ -1,17 +1,29 @@
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-run.bat
-pyqs
-# Ignore all directories starting with '_'
-_*/
+# build output
+dist/
+# generated types
+.astro/
 
-# Don't ignore these directories
-!/_drafts
-!/_includes
-!/_layouts
-!/_posts
-!/_data
-!/_sass
-!/assets
-!/vendor
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+.vscode/
+
+src/content/pyqs
+pyqs
+old

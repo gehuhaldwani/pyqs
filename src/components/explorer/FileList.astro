@@ -1,0 +1,87 @@
+---
+import type { Entry } from "utils/types.ts";
+import Directory from "components/explorer/Directory.astro";
+import Pdf from "components/explorer/Pdf.astro";
+import Url from "components/explorer/Url.astro";
+
+interface Props {
+	title: string;
+	dirs: Entry[];
+	pdfs: Entry[];
+	urls: Entry[];
+	files: Entry[];
+}
+
+const { title, dirs, pdfs, urls } = Astro.props;
+---
+
+<ul
+	class="fileList"
+	style={`view-transition-name: ${title.replace(" ", "_")};`}
+>
+	{
+		dirs.map((dir: Entry) => (
+			<li>
+				<Directory dir={dir} />
+			</li>
+		))
+	}
+	{
+		pdfs.map((pdf: Entry) => (
+			<li>
+				<Pdf pdf={pdf} />
+			</li>
+		))
+	}
+	{
+		urls.map((url: Entry) => (
+			<li>
+				<Url url={url} />
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+	li {
+		margin: 10px;
+	}
+</style>
+
+<style is:global>
+	.folder-link {
+		color: var(--text-color) !important;
+		padding: 1em;
+		font-size: large;
+		width: inherit;
+		max-width: 80%;
+		word-wrap: break-word;
+	}
+	.region {
+		width: inherit;
+		height: inherit;
+		padding: 0.5em 1em;
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		border-radius: 0.5em;
+		background-color: var(--highlight-color);
+		transition: transform 0.2s;
+	}
+	.region:hover {
+		background-color: var(--highlight-hover-color);
+		cursor: pointer;
+		transform: scale(1.025);
+		box-shadow: var(--box-shadow);
+	}
+	.icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+</style>

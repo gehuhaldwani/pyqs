@@ -1,0 +1,118 @@
+---
+import { Icon } from "astro-iconify";
+import { SITE_BASE } from "consts";
+
+const date = new Date();
+---
+
+<footer class="border-t m-5">
+	<div
+		class="max-w-screen-md mx-auto my-10 flex flex-col justify-center mx-4"
+	>
+		<div class="flex gap-4 pb-8 mb-5 flex-col lg:flex-row">
+			<div class="w-full lg:w-2/3">
+				<h1 class="text-lg font-bold mb-4">
+					Maintained by Lakshyajeet Jalal
+				</h1>
+				<p class="text-sm">
+					A collection of student contributed previous year question
+					papers for Graphic Era Hill University semester
+					examinations. This is a community driven project and we
+					encourage you to contribute to the project by adding more
+					question papers.
+				</p>
+				<div class="flex gap-3 mt-3">
+					<a href="https://mglsj.eu.org" target="_blank">
+						<Icon
+							name="mdi:web"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a href="https://t.me/mglsj" target="_blank">
+						<Icon
+							name="mdi:telegram"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a href="https://wa.me/9412130016" target="_blank">
+						<Icon
+							name="mdi:whatsapp"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a href="mailto:lakshyajeetjalal@duck.com" target="_blank">
+						<Icon
+							name="mdi:gmail"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a href="https://www.github.com/MG-LSJ" target="_blank">
+						<Icon
+							name="mdi:github"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a
+						href="https://www.linkedin.com/in/lakshyajeet-jalal/"
+						target="_blank"
+					>
+						<Icon
+							name="mdi:linkedin"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a
+						href="https://www.linkedin.com/in/lakshyajeet-jalal/"
+						target="_blank"
+					>
+						<Icon
+							name="mdi:mastodon"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+					<a
+						href="https://www.instagram.com/mglsj.gg"
+						target="_blank"
+					>
+						<Icon
+							name="mdi:instagram"
+							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+						/>
+					</a>
+				</div>
+			</div>
+			<div class="flex lg:ml-auto gap-10 mt-1">
+				<div>
+					<h1 class="font-bold mb-3 text-base">Quick Links</h1>
+					<ul class="flex flex-col gap-2 text-sm">
+						<li>
+							<a
+								href={SITE_BASE + "/contribute"}
+								class="flex items-center gap-1 hover:no-underline hover:text-gray-600"
+								>Contribute<Icon
+									name="radix-icons:arrow-top-right"
+									class="w-3 h-3"
+								/></a
+							>
+						</li>
+						<li>
+							<a
+								href={SITE_BASE + "/about"}
+								class="flex items-center gap-1 hover:no-underline hover:text-gray-600"
+								>About <Icon
+									name="radix-icons:arrow-top-right"
+									class="w-3 h-3"
+								/></a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<p class="text-sm font-medium mb-10">
+			This site was last updated on {date.toDateString()} at {
+				date.toTimeString()
+			}.
+		</p>
+	</div>
+</footer>

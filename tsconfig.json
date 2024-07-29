@@ -1,0 +1,14 @@
+{
+    "extends": "astro/tsconfigs/strict",
+    "compilerOptions": {
+        "strictNullChecks": true,
+        "baseUrl": "./src",
+    },
+    "exclude": [
+        "public",
+        "dist",
+        "old",
+        "node_modules",
+        "pyqs",
+    ]
+}
