@@ -6,16 +6,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "consts";
 
 interface Props {
 	title?: string;
+	description?: string;
 	frontmatter?: Props;
 }
 
-const { title = SITE_TITLE } = Astro.props.frontmatter || Astro.props;
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } =
+	Astro.props.frontmatter || Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={SITE_DESCRIPTION} />
+		<BaseHead title={title} description={description} />
 	</head>
 	<body
 		class="dark:bg-stone-900 dark:text-neutral-300 transition-colors duration-300"
