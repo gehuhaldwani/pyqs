@@ -45,29 +45,23 @@ jobs:
         with:
           node-version: "latest"
 
-      - name: Generate .md with python
-        run: python generate.py
+      - name: Generate .json with python
+        run: python generate_json.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Build with Jekyll v4
-        uses: dunkmann00/jekyll-v4-build-pages@v2
-        with:
-          source: "./"
-          destination: "./_site"
+      - name: Build Astro Site
+        run: npm install && npm run build
 
-      # - name: Move all files and folders from /_site/pyqs to /_site
-      #   run: sudo rsync -a _site/pyqs/ _site/ && sudo rm -r _site/pyqs/*
-
-      - name: Minify HTML,CSS and JS
-        run: bash minify.sh
+      # - name: Minify HTML,CSS and JS
+      #   run: bash minify.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: "./_site"
+          path: "./dist"
 
   # Deployment job
   deploy:
