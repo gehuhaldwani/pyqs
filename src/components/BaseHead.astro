@@ -35,6 +35,14 @@ const { title, description } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
+<meta property="og:image" content={`${SITE_BASE}/assets/icons/favicon.ico`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain" content={canonicalURL} />
+<meta property="twitter:url" content={Astro.url} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={`${SITE_BASE}/assets/icons/favicon.ico`} />
 
 <script is:inline>
 	const theme = (() => {

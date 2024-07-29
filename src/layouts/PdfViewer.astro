@@ -33,7 +33,10 @@ var scriptElement = `
 <!doctype html>
 <html dir="ltr">
 	<head>
-		<BaseHead title={title} description="View PDFs online" />
+		<BaseHead
+			title={title.toUpperCase().split("_").slice(1).join(" ")}
+			description={path.split("/").slice(1).join(" > ")}
+		/>
 		<link
 			rel="stylesheet"
 			href={`${SITE_BASE}/vendor/pdfjs/web/viewer.css`}
