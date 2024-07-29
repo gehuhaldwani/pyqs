@@ -54,8 +54,8 @@ jobs:
       - name: Build Astro Site
         run: npm install && npm run build
 
-      # - name: Minify HTML,CSS and JS
-      #   run: bash minify.sh
+      - name: Minify HTML,CSS and JS
+        run: bash minify.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
