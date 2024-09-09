@@ -10,7 +10,7 @@ const { url } = Astro.props;
 
 <div
 	class="region"
-	onclick=`goToFolder(this, "${url.path}", "${url.title}", true)`
+	style={`view-transition-name: ${url.title.replace(" ", "_")};`}
 >
 	<div class="icon">
 		<svg
@@ -26,4 +26,5 @@ const { url } = Astro.props;
 		</svg>
 	</div>
 	<span class="folder-link">{url.title}</span>
+	<a class="entry-link" href={url.path} target="_blank"></a>
 </div>

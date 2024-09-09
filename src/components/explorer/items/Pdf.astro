@@ -10,8 +10,7 @@ const { pdf } = Astro.props;
 
 <div
 	class="region"
-	onclick=`goToFolder(this, "${pdf.path}", "${pdf.title.replace(' ', '_')}")`
-	onauxclick=`handleAuxClickToFolder(event, this, "${pdf.path}", "${pdf.title.replace(' ', '_')}")`
+	style={`view-transition-name: ${pdf.title.replace(" ", "_")};`}
 >
 	<div class="icon">
 		<svg
@@ -30,4 +29,5 @@ const { pdf } = Astro.props;
 		</svg>
 	</div>
 	<span class="folder-link">{pdf.title}</span>
+	<a class="entry-link" href={pdf.path}></a>
 </div>

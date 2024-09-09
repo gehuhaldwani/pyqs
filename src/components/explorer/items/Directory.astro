@@ -11,7 +11,7 @@ const { dir } = Astro.props;
 
 <div
 	class="region"
-	onclick=`goToFolder(this, "${dir.path}", "${dir.title.replace(' ', '_')}")`
+	style={`view-transition-name: ${dir.title.replace(" ", "_")};`}
 >
 	<div class="icon">
 		<svg
@@ -35,4 +35,5 @@ const { dir } = Astro.props;
 				: toTitleCase(dir.title)
 		}</span
 	>
+	<a class="entry-link" href={dir.path}></a>
 </div>

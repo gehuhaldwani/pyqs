@@ -1,8 +1,8 @@
 ---
 import type { Entry } from "utils/types.ts";
-import Directory from "components/explorer/Directory.astro";
-import Pdf from "components/explorer/Pdf.astro";
-import Url from "components/explorer/Url.astro";
+import Directory from "components/explorer/items/Directory.astro";
+import Pdf from "components/explorer/items/Pdf.astro";
+import Url from "components/explorer/items/Url.astro";
 
 interface Props {
 	title: string;
@@ -72,6 +72,7 @@ const { title, dirs, pdfs, urls } = Astro.props;
 		border-radius: 0.5em;
 		background-color: var(--highlight-color);
 		transition: transform 0.2s;
+		position: relative;
 	}
 	.region:hover {
 		background-color: var(--highlight-hover-color);
@@ -83,5 +84,14 @@ const { title, dirs, pdfs, urls } = Astro.props;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.entry-link {
+		pointer-events: painted;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
 	}
 </style>
