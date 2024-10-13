@@ -1,24 +1,24 @@
 ---
-import FunctionRow from "components/explorer/FunctionRow.astro";
-import FileList from "components/explorer/FileList.astro";
-import Base from "./Base.astro";
-import type { Entry, Props } from "utils/types.ts";
-import { toTitleCase } from "utils/helpers";
+import FunctionRow from "@/components/explorer/FunctionRow.astro";
+import FileList from "@/components/explorer/FileList.astro";
+import Base from "@/layouts/Base.astro";
+import type { Entry, Props } from "@/utils/types.ts";
+import { toTitleCase } from "@/utils/helpers";
 
 const { title, path, parent_path, entries } = Astro.props;
 
-var dirs: Entry[] = entries.filter((entry) => entry.type === "dir");
-var pdfs: Entry[] = entries.filter((entry) => entry.type === "pdf");
-var urls: Entry[] = entries.filter((entry) => entry.type === "url");
-var files: Entry[] = entries.filter((entry) => entry.type === "file");
+const dirs: Entry[] = entries.filter((entry) => entry.type === "dir");
+const pdfs: Entry[] = entries.filter((entry) => entry.type === "pdf");
+const urls: Entry[] = entries.filter((entry) => entry.type === "url");
+const files: Entry[] = entries.filter((entry) => entry.type === "file");
 
-var speculationRules = `
+const speculationRules = `
 <script type="speculationrules">
     {
         "prefetch": [
             {
                 "source": "list",
-                "urls": [${dirs.map((dir: Entry) => `"${dir.path}"`)}${pdfs.length != 0 ? "," : ""} ${pdfs.map((pdf: Entry) => `"${pdf.path}"`)}]
+                "urls": [${dirs.map((dir: Entry) => `"${dir.path}"`)}${pdfs.length !== 0 ? "," : ""} ${pdfs.map((pdf: Entry) => `"${pdf.path}"`)}]
             }
         ]
     }

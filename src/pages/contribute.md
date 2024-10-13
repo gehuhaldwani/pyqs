@@ -68,13 +68,15 @@ Note:
 
 ### Via social media
 
-Send me the file on message.
+Send me the pdf file on message.
 
 -   [Telegram](https://t.me/mglsj)
 -   [WhatsApp](https://wa.me/9412130016)
 -   [email](mailto:lakshyajeetjalal@duck.com)
 
 ### Via Github Issue
+
+[Github Repo](https://github.com/gehuhaldwani/pyqs)
 
 Only do this if you are familiar with github.
 
@@ -85,6 +87,6 @@ Only do this if you are familiar with github.
 
 Only do this if you are familiar with git and github.
 
--   Fork the repository.
--   Add the file to the `pdfs` folder.
+-   Fork the repository (`main` branch only).
+-   Add the file to the appropriate folder.
 -   Create a pull request.

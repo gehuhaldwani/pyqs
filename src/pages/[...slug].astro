@@ -1,8 +1,8 @@
 ---
-import type { Props } from "utils/types.ts";
+import type { Props } from "@/utils/types.ts";
 import { getCollection } from "astro:content";
-import Explorer from "layouts/Explorer.astro";
-import PdfViewer from "layouts/PdfViewer.astro";
+import Explorer from "@/layouts/Explorer.astro";
+import PdfViewer from "@/layouts/PdfViewer.astro";
 
 export async function getStaticPaths() {
 	const pyqsEntries = await getCollection("pyqs");

@@ -7,13 +7,15 @@ title: About
 
 This GEHU PYQs Archieve website was created by Lakshyajeet Jalal, a B.Tech CSE student of GEHU Haldwani Campus.
 
+This site is not affiliated with Graphic Era Hill University or any of its campuses. This site is created for the students of GEHU to access previous year question papers easily.
+
 ## Why this website?
 
 If you are using this site, then you know why.
 
 ## Source
 
--   Made with Ruby, Jekyll and Python
+-   Made with Astro JS and Python
 -   Hosted on GitHub Pages
 -   pdfJs by Mozilla
 
@@ -49,14 +51,3 @@ Best programming course for beginners with free certificate.
 
 -   [youtube](https://www.youtube.com/playlist?list=PLhQjrBD2T381WAHyx1pq-sBfykqMBI7V4)
 -   [website](https://cs50.harvard.edu/x/2024/)
-
-## Personal Contact
-
--   [Telegram](https://t.me/mglsj)
--   [WhatsApp](https://wa.me/9412130016)
--   [Mastadon](https://mastodon.social/@mglsj)
--   [Github](https://github.com/MG-LSJ)
--   [email](mailto:lakshyajeetjalal@duck.com)
--   [Instagram](https://www.instagram.com/lakshyajeetjalal.gg/)
--   [Linkedin](https://www.linkedin.com/in/lakshyajeet-jalal/)
--   [Steam](https://steamcommunity.com/id/MasterGamerLSJ/)

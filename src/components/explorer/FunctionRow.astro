@@ -1,5 +1,5 @@
 ---
-import PathList from "./PathList.astro";
+import PathBreadcrumbs from '@/components/explorer/PathBreadcrumbs.astro';
 
 interface Props {
 	path: string;
@@ -16,8 +16,9 @@ const { path, parent_path } = Astro.props;
 				<button
 					class="backButton functionRowButton"
 					title="Back"
-					onclick={`goToUrl("${parent_path}")`}
+					// onclick={`goToUrl("${parent_path}")`}
 				/>
+				<a class="entry-link" href={parent_path}></a>
 			) : (
 				<button
 					class="backButton functionRowButton"
@@ -27,7 +28,7 @@ const { path, parent_path } = Astro.props;
 			)
 		}
 	</div>
-	<PathList path={path} />
+	<PathBreadcrumbs path={path} />
 </div>
 
 <style is:global>
@@ -46,6 +47,7 @@ const { path, parent_path } = Astro.props;
 	}
 	.backButtonContainer {
 		flex: 0 0 auto;
+		position: relative;
 	}
 	.toggleButtonContainer {
 		flex: 0 0 auto;

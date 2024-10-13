@@ -10,12 +10,12 @@ type Path = {
 	path: string;
 };
 
-var curPath = "/";
-var pathList: Path[] = [];
+let curPath = "/";
+const pathList: Path[] = [];
 
-for (var p of path.split("/")) {
+for (const p of path.split("/")) {
 	if (p) {
-		curPath += p + "/";
+		curPath += `${p}/`;
 		pathList.push({
 			title: p,
 			path: curPath,

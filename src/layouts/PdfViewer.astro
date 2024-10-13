@@ -1,15 +1,13 @@
 ---
-import { SITE_BASE } from "consts";
-import type { Props } from "utils/types.ts";
-import BaseHead from "components/BaseHead.astro";
+import { SITE_BASE } from "@/consts";
+import type { Props } from "@/utils/types.ts";
+import BaseHead from "@/components/BaseHead.astro";
 
 const { title, path, parent_path } = Astro.props;
 
-var link =
-	"https://raw.githubusercontent.com/gehuhaldwani/pyqs/main" +
-	path.replace("/pyqs", "").replaceAll(" ", "%20");
+const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
 
-var scriptElement = `		
+const scriptElement = `		
 <script type="text/javascript" defer>
 	let FILE_PATH = "${link}";
 	let PDF_JS_PATH = "${SITE_BASE}/vendor/pdfjs";
