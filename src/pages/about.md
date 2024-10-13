@@ -1,5 +1,5 @@
 ---
-layout: layouts/PlainText.astro
+layout: "@/layouts/PlainText.astro"
 title: About
 ---
 

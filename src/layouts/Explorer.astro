@@ -33,28 +33,6 @@ const description = path.split("/").slice(1).join(" > ");
 	<FileList title={title} dirs={dirs} pdfs={pdfs} urls={urls} files={files} />
 </Base>
 
-<!-- <script lang="js" is:inline>
-	// Go To
-	function goToFolder(ele, url, name, newTab = false) {
-		ele.setAttribute("style", `view-transition-name: ${name};`);
-		goToUrl(url, newTab);
-	}
-
-	function goToUrl(url = "", newTab = false) {
-		if (newTab) {
-			window.open(url, "_blank").focus();
-		} else {
-			window.location.href = url;
-		}
-	}
-
-	function handleAuxClickToFolder(e, ele, url, name) {
-		if (e.button === 1) {
-			goToFolder(ele, url, name, true);
-		}
-	}
-</script> -->
-
 <style is:global>
 	:root {
 		--text-color: #242424;
