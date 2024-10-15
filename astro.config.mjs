@@ -6,7 +6,7 @@ import tailwind from '@astrojs/tailwind'
 
 // https://astro.build/config
 export default defineConfig({
-    site: "http://localhost:4321",
+    site: "https://gehuhaldwani.github.io",
     base: '/pyqs',
     integrations: [mdx(), sitemap(), tailwind()],
     markdown: {

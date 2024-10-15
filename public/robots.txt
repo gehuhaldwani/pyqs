@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gehuhaldwani.github.io/pyqs/sitemap-index.xml
