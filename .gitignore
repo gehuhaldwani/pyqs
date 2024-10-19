@@ -31,3 +31,5 @@ old
 #locks
 package-lock.json
 pnpm-lock.yaml
+
+.mypy_cache
