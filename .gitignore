@@ -27,3 +27,7 @@ pnpm-debug.log*
 src/content/pyqs
 pyqs
 old
+
+#locks
+package-lock.json
+pnpm-lock.yaml
