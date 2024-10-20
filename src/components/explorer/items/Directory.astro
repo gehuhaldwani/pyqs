@@ -9,10 +9,7 @@ interface Props {
 const { dir } = Astro.props;
 ---
 
-<div
-	class="region"
-	style={`view-transition-name: ${dir.title.replace(" ", "_")};`}
->
+<div class="region" transition:name={dir.title.replace(" ", "_")}>
 	<div class="icon">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

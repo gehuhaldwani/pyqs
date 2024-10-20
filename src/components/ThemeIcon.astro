@@ -97,7 +97,10 @@ const props = Astro.props;
 	}
 </style>
 
-<button class={"switch-theme-button pushable " + props.class}>
+<button
+	class={"switch-theme-button pushable " + props.class}
+	onclick="chageTheme()"
+>
 	<span class="shadow"></span>
 	<span class="edge"></span>
 	<span class="front">
@@ -106,19 +109,14 @@ const props = Astro.props;
 	</span>
 </button>
 
-<script>
-	// document.addEventListener('astro:page-load', () => {
-	const buttons = document.querySelectorAll(".switch-theme-button");
-	buttons.forEach((button) => {
-		button.addEventListener("click", () => {
-			if (localStorage.theme === "dark") {
-				localStorage.theme = "light";
-				document.documentElement.classList.remove("dark");
-			} else {
-				localStorage.theme = "dark";
-				document.documentElement.classList.add("dark");
-			}
-		});
-	});
-	// });
+<script is:inline data-astro-rerun>
+	function chageTheme() {
+		if (localStorage.theme === "dark") {
+			localStorage.theme = "light";
+			document.documentElement.classList.remove("dark");
+		} else {
+			localStorage.theme = "dark";
+			document.documentElement.classList.add("dark");
+		}
+	}
 </script>

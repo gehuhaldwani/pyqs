@@ -108,16 +108,5 @@ const { path, parent_path } = Astro.props;
 		mask-image: var(--icon-up);
 	}
 
-	/* View Transitions */
-	.functionRow {
-		view-transition-name: functionRow;
-	}
-	/* .pathList {
-		view-transition-name: pathList;
-	} */
 
-	::view-transition-old(functionRow),
-	::view-transition-new(functionRow) {
-		mix-blend-mode: normal;
-	}
 </style>

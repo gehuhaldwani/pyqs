@@ -1,5 +1,4 @@
 ---
-import { SITE_BASE } from "@/consts";
 import type { Props } from "@/utils/types.ts";
 import BaseHead from "@/components/BaseHead.astro";
 
@@ -7,10 +6,12 @@ const { title, path, parent_path } = Astro.props;
 
 const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
 
+const SITE_BASE = import.meta.env.BASE_URL;
+
 const scriptElement = `		
 <script type="text/javascript" defer>
 	let FILE_PATH = "${link}";
-	let PDF_JS_PATH = "${SITE_BASE}/vendor/pdfjs";
+	let PDF_JS_PATH = "${SITE_BASE}vendor/pdfjs";
 
 	function downloadPDF() {
 			var element = document.createElement("a");
@@ -37,15 +38,15 @@ const scriptElement = `
 		/>
 		<link
 			rel="stylesheet"
-			href={`${SITE_BASE}/vendor/pdfjs/web/viewer.css`}
+			href={`${SITE_BASE}vendor/pdfjs/web/viewer.css`}
 		/>
 		<script
 			is:inline
-			src={`${SITE_BASE}/vendor/pdfjs/build/pdf.mjs`}
+			src={`${SITE_BASE}vendor/pdfjs/build/pdf.mjs`}
 			type="module"></script>
 		<script
 			is:inline
-			src={`${SITE_BASE}/vendor/pdfjs/web/viewer.mjs`}
+			src={`${SITE_BASE}vendor/pdfjs/web/viewer.mjs`}
 			type="module"></script>
 
 		<style>

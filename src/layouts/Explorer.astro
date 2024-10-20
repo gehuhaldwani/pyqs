@@ -24,10 +24,20 @@ const speculationRules = `
     }
 </script>`;
 
-const description = path.split("/").slice(1).join(" > ");
+const pathList = path.split("/").slice(1);
+const description = pathList.join(" > ");
+
+let pageTitle: string = title;
+
+if (title.toLowerCase() === "mid" || title.toLowerCase() === "end") {
+	pageTitle = pathList.splice(-2).join(" > ");
+}
+if (title.toLowerCase() === "old") {
+	pageTitle = pathList.splice(-3).join(" > ");
+}
 ---
 
-<Base title={toTitleCase(title)} description={description}>
+<Base title={toTitleCase(pageTitle)} description={description}>
 	<Fragment set:html={speculationRules} />
 	<FunctionRow path={path} parent_path={parent_path} />
 	<FileList title={title} dirs={dirs} pdfs={pdfs} urls={urls} files={files} />

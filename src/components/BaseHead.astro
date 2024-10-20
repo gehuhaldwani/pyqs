@@ -1,5 +1,5 @@
 ---
-import { SITE_BASE } from "@/consts";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import "@/styles/global.css";
 
 interface Props {
@@ -10,7 +10,14 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description } = Astro.props;
+
+const SITE_BASE = import.meta.env.BASE_URL;
+
+const pageTitle = `${SITE_TITLE} | ${title}`;
+const pageDescription = `${description}\n${SITE_DESCRIPTION}`;
 ---
+
+<title>{pageTitle}</title>
 
 <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -20,7 +27,7 @@ const { title, description } = Astro.props;
 <link
 	rel="icon"
 	type="image/svg+xml"
-	href={`${SITE_BASE}/assets/icons/favicon.ico`}
+	href={`${SITE_BASE}assets/icons/favicon.ico`}
 />
 <meta name="generator" content={Astro.generator} />
 
@@ -28,25 +35,24 @@ const { title, description } = Astro.props;
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
 <meta name="title" content={title} />
-<meta name="description" content={description} />
+<meta name="description" content={pageDescription} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
-<meta property="og:image" content={`${SITE_BASE}/assets/icons/favicon.ico`} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:image" content={`${SITE_BASE}assets/icons/favicon.ico`} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:domain" content={canonicalURL} />
 <meta property="twitter:url" content={Astro.url} />
 <meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={`${SITE_BASE}/assets/icons/favicon.ico`} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={`${SITE_BASE}assets/icons/favicon.ico`} />
 
-<script is:inline>
+<script is:inline data-astro-rerun>
 	const theme = (() => {
 		if (
 			typeof localStorage !== "undefined" &&

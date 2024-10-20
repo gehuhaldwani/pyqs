@@ -17,7 +17,8 @@ const { title, dirs, pdfs, urls } = Astro.props;
 
 <ul
 	class="fileList"
-	style={`view-transition-name: ${title.replace(" ", "_")};`}
+	transition:name={title.replace(" ", "_")}
+	transition:animate="fade"
 >
 	{
 		dirs.map((dir: Entry) => (

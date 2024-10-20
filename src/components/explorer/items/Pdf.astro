@@ -8,10 +8,7 @@ interface Props {
 const { pdf } = Astro.props;
 ---
 
-<div
-	class="region"
-	style={`view-transition-name: ${pdf.title.replace(" ", "_")};`}
->
+<div class="region" transition:name={pdf.title.replace(" ", "_")}>
 	<div class="icon">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -29,5 +26,5 @@ const { pdf } = Astro.props;
 		</svg>
 	</div>
 	<span class="folder-link">{pdf.title}</span>
-	<a class="entry-link" href={pdf.path}></a>
+	<a class="entry-link" href={`${pdf.path}/`}></a>
 </div>
