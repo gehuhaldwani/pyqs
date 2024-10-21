@@ -36,6 +36,8 @@ Full source code on github [here](https://github.com/gehuhaldwani/pyqs). (MIT Li
 
 Consider contributing to this project by submitting your question papers.
 
+---
+
 ## Also Check Out
 
 Join our [Discord server](https://discord.gg/u5QVwjKWWf) for B.Tech CSE notes and other resources.
