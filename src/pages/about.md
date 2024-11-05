@@ -42,6 +42,7 @@ License)
 - Yash Agarwal (BTECH CSE 2027)
 - Manav Sati (BCA 2025)
 - Daksh Bhaisora (BCA 2026)
+- Vansh Jaiswal (BTECH CSE 2027)
 
 Consider contributing to this project by submitting your question papers.
 
