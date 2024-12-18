@@ -43,6 +43,8 @@ License)
 - Manav Sati (BCA 2025)
 - Daksh Bhaisora (BCA 2026)
 - Vansh Jaiswal (BTECH CSE 2027)
+- Bhavesh Negi (BCA AI&DS 2028)
+- Dkash (BCA 2026)
 
 Consider contributing to this project by submitting your question papers.
 
