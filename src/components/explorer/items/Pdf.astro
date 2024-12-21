@@ -26,7 +26,7 @@ const name =
 	(pdf as Entry).pyq?.subject_code.toUpperCase() +
 	" " +
 	((pdf as Entry).pyq?.specialization_code
-		? `- ${(pdf as Entry).pyq?.specialization_code.toUpperCase()} `
+		? `- ${(pdf as Entry).pyq?.specialization_code!.toUpperCase()} `
 		: "") +
 	"• " +
 	((pdf as Entry).pyq?.set ? `Set ${(pdf as Entry).pyq?.set} • ` : "") +
@@ -36,9 +36,9 @@ const name =
 	"• " +
 	(pdf as Entry).pyq?.year +
 	((pdf as Entry).pyq?.month
-		? ` ${monthNames[(pdf as Entry).pyq?.month - 1]}`
+		? ` ${monthNames[(pdf as Entry).pyq?.month! - 1]}`
 		: "") +
-	((pdf as Entry).pyq?.date ? ` ${(pdf as Entry).pyq?.date}` : "");
+	((pdf as Entry).pyq?.date ? ` ${(pdf as Entry).pyq?.date!}` : "");
 ---
 
 <div class="region" transition:name={pdf.title.replace(" ", "_")}>

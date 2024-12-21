@@ -17,7 +17,13 @@ interface Props {
 
 const { title, path, dirs, pdfs, urls } = Astro.props;
 
-pdfs.sort((a: Entry, b: Entry) => -1 * comparePyqs(a.pyq, b.pyq));
+pdfs.sort((a: Entry, b: Entry) => {
+	if (a.pyq && b.pyq === null) return -1;
+	if (a.pyq === null && b.pyq) return 1;
+	if (a.pyq === null && b.pyq === null) return 0;
+	// biome-ignore lint/style/noNonNullAssertion: <explanation>
+	return comparePyqs(a.pyq!, b.pyq!);
+});
 ---
 
 <ul

@@ -1,6 +1,6 @@
 import { z } from "astro:content";
 
-const pyqSchema = z.object({
+const pyqSchema: z.ZodSchema = z.object({
 	subject_code: z.string(),
 	specialization_code: z.string().nullable(),
 	type: z.string(),
@@ -22,12 +22,12 @@ type Pyq = {
 	set: string | null;
 };
 
-const entrySchema = z.object({
+const entrySchema: z.ZodSchema = z.object({
 	title: z.string(),
 	type: z.string(),
 	path: z.string(),
-	parent_path: z.string().nullable(),
-	entries: z.array(z.lazy(() => entrySchema)).optional(),
+	parent_path: z.string(),
+	entries: z.array(z.lazy(() => entrySchema)),
 	pyq: pyqSchema.nullable(),
 });
 
@@ -35,8 +35,8 @@ type Entry = {
 	title: string;
 	type: string;
 	path: string;
-	parent_path: string | null;
-	entries: Entry[] | null;
+	parent_path: string;
+	entries: Entry[];
 	pyq: Pyq | null;
 };
 
