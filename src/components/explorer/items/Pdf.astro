@@ -6,6 +6,39 @@ interface Props {
 }
 
 const { pdf } = Astro.props;
+
+const monthNames = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
+const name =
+	(pdf as Entry).pyq?.subject_code.toUpperCase() +
+	" " +
+	((pdf as Entry).pyq?.specialization_code
+		? `- ${(pdf as Entry).pyq?.specialization_code.toUpperCase()} `
+		: "") +
+	"• " +
+	((pdf as Entry).pyq?.set ? `Set ${(pdf as Entry).pyq?.set} • ` : "") +
+	((pdf as Entry).pyq?.type === "midsem" ? "Mid Sem" : "End Sem") +
+	" " +
+	((pdf as Entry).pyq?.back ? "BACK " : "") +
+	"• " +
+	(pdf as Entry).pyq?.year +
+	((pdf as Entry).pyq?.month
+		? ` ${monthNames[(pdf as Entry).pyq?.month - 1]}`
+		: "") +
+	((pdf as Entry).pyq?.date ? ` ${(pdf as Entry).pyq?.date}` : "");
 ---
 
 <div class="region" transition:name={pdf.title.replace(" ", "_")}>
@@ -25,6 +58,6 @@ const { pdf } = Astro.props;
 			></path>
 		</svg>
 	</div>
-	<span class="folder-link">{pdf.title}</span>
-	<a class="entry-link" href={`${pdf.path}/`}></a>
+	<span class="folder-link">{name}</span>
+	<a class="entry-link" href={`${pdf.title}/`}></a>
 </div>

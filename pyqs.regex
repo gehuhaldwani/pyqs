@@ -1,0 +1,1 @@
+^(?P<subject_code>[a-zA-Z0-9]+)_(?:(?P<specialization_code>[a-zA-Z0-9]+)_)?(?P<type>(?:midsem)|(?:endsem))_(?:(?P<back>back)_)?(?P<year>20[0-9]{2})(?:_(?P<month>(?:jan)|(?:feb)|(?:mar)|(?:apr)|(?:may)|(?:jun)|(?:jul)|(?:aug)|(?:sep)|(?:oct)|(?:nov)|(?:dec)))?(?:_(?P<date>[0-9]{1,2}))?(?:_set(?P<set>[a-zA-Z0-9]+))?$

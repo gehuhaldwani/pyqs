@@ -1,10 +1,14 @@
 ---
-import type { Props } from "@/utils/types.ts";
 import BaseHead from "@/components/BaseHead.astro";
+import type { Entry } from "@/utils/types";
 
-const { title, path, parent_path } = Astro.props;
+interface Props {
+	entry: Entry;
+}
 
-const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
+const { entry } = Astro.props;
+
+const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
 
 const SITE_BASE = import.meta.env.BASE_URL;
 
@@ -24,7 +28,7 @@ const scriptElement = `
 		}
 
 		function closePage() {
-			window.location.href = "${parent_path}";
+			window.location.href = "${entry.parent_path}";
 		}
 </script>`;
 ---
@@ -33,8 +37,8 @@ const scriptElement = `
 <html dir="ltr">
 	<head>
 		<BaseHead
-			title={title.toUpperCase().split("_").join(" ")}
-			description={path.split("/").slice(1).join(" > ")}
+			title={entry.title.toUpperCase().split("_").join(" ")}
+			description={entry.path.split("/").slice(1).join(" > ")}
 		/>
 		<link
 			rel="stylesheet"

@@ -2,15 +2,27 @@
 import FunctionRow from "@/components/explorer/FunctionRow.astro";
 import FileList from "@/components/explorer/FileList.astro";
 import Base from "@/layouts/Base.astro";
-import type { Entry, Props } from "@/utils/types.ts";
 import { toTitleCase } from "@/utils/helpers";
+import type { Entry } from "@/utils/types";
 
-const { title, path, parent_path, entries } = Astro.props;
+interface Props {
+	entry: Entry;
+}
 
-const dirs: Entry[] = entries.filter((entry) => entry.type === "dir");
-const pdfs: Entry[] = entries.filter((entry) => entry.type === "pdf");
-const urls: Entry[] = entries.filter((entry) => entry.type === "url");
-const files: Entry[] = entries.filter((entry) => entry.type === "file");
+const { entry } = Astro.props;
+
+const dirs: Entry[] = entry.entries.filter(
+	(entry: Entry) => entry.type === "dir",
+);
+const pdfs: Entry[] = entry.entries.filter(
+	(entry: Entry) => entry.type === "pdf",
+);
+const urls: Entry[] = entry.entries.filter(
+	(entry: Entry) => entry.type === "url",
+);
+const files: Entry[] = entry.entries.filter(
+	(entry: Entry) => entry.type === "file",
+);
 
 const speculationRules = `
 <script type="speculationrules">
@@ -24,23 +36,36 @@ const speculationRules = `
     }
 </script>`;
 
-const pathList = path.split("/").slice(1);
+const pathList = entry.path.split("/").slice(1);
 const description = pathList.join(" > ");
 
-let pageTitle: string = title;
+let pageTitle: string = entry.title;
 
-if (title.toLowerCase() === "mid" || title.toLowerCase() === "end") {
-	pageTitle = pathList.splice(-2).join(" > ");
-}
-if (title.toLowerCase() === "old") {
+if (entry.title.toLowerCase() === "others") {
 	pageTitle = pathList.splice(-3).join(" > ");
+}
+if (
+	entry.title.toLowerCase() === "mid" ||
+	entry.title.toLowerCase() === "end"
+) {
+	pageTitle = pathList.splice(-3).join(" > ");
+}
+if (entry.title.toLowerCase() === "old") {
+	pageTitle = pathList.splice(-4).join(" > ");
 }
 ---
 
 <Base title={toTitleCase(pageTitle)} description={description}>
 	<Fragment set:html={speculationRules} />
-	<FunctionRow path={path} parent_path={parent_path} />
-	<FileList title={title} dirs={dirs} pdfs={pdfs} urls={urls} files={files} />
+	<FunctionRow path={entry.path} parent_path={entry.parent_path} />
+	<FileList
+		path={entry.path}
+		title={entry.title}
+		dirs={dirs}
+		pdfs={pdfs}
+		urls={urls}
+		files={files}
+	/>
 </Base>
 
 <style is:global>

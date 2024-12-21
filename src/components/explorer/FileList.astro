@@ -3,16 +3,21 @@ import type { Entry } from "@/utils/types.ts";
 import Directory from "@/components/explorer/items/Directory.astro";
 import Pdf from "@/components/explorer/items/Pdf.astro";
 import Url from "@/components/explorer/items/Url.astro";
+import Contribute from "@/components/explorer/items/Contribute.astro";
+import { comparePyqs } from "@/utils/helpers";
 
 interface Props {
 	title: string;
+	path: string;
 	dirs: Entry[];
 	pdfs: Entry[];
 	urls: Entry[];
 	files: Entry[];
 }
 
-const { title, dirs, pdfs, urls } = Astro.props;
+const { title, path, dirs, pdfs, urls } = Astro.props;
+
+pdfs.sort((a: Entry, b: Entry) => -1 * comparePyqs(a.pyq, b.pyq));
 ---
 
 <ul
@@ -40,6 +45,13 @@ const { title, dirs, pdfs, urls } = Astro.props;
 				<Url url={url} />
 			</li>
 		))
+	}
+	{
+		pdfs.length > 0 && (
+			<li>
+				<Contribute path={path} />
+			</li>
+		)
 	}
 </ul>
 

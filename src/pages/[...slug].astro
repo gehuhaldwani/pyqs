@@ -1,21 +1,28 @@
 ---
-import type { Props } from "@/utils/types.ts";
 import { getCollection } from "astro:content";
 import Explorer from "@/layouts/Explorer.astro";
 import PdfViewer from "@/layouts/PdfViewer.astro";
 
 export async function getStaticPaths() {
-	const pyqsEntries = await getCollection("pyqs");
+	const pyqsEntries = await getCollection("entries");
 	return pyqsEntries.map((entry) => ({
 		params: {
 			slug: entry.data.path.replace("/pyqs", "").replace(".pdf", ""),
 		},
-		props: entry.data,
+		props: {
+			entry: entry.data,
+		},
 	}));
 }
 
-const entry = Astro.props;
+import type { Entry } from "@/utils/types";
+
+interface Props {
+	entry: Entry;
+}
+
+const { entry } = Astro.props;
 ---
 
-{entry.type === "dir" ? <Explorer {...entry} /> : null}
-{entry.type === "pdf" ? <PdfViewer {...entry} /> : null}
+{entry.type === "dir" ? <Explorer entry={entry} /> : null}
+{entry.type === "pdf" ? <PdfViewer entry={entry} /> : null}
