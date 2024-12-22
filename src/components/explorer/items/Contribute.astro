@@ -1,11 +1,12 @@
 ---
 interface Props {
+	title: string;
 	path: string;
 }
 
-const { path } = Astro.props;
+const { path, title } = Astro.props;
 
-const url = "https://pyqs-uploader.onrender.com/?path=" + path;
+const url = `https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`;
 ---
 
 <div class="region" transition:name="contribute">
@@ -21,7 +22,9 @@ const url = "https://pyqs-uploader.onrender.com/?path=" + path;
 			></path></svg
 		>
 	</div>
-	<span class="folder-link"> Upload PYQs </span>
+	<span class="folder-link">
+		Upload PYQs to <b>"{title.toUpperCase()}"</b></span
+	>
 	<a class="entry-link" href={url} target="_blank"></a>
 </div>
 

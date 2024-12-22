@@ -60,7 +60,7 @@ if (entry.title.toLowerCase() === "old") {
 	<FunctionRow path={entry.path} parent_path={entry.parent_path} />
 	<FileList
 		path={entry.path}
-		title={entry.title}
+		title={pageTitle.substring(0, pageTitle.length - 3)}
 		dirs={dirs}
 		pdfs={pdfs}
 		urls={urls}

@@ -29,7 +29,12 @@ const { dir } = Astro.props;
 		>{
 			dir.path.split("/").length === 4
 				? dir.title.toUpperCase()
-				: toTitleCase(dir.title)
+				: dir.title.toUpperCase() === "OTHERS" ||
+					  dir.title.toUpperCase() === "OLD" ||
+					  dir.title.toUpperCase() === "MID" ||
+					  dir.title.toUpperCase() === "END"
+					? dir.title.toUpperCase()
+					: toTitleCase(dir.title)
 		}</span
 	>
 	<a class="entry-link" href={dir.path}></a>
