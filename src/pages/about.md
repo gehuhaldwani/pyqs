@@ -45,6 +45,8 @@ License)
 - Vansh Jaiswal (BTECH CSE 2027)
 - Bhavesh Negi (BCA AI&DS 2028)
 - Dkash (BCA 2026)
+- Sapna Rawat (BTech 2025)
+- Prateek Banoula (BTech 2028)
 
 Consider contributing to this project by submitting your question papers.
 
