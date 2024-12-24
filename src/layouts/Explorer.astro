@@ -53,6 +53,9 @@ if (
 if (entry.title.toLowerCase() === "old") {
 	pageTitle = pathList.splice(-4).join(" > ");
 }
+if (pageTitle.endsWith(" > ")) {
+	pageTitle = pageTitle.substring(0, pageTitle.length - 3);
+}
 ---
 
 <Base title={toTitleCase(pageTitle)} description={description}>
@@ -60,7 +63,7 @@ if (entry.title.toLowerCase() === "old") {
 	<FunctionRow path={entry.path} parent_path={entry.parent_path} />
 	<FileList
 		path={entry.path}
-		title={pageTitle.substring(0, pageTitle.length - 3)}
+		title={pageTitle}
 		dirs={dirs}
 		pdfs={pdfs}
 		urls={urls}
