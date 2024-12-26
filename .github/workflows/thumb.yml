@@ -45,12 +45,16 @@ jobs:
             output_subdir="$OUTPUT_DIR/$dir_name"
             mkdir -p "$output_subdir"
 
-            # Convert the first page of the PDF to a .webp thumbnail
-            convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
+            (
+              # Convert the first page of the PDF to a .webp thumbnail
+              convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
 
-            # Notify the user
-            echo "Converted $pdf_file to $output_subdir/$base_name.webp"
+              # Notify the user
+              echo "Converted $pdf_file to $output_subdir/$base_name.webp"
+            ) &
           done
+
+          wait
 
           echo "All PDF files have been converted to .webp thumbnails."
 
