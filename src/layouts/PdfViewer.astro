@@ -9,6 +9,7 @@ interface Props {
 const { entry } = Astro.props;
 
 const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
+const thumbnail = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/refs/heads/thumbnails${entry.path.replace("/pyqs", "").replaceAll(" ", "%20").replace(".pdf", ".webp")}`;
 
 const SITE_BASE = import.meta.env.BASE_URL;
 
@@ -39,6 +40,7 @@ const scriptElement = `
 		<BaseHead
 			title={entry.title.toUpperCase().split("_").join(" ")}
 			description={entry.path.split("/").slice(1).join(" > ")}
+			image={thumbnail}
 		/>
 		<link
 			rel="stylesheet"

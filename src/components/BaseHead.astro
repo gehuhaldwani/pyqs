@@ -5,13 +5,16 @@ import "@/styles/global.css";
 interface Props {
 	title: string;
 	description: string;
+	image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description } = Astro.props;
+const { title, description, image } = Astro.props;
 
 const SITE_BASE = import.meta.env.BASE_URL;
+
+const ogImage = image ? image : `${SITE_BASE}assets/icons/favicon.ico`;
 
 const pageTitle = `${SITE_TITLE} | ${title}`;
 const pageDescription = `${description}\n${SITE_DESCRIPTION}`;
@@ -43,14 +46,14 @@ const pageDescription = `${description}\n${SITE_DESCRIPTION}`;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={pageDescription} />
-<meta property="og:image" content={`${SITE_BASE}assets/icons/favicon.ico`} />
+<meta property="og:image" content={ogImage} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:domain" content={canonicalURL} />
 <meta property="twitter:url" content={Astro.url} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={pageDescription} />
-<meta name="twitter:image" content={`${SITE_BASE}assets/icons/favicon.ico`} />
+<meta name="twitter:image" content={ogImage} />
 
 <script is:inline data-astro-rerun>
 	const theme = (() => {
