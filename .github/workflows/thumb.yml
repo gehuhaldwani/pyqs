@@ -1,0 +1,60 @@
+name: Generate Thumbnails
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: "thumbnails"
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch to pyqs
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Generate Thumbnails
+        run: |
+          # Set the output thumbnail size
+          THUMBNAIL_SIZE="512x512"
+
+          # Create an output directory for thumbnails (optional)
+          OUTPUT_DIR="thumbnails"
+          mkdir -p "$OUTPUT_DIR"
+
+          # Find all PDF files in the current directory and its subdirectories
+          find . -type f -name "*.pdf" | while read -r pdf_file; do
+            # Extract the base filename and directory path
+            base_name=$(basename "$pdf_file" .pdf)
+            dir_name=$(dirname "$pdf_file")
+
+            # Create a corresponding subdirectory structure in the output directory
+            output_subdir="$OUTPUT_DIR/$dir_name"
+            mkdir -p "$output_subdir"
+
+            # Convert the first page of the PDF to a .webp thumbnail
+            convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
+
+            # Notify the user
+            echo "Converted $pdf_file to $output_subdir/$base_name.webp"
+          done
+
+          echo "All PDF files have been converted to .webp thumbnails."
+
+      - name: push thumbnails to the output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: thumbnails
+          build_dir: thumbnails
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
