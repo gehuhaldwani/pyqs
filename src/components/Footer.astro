@@ -1,4 +1,5 @@
 ---
+import { SOCIALS, MAINTAINER_NAME, MAINTAINER_COURSE } from "@/consts";
 import { Icon } from "astro-iconify";
 
 const SITE_BASE = import.meta.env.BASE_URL;
@@ -6,15 +7,13 @@ const date = new Date();
 ---
 
 <footer class="border-t m-5">
-	<div
-		class="max-w-screen-md mx-auto my-10 flex flex-col justify-center mx-4"
-	>
+	<div class="max-w-screen-md mx-auto my-10 flex flex-col justify-center">
 		<div class="flex gap-4 pb-8 mb-5 flex-col lg:flex-row">
 			<div class="w-full lg:w-2/3">
 				<h1 class="text-lg font-bold mb-4">
-					Maintained by Lakshyajeet Jalal
+					Maintained by {MAINTAINER_NAME}
 					<br />
-					B.Tech (CSE) 2026
+					{MAINTAINER_COURSE}
 				</h1>
 				<p class="text-sm">
 					A collection of student contributed previous year question
@@ -24,60 +23,16 @@ const date = new Date();
 					question papers.
 				</p>
 				<div class="flex gap-3 mt-3">
-					<a href="https://lakshyajeet.jalal.uk.in/" target="_blank">
-						<Icon
-							name="mdi:web"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a href="https://t.me/mglsj" target="_blank">
-						<Icon
-							name="mdi:telegram"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a href="https://wa.me/9412130016" target="_blank">
-						<Icon
-							name="mdi:whatsapp"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a href="mailto:lakshyajeet@jalal.uk.in" target="_blank">
-						<Icon
-							name="mdi:gmail"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a href="https://www.github.com/mglsj" target="_blank">
-						<Icon
-							name="mdi:github"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a
-						href="https://www.linkedin.com/in/lakshyajeet-jalal/"
-						target="_blank"
-					>
-						<Icon
-							name="mdi:linkedin"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a
-						href="https://www.linkedin.com/in/lakshyajeet-jalal/"
-						target="_blank"
-					>
-						<Icon
-							name="mdi:mastodon"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
-					<a href="https://mastodon.social/@mglsj" target="_blank">
-						<Icon
-							name="mdi:instagram"
-							class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
-						/>
-					</a>
+					{
+						SOCIALS.map((social) => (
+							<a href={social.url} target="_blank">
+								<Icon
+									name={social.icon}
+									class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+								/>
+							</a>
+						))
+					}
 				</div>
 			</div>
 			<div class="flex lg:ml-auto gap-10 mt-1">
@@ -114,7 +69,7 @@ const date = new Date();
 						</li>
 						<li>
 							<a
-								href={SITE_BASE + "/contribute"}
+								href={SITE_BASE + "contribute/"}
 								class="flex items-center gap-1 hover:no-underline hover:text-gray-600"
 								>Contribute<Icon
 									name="radix-icons:arrow-top-right"
@@ -124,7 +79,7 @@ const date = new Date();
 						</li>
 						<li>
 							<a
-								href={SITE_BASE + "/about"}
+								href={SITE_BASE + "about/"}
 								class="flex items-center gap-1 hover:no-underline hover:text-gray-600"
 								>About <Icon
 									name="radix-icons:arrow-top-right"

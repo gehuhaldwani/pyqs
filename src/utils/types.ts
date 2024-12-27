@@ -40,5 +40,11 @@ type Entry = {
 	pyq: Pyq | null;
 };
 
+type Social = {
+	name: string;
+	url: string;
+	icon: string;
+};
+
 export { entrySchema, pyqSchema };
-export type { Entry, Pyq };
+export type { Entry, Pyq, Social };

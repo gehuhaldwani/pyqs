@@ -1,0 +1,13 @@
+---
+import { contributors } from "@/data/contributors";
+---
+
+<ul>
+	{
+		contributors.map((contributor) => (
+			<li>
+				{contributor.name} ({contributor.course} {contributor.batch})
+			</li>
+		))
+	}
+</ul>
