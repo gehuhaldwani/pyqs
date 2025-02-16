@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
 html {
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif, monospace;
 	width: 100%;
