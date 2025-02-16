@@ -41,9 +41,10 @@ type Entry = {
 };
 
 type Social = {
+	id: string;
 	name: string;
 	url: string;
-	icon: string;
+	iconify: string;
 };
 
 export { entrySchema, pyqSchema };
