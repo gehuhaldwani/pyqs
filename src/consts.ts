@@ -6,9 +6,10 @@ export const SITE_DESCRIPTION =
 
 export const MAINTAINER_NAME = "Lakshyajeet Jalal";
 export const MAINTAINER_COURSE = "B.Tech CSE";
+export const MAINTAINER_BATCH = "2026";
 
-const respone = await fetch(
+const response = await fetch(
 	"https://raw.githubusercontent.com/mglsj/socials/refs/heads/main/socials.json",
 ).then((res) => res.json());
 
-export const SOCIALS: Social[] = respone.primary as Social[];
+export const SOCIALS: Social[] = response.primary as Social[];

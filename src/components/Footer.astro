@@ -1,5 +1,10 @@
 ---
-import { SOCIALS, MAINTAINER_NAME, MAINTAINER_COURSE } from "@/consts";
+import {
+	SOCIALS,
+	MAINTAINER_NAME,
+	MAINTAINER_COURSE,
+	MAINTAINER_BATCH,
+} from "@/consts";
 import { Icon } from "astro-iconify";
 
 const SITE_BASE = import.meta.env.BASE_URL;
@@ -11,9 +16,11 @@ const date = new Date();
 		<div class="flex gap-4 pb-8 mb-5 flex-col lg:flex-row">
 			<div class="w-full lg:w-2/3">
 				<h1 class="text-lg font-bold mb-4">
-					Maintained by {MAINTAINER_NAME}
+					Maintained by
+					{MAINTAINER_NAME}
 					<br />
-					{MAINTAINER_COURSE}
+					( {MAINTAINER_COURSE}
+					{MAINTAINER_BATCH} )
 				</h1>
 				<p class="text-sm">
 					A collection of student contributed previous year question
@@ -22,13 +29,13 @@ const date = new Date();
 					encourage you to contribute to the project by adding more
 					question papers.
 				</p>
-				<div class="flex gap-3 mt-3">
+				<div class="flex gap-4 mt-3">
 					{
 						SOCIALS.map((social) => (
 							<a href={social.url} target="_blank">
 								<Icon
 									name={social.iconify}
-									class="w-7 h-7 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
+									class="w-5 h-5 text-gray-600 hover:text-gray-500 dark:text-neutral-200"
 								/>
 							</a>
 						))
