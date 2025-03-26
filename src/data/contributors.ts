@@ -10,7 +10,6 @@ export const contributors: Contributor[] = [
 		course: "B.Tech CSE",
 		batch: "2026",
 	},
-
 	{
 		name: "Kunal Pathak",
 		course: "BCA",
@@ -95,5 +94,15 @@ export const contributors: Contributor[] = [
 		name: "Prateek Banoula",
 		course: "B.Tech",
 		batch: "2028",
+	},
+	{
+		name: "Taniksha Dhyani",
+		course: "BCA",
+		batch: "2027",
+	},
+	{
+		name: "Yogesh Pandey",
+		course: "B.Tech",
+		batch: "2027",
 	},
 ];
