@@ -105,4 +105,9 @@ export const contributors: Contributor[] = [
 		course: "B.Tech",
 		batch: "2027",
 	},
+	{
+		name: "Piyush Paneru",
+		course: "BCom(H)",
+		batch: "2026",
+	},
 ];
