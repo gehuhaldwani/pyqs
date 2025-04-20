@@ -32,30 +32,16 @@ jobs:
           clean: false
           path: pyqs
 
-      # - name: Remove hidden files and directories from pyqs directory
-      #   run: sudo find pyqs -mindepth 1 -name ".*" -prune -exec rm -rf {} \; && sudo find pyqs -mindepth 1 -name "_*" -prune -exec rm -rf {} \; && sudo find pyqs -maxdepth 1 -type f -exec rm -f {} \;
-
-      - name: Set up python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Set up node
         uses: actions/setup-node@v4
         with:
           node-version: "latest"
-
-      - name: Generate .json with python
-        run: python generate_json.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Build Astro Site
         run: npm install && npm run build
-
-      # - name: Minify HTML,CSS and JS
-      #   run: bash minify.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
