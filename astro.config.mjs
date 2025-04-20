@@ -1,15 +1,21 @@
+// @ts-check
 import { defineConfig } from "astro/config";
-import sitemap from "@astrojs/sitemap";
-import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
+import sitemap from "@astrojs/sitemap";
+
+import icon from "astro-icon";
+
+import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
 	site: "https://gehuhaldwani.in",
 	base: "/pyqs/",
 	trailingSlash: "always",
-	integrations: [sitemap(), mdx()],
-
+	prefetch: {
+		defaultStrategy: "viewport",
+	},
+	integrations: [sitemap(), icon(), mdx()],
 	vite: {
 		plugins: [tailwindcss()],
 	},

@@ -1,0 +1,17 @@
+{
+  "title": "PYQs Archive",
+  "description": "A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations.",
+  "site": "https://gehihualdwani.in/pyqs",
+  "favicon": "/favicon.ico",
+  "logo": "",
+  "navigation": [
+    {
+      "name": "Contribute",
+      "url": "/contribute"
+    },
+    {
+      "name": "About",
+      "url": "/about"
+    }
+  ]
+}

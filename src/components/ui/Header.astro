@@ -1,0 +1,53 @@
+---
+import siteConfig from "@/configs/site.config";
+import ThemeSwitcher from "../partials/ThemeSwitcher.astro";
+import { base } from "astro:config/server";
+import { addForwardSlashAndBase } from "@/utils/url";
+import {
+	Dropdown,
+	DropdownTrigger,
+	DropdownContent,
+	DropdownItem,
+	DropdownLabel,
+	DropdownSeparator,
+} from "@/components/starwind/dropdown";
+import { Icon } from "astro-icon/components";
+---
+
+<header class="border-b">
+	<div
+		class="h-full flex items-center justify-between max-w-screen-xl mx-auto px-10 py-2"
+	>
+		<div class="text-xl md:text-2xl font-black">
+			<a href={base}>{siteConfig.title}</a>
+		</div>
+
+		<div class="flex flex-row gap-4">
+			<nav class="hidden sm:flex flex-row gap-3">
+				{
+					siteConfig.navigation.map((nav) => (
+						<a href={addForwardSlashAndBase(nav.url)}>{nav.name}</a>
+					))
+				}
+			</nav>
+			<ThemeSwitcher />
+			<Dropdown class="block sm:hidden">
+				<DropdownTrigger>
+					<Icon name="mdi:menu" class="w-4 h-full" />
+				</DropdownTrigger>
+				<DropdownContent align="end">
+					{
+						siteConfig.navigation.map((nav) => (
+							<DropdownItem
+								as="a"
+								href={addForwardSlashAndBase(nav.url)}
+							>
+								{nav.name}
+							</DropdownItem>
+						))
+					}
+				</DropdownContent>
+			</Dropdown>
+		</div>
+	</div>
+</header>

@@ -1,0 +1,77 @@
+---
+import siteConfig, { SOCIALS } from "@/configs/site.config";
+import { addForwardSlashAndBase } from "@/utils/url";
+import { Icon } from "astro-icon/components";
+import GithubButton from "../partials/GithubButton.astro";
+
+const links = [
+	{
+		title: "Join Discord",
+		url: "https://discord.gg/ZdNcYFZnrB",
+	},
+	{
+		title: "Contribute",
+		url: addForwardSlashAndBase("contribute"),
+	},
+	{
+		title: "About",
+		url: addForwardSlashAndBase("about"),
+	},
+];
+---
+
+<footer class="border-t bg-muted">
+	<div class="h-full w-full max-w-screen-xl mx-auto p-10">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<div class="col-span-2">
+				<p class="text-xl font-semibold">
+					Maintained by Lakshyajeet Jalal
+				</p>
+				<p class="text-xl font-semibold">(B.Tech CSE 2026)</p>
+				<br />
+				<div class="flex gap-4 mt-3">
+					{
+						SOCIALS.map((social) => (
+							<a href={social.url} target="_blank">
+								<Icon
+									name={social.iconify}
+									class="w-7 h-7 text-muted-foreground hover:text-foreground"
+								/>
+							</a>
+						))
+					}
+				</div>
+				<br />
+				<p>{siteConfig.description}</p>
+			</div>
+			<div class="col-span-1">
+				<p class="text-lg font-bold mb-2">Quick Links</p>
+				<ul class="">
+					<li>
+						<GithubButton />
+					</li>
+					{
+						links.map((link) => (
+							<li class="my-2">
+								<a
+									href={link.url}
+									class="flex text-muted-foreground hover:text-foreground"
+								>
+									{link.title}{" "}
+									<Icon
+										name="mdi:arrow-top-right"
+										class="w-3 h-3"
+									/>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+		<br />
+		<p class="w-full text-center">
+			This site was last updated on {new Date().toLocaleString("en-IN")} (IST)
+		</p>
+	</div>
+</footer>

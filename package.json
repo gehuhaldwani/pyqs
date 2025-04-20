@@ -1,32 +1,36 @@
 {
-	"name": "pyqs-archive",
+	"name": "pyqs",
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "astro dev --host",
-		"start": "astro dev",
-		"build": "astro check && astro build",
+		"dev": "astro dev",
+		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.9.4",
-		"@astrojs/mdx": "^4.1.1",
-		"@astrojs/sitemap": "^3.2.1",
+		"@astrojs/mdx": "^4.2.4",
+		"@astrojs/sitemap": "^3.3.0",
+		"@iconify-json/mdi": "^1.2.3",
+		"@iconify-json/simple-icons": "^1.2.32",
+		"@tabler/icons": "^3.31.0",
+		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.16",
-		"@tailwindcss/vite": "^4.0.13",
-		"astro": "^5.4.3",
-		"astro-iconify": "^1.2.0",
-		"astro-navbar": "^2.3.9",
-		"clsx": "^2.1.1",
-		"tailwind-merge": "^3.0.2",
-		"tailwindcss": "^4.0.13",
-		"typescript": "^5.8.2"
+		"@tailwindcss/vite": "^4.1.4",
+		"astro": "^5.7.4",
+		"astro-icon": "^1.1.5",
+		"tailwind-variants": "^1.0.0",
+		"tailwindcss": "^4.1.4",
+		"tw-animate-css": "^1.2.5"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "sharp"]
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"esbuild",
+			"sharp"
+		]
 	}
 }

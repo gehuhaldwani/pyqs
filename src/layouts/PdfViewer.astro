@@ -1,6 +1,6 @@
 ---
-import BaseHead from "@/components/BaseHead.astro";
-import type { Entry } from "@/utils/types";
+import Head from "@/components/partials/Head.astro";
+import type { Entry } from "@/types/content";
 
 interface Props {
 	entry: Entry;
@@ -29,7 +29,7 @@ const scriptElement = `
 		}
 
 		function closePage() {
-			window.location.href = "${entry.parent_path}";
+			window.location.href = "../";
 		}
 </script>`;
 ---
@@ -37,10 +37,11 @@ const scriptElement = `
 <!doctype html>
 <html dir="ltr">
 	<head>
-		<BaseHead
+		<Head
 			title={entry.title.toUpperCase().split("_").join(" ")}
 			description={entry.path.split("/").slice(1).join(" > ")}
-			image={thumbnail}
+			ogImageUrl={new URL(thumbnail)}
+			transition={false}
 		/>
 		<link
 			rel="stylesheet"

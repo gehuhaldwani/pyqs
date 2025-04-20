@@ -1,0 +1,32 @@
+---
+import Header from "@/components/ui/Header.astro";
+import BaseLayout from "./BaseLayout.astro";
+import type { Props } from "@/components/partials/Head.astro";
+import Footer from "@/components/ui/Footer.astro";
+---
+
+<BaseLayout {...Astro.props}>
+	<Header transition:name="header" />
+
+	<main class="w-full max-w-screen-xl mx-auto p-10">
+		<slot />
+	</main>
+
+	<Footer transition:name="footer" />
+</BaseLayout>
+
+<style>
+	body {
+		display: flex;
+		flex-direction: column;
+	}
+	header {
+		flex: 0 0 auto;
+	}
+	main {
+		flex: 1 1 auto;
+	}
+	footer {
+		flex: 0 0 auto;
+	}
+</style>

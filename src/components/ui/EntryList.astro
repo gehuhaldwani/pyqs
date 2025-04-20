@@ -1,0 +1,92 @@
+---
+import type { Entry } from "@/types/content";
+import { toTitleCase } from "@/utils/string";
+import { addForwardSlashAndBase } from "@/utils/url";
+import FolderIcon from "@/assets/icons/folder.svg";
+import PdfIcon from "@/assets/icons/pdf.svg";
+import UrlIcon from "@/assets/icons/url.svg";
+import { comparePyqs, getPyqTitle } from "@/utils/pyqs";
+import EntryWrapper from "../partials/EntryWrapper.astro";
+import Button from "../starwind/button";
+
+interface Props {
+	title: string;
+	path: string;
+	entries: Entry[];
+	capitalize?: boolean;
+}
+
+const { entries, capitalize = false, path, title } = Astro.props;
+
+const dirs: Entry[] = entries.filter((entry: Entry) => entry.type === "dir");
+const pdfs: Entry[] = entries.filter((entry: Entry) => entry.type === "pdf");
+const urls: Entry[] = entries.filter((entry: Entry) => entry.type === "url");
+const files: Entry[] = entries.filter((entry: Entry) => entry.type === "file");
+
+pdfs.sort((a: Entry, b: Entry) => {
+	if (a.pyq && b.pyq === null) return -1;
+	if (a.pyq === null && b.pyq) return 1;
+	if (a.pyq === null && b.pyq === null) return 0;
+	// biome-ignore lint/style/noNonNullAssertion: <explanation>
+	return -1 * comparePyqs(a.pyq!, b.pyq!);
+});
+
+function getDirTitle(title: string, capitalize: boolean) {
+	return capitalize || ["OTHERS", "OLD", "END", "MID"].includes(title)
+		? title
+		: toTitleCase(title);
+}
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+	{
+		dirs.map((dir) => (
+			<EntryWrapper
+				href={addForwardSlashAndBase(dir.path)}
+				title={getDirTitle(dir.title.toUpperCase(), capitalize)}
+			>
+				<FolderIcon
+					fill={
+						dir.title === "OTHERS" || dir.title === "OLD"
+							? "grey"
+							: "#F5B800"
+					}
+				/>
+			</EntryWrapper>
+		))
+	}
+	{
+		pdfs.map((pdf) => (
+			<EntryWrapper
+				href={addForwardSlashAndBase(pdf.path).replace(".pdf", "")}
+				title={getPyqTitle(pdf.pyq!)}
+			>
+				<PdfIcon />
+			</EntryWrapper>
+		))
+	}
+	{
+		urls.map((url) => (
+			<EntryWrapper href={url.path} title={url.title}>
+				<UrlIcon />
+			</EntryWrapper>
+		))
+	}
+</div>
+
+{
+	pdfs.length > 0 && (
+		<div class="flex justify-center my-4">
+			<Button
+				href={`https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`}
+				target="_blank"
+				class="h-full"
+				variant="default"
+			>
+				<p class="break-words whitespace-normal text-center">
+					Upload PYQs to <span class="font-bold">{title}</span>
+				</p>
+			</Button>
+		</div>
+	)
+}

@@ -1,0 +1,55 @@
+<button id="mode_switcher" class="group" title="Switch mode">
+	<svg
+		height="512"
+		viewBox="0 0 24 24"
+		width="512"
+		xmlns="http://www.w3.org/2000/svg"
+		class="w-6 h-auto fill-theme-secondary hover:fill-theme-accent dark:fill-white dark:hover:fill-theme-accent"
+	>
+		<path
+			d="m12 18a6 6 0 1 1 6-6 6 6 0 0 1 -6 6zm0-10a4 4 0 1 0 4 4 4 4 0 0 0 -4-4z"
+		></path>
+		<path d="m12 15a1 1 0 0 1 -1-1v-4a1 1 0 0 1 1-1 3 3 0 0 1 0 6z"> </path>
+		<path d="m12 5a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1z"
+		></path>
+		<path
+			d="m17.66 7.34a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29z"
+		></path>
+		<path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2z"></path>
+		<path
+			d="m18.36 19.36a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"
+		></path>
+		<path d="m12 22a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1z"
+		></path>
+		<path
+			d="m5.64 19.36a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24z"
+		></path>
+		<path d="m4 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2z"></path>
+		<path
+			d="m6.34 7.34a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29z"
+		></path>
+	</svg>
+</button>
+
+<script>
+	const setDarkModeButton = () => {
+		const button = document.querySelector("#mode_switcher");
+
+		button?.addEventListener("click", function () {
+			document.documentElement.classList.toggle("dark");
+
+			if (document.documentElement.classList.contains("dark")) {
+				localStorage.darkMode = "true";
+			} else {
+				localStorage.darkMode = "false";
+			}
+
+			// fire a custom event to notify other components
+			document.dispatchEvent(new Event("darkModeChanged"));
+		});
+	};
+
+	setDarkModeButton();
+	// Runs on view transitions navigation
+	document.addEventListener("astro:after-swap", setDarkModeButton);
+</script>

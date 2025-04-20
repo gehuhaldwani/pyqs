@@ -1,5 +1,7 @@
 # build output
 dist/
+
+pyqs
 # generated types
 .astro/
 
@@ -21,15 +23,3 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
-
-.vscode/
-
-src/content/pyqs
-pyqs
-old
-
-#locks
-package-lock.json
-pnpm-lock.yaml
-
-.mypy_cache

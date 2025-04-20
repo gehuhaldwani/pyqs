@@ -1,5 +1,5 @@
 ---
-layout: "@/layouts/PlainText.astro"
+layout: "@/layouts/PostLayout.astro"
 title: Contribute
 ---
 

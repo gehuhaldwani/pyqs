@@ -1,0 +1,62 @@
+---
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbSeparator,
+} from "../starwind/breadcrumb";
+import Button from "../starwind/button";
+
+interface Props {
+	path: string;
+	back?: boolean;
+}
+
+const { path, back = true  } = Astro.props;
+
+type Crumb = {
+	title: string;
+	path: string;
+};
+
+const crumbs: Crumb[] = [];
+let currentPath = "/";
+
+for (const p of path.split("/")) {
+	if (p) {
+		currentPath += `${p}/`;
+		crumbs.push({
+			title: p,
+			path: currentPath,
+		});
+	}
+}
+---
+<Breadcrumb class="select-none">
+	<BreadcrumbList>
+		<Button class="font-bold text-foreground mr-2"  variant="outline" disabled href={back && "../"} about={"Up a folder"}>↑</Button>
+		{
+			crumbs.map((crumb, index) => 
+				{
+					if (index + 1 !== crumbs.length)
+						return (
+							<BreadcrumbItem>
+								<BreadcrumbLink href={crumb.path} class="text-lg">
+									{crumb.title}
+								</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator>/</BreadcrumbSeparator>
+							);
+					return (
+						<BreadcrumbItem>
+							<a class="text-foreground font-bold text-lg">
+								{crumb.title}
+							</a>
+						</BreadcrumbItem>	
+					);
+				}
+			)
+		}
+	</BreadcrumbList>
+</Breadcrumb>

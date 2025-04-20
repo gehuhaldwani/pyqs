@@ -1,0 +1,59 @@
+---
+import type { Entry } from "@/types/content";
+import PageLayout from "./PageLayout.astro";
+import { addForwardSlashAndBase } from "@/utils/url";
+import PathCrumbs from "@/components/ui/PathCrumbs.astro";
+import EntryList from "@/components/ui/EntryList.astro";
+import { base } from "astro:config/server";
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@/components/starwind/alert";
+import Button from "@/components/starwind/button";
+
+interface Props {
+	entry: Entry;
+}
+
+const { entry } = Astro.props;
+const isHomePage = Astro.url.pathname === base;
+
+const path: string = addForwardSlashAndBase(entry.path);
+const pathList = path.split("/").filter((element) => element);
+
+let title: string = entry.title.toUpperCase();
+
+if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
+	title = pathList.splice(-2).join(" > ");
+} else if (["OLD"].includes(title) || title.includes("SEM ")) {
+	title = pathList.splice(-3).join(" > ");
+}
+---
+
+<PageLayout title={title}>
+	<PathCrumbs path={path} back={!isHomePage} transition:name="breadcrumbs" />
+
+	<hr class="my-4" />
+
+	{
+		isHomePage && (
+			<Alert variant="info" class="mb-4">
+				<AlertTitle>Important Note</AlertTitle>
+				<AlertDescription>
+					This site is not affiliated with Graphic Era. It is
+					independently maintained by students of Haldwani Campus.
+				</AlertDescription>
+			</Alert>
+		)
+	}
+
+	<EntryList
+		entries={entry.entries}
+		capitalize={isHomePage}
+		path={path}
+		title={title}
+	/>
+
+	<hr class="my-4" />
+</PageLayout>

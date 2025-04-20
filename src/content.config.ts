@@ -1,12 +1,12 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
-import { entrySchema } from "@/utils/types";
+import { entrySchema } from "@/types/content";
+import { entryLoader } from "@/utils/loader";
 
 const entryCollection = defineCollection({
-	loader: glob({ pattern: "**/[^_]*.json", base: "./src/content/pyqs" }),
+	loader: entryLoader(),
 	schema: entrySchema,
 });
 
 export const collections = {
-	entries: entryCollection,
+	entry: entryCollection,
 };
