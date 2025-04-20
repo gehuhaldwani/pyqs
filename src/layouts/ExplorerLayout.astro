@@ -1,7 +1,7 @@
 ---
 import type { Entry } from "@/types/content";
 import PageLayout from "./PageLayout.astro";
-import { addForwardSlashAndBase } from "@/utils/url";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import PathCrumbs from "@/components/ui/PathCrumbs.astro";
 import EntryList from "@/components/ui/EntryList.astro";
 import { base } from "astro:config/server";
@@ -19,7 +19,7 @@ interface Props {
 const { entry } = Astro.props;
 const isHomePage = Astro.url.pathname === base;
 
-const path: string = addForwardSlashAndBase(entry.path);
+const path: string = addForwardSlashAndBaseUrl(entry.path);
 const pathList = path.split("/").filter((element) => element);
 
 let title: string = entry.title.toUpperCase();

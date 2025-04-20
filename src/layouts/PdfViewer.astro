@@ -1,6 +1,7 @@
 ---
 import Head from "@/components/partials/Head.astro";
 import type { Entry } from "@/types/content";
+import { addBaseUrl } from "@/utils/url";
 
 interface Props {
 	entry: Entry;
@@ -11,12 +12,10 @@ const { entry } = Astro.props;
 const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
 const thumbnail = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/refs/heads/thumbnails${entry.path.replace("/pyqs", "").replaceAll(" ", "%20").replace(".pdf", ".webp")}`;
 
-const SITE_BASE = import.meta.env.BASE_URL;
-
 const scriptElement = `		
 <script type="text/javascript" defer>
 	let FILE_PATH = "${link}";
-	let PDF_JS_PATH = "${SITE_BASE}vendor/pdfjs";
+	let PDF_JS_PATH = "${addBaseUrl("vendor/pdfjs")}";
 
 	function downloadPDF() {
 			var element = document.createElement("a");
@@ -45,15 +44,15 @@ const scriptElement = `
 		/>
 		<link
 			rel="stylesheet"
-			href={`${SITE_BASE}vendor/pdfjs/web/viewer.css`}
+			href={addBaseUrl("vendor/pdfjs/web/viewer.css")}
 		/>
 		<script
 			is:inline
-			src={`${SITE_BASE}vendor/pdfjs/build/pdf.mjs`}
+			src={addBaseUrl("vendor/pdfjs/build/pdf.mjs")}
 			type="module"></script>
 		<script
 			is:inline
-			src={`${SITE_BASE}vendor/pdfjs/web/viewer.mjs`}
+			src={addBaseUrl("vendor/pdfjs/web/viewer.mjs")}
 			type="module"></script>
 
 		<style>

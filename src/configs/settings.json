@@ -3,7 +3,7 @@
   "description": "A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations.",
   "site": "https://gehihualdwani.in/pyqs",
   "favicon": "/favicon.ico",
-  "logo": "",
+  "logo": "/logo.png",
   "navigation": [
     {
       "name": "Contribute",

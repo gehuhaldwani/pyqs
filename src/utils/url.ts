@@ -1,11 +1,15 @@
 import { trailingSlash, base } from "astro:config/client";
 
-// This method adds a forward slash to paths, and prepends the `base`
-function addForwardSlashAndBase(path: string) {
+function addBaseUrl(path: string) {
 	const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 	// remove trailing slash from base to prevent double slashes
 	const basePath = base.endsWith("/") ? base.slice(0, -1) : base;
-	let url = `${basePath}${normalizedPath}`;
+	return `${basePath}${normalizedPath}`;
+}
+
+// This method adds a forward slash to paths, and prepends the `base`
+function addForwardSlashAndBaseUrl(path: string) {
+	let url = addBaseUrl(path);
 
 	if (trailingSlash === "always" && !url.endsWith("/")) {
 		url += "/";
@@ -16,4 +20,4 @@ function addForwardSlashAndBase(path: string) {
 	return url;
 }
 
-export { addForwardSlashAndBase };
+export { addForwardSlashAndBaseUrl, addBaseUrl };

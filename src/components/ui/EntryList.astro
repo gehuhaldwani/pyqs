@@ -1,7 +1,7 @@
 ---
 import type { Entry } from "@/types/content";
 import { toTitleCase } from "@/utils/string";
-import { addForwardSlashAndBase } from "@/utils/url";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import FolderIcon from "@/assets/icons/folder.svg";
 import PdfIcon from "@/assets/icons/pdf.svg";
 import UrlIcon from "@/assets/icons/url.svg";
@@ -42,7 +42,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 	{
 		dirs.map((dir) => (
 			<EntryWrapper
-				href={addForwardSlashAndBase(dir.path)}
+				href={addForwardSlashAndBaseUrl(dir.path)}
 				title={getDirTitle(dir.title.toUpperCase(), capitalize)}
 			>
 				<FolderIcon
@@ -58,7 +58,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 	{
 		pdfs.map((pdf) => (
 			<EntryWrapper
-				href={addForwardSlashAndBase(pdf.path).replace(".pdf", "")}
+				href={addForwardSlashAndBaseUrl(pdf.path).replace(".pdf", "")}
 				title={getPyqTitle(pdf.pyq!)}
 			>
 				<PdfIcon />

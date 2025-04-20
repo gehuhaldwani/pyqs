@@ -2,14 +2,12 @@
 import siteConfig from "@/configs/site.config";
 import ThemeSwitcher from "../partials/ThemeSwitcher.astro";
 import { base } from "astro:config/server";
-import { addForwardSlashAndBase } from "@/utils/url";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import {
 	Dropdown,
 	DropdownTrigger,
 	DropdownContent,
 	DropdownItem,
-	DropdownLabel,
-	DropdownSeparator,
 } from "@/components/starwind/dropdown";
 import { Icon } from "astro-icon/components";
 ---
@@ -26,7 +24,9 @@ import { Icon } from "astro-icon/components";
 			<nav class="hidden sm:flex flex-row gap-3">
 				{
 					siteConfig.navigation.map((nav) => (
-						<a href={addForwardSlashAndBase(nav.url)}>{nav.name}</a>
+						<a href={addForwardSlashAndBaseUrl(nav.url)}>
+							{nav.name}
+						</a>
 					))
 				}
 			</nav>
@@ -40,7 +40,7 @@ import { Icon } from "astro-icon/components";
 						siteConfig.navigation.map((nav) => (
 							<DropdownItem
 								as="a"
-								href={addForwardSlashAndBase(nav.url)}
+								href={addForwardSlashAndBaseUrl(nav.url)}
 							>
 								{nav.name}
 							</DropdownItem>

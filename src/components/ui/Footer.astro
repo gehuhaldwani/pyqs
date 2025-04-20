@@ -1,6 +1,6 @@
 ---
 import siteConfig, { SOCIALS } from "@/configs/site.config";
-import { addForwardSlashAndBase } from "@/utils/url";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import { Icon } from "astro-icon/components";
 import GithubButton from "../partials/GithubButton.astro";
 
@@ -11,11 +11,11 @@ const links = [
 	},
 	{
 		title: "Contribute",
-		url: addForwardSlashAndBase("contribute"),
+		url: addForwardSlashAndBaseUrl("contribute"),
 	},
 	{
 		title: "About",
-		url: addForwardSlashAndBase("about"),
+		url: addForwardSlashAndBaseUrl("about"),
 	},
 ];
 ---
