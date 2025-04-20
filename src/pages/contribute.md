@@ -22,7 +22,7 @@ Submit your question paper directly to me.
 
 - Scan ONE page at a time.
 
-- Sperate the pages / removing the stepal pins before scanning.
+- Septate the pages / removing the stapler pins before scanning.
 
 ### On PC / laptop with physical scanner
 
@@ -52,7 +52,7 @@ Submit your question paper directly to me.
 
 Name the file as
 
-`SubjectCode_SpecilizationCode_ExamType_ExamSubtype_Year_Month_Set.pdf`
+`SubjectCode_SpecializationCode_ExamType_ExamSubtype_Year_Month_Set.pdf`
 
 Example:
 
@@ -62,7 +62,7 @@ Example:
 
 Note:
 
-- Everything in lowercase except set letter and specilization code.
+- Everything in lowercase except set letter and specialization code.
 - Use `midsem` for mid semester exam and `endsem` for end semester exam.
 - Use `back` for back paper.
 - Use `_` underscore to separate words.
