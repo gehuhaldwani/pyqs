@@ -9,19 +9,19 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^4.2.4",
-		"@astrojs/sitemap": "^3.3.0",
+		"@astrojs/mdx": "^4.3.0",
+		"@astrojs/sitemap": "^3.4.0",
 		"@iconify-json/mdi": "^1.2.3",
-		"@iconify-json/simple-icons": "^1.2.32",
-		"@tabler/icons": "^3.31.0",
+		"@iconify-json/simple-icons": "^1.2.36",
+		"@tabler/icons": "^3.33.0",
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.16",
-		"@tailwindcss/vite": "^4.1.4",
-		"astro": "^5.7.4",
+		"@tailwindcss/vite": "^4.1.7",
+		"astro": "^5.8.0",
 		"astro-icon": "^1.1.5",
 		"tailwind-variants": "^1.0.0",
-		"tailwindcss": "^4.1.4",
-		"tw-animate-css": "^1.2.5"
+		"tailwindcss": "^4.1.7",
+		"tw-animate-css": "^1.3.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4"
@@ -29,6 +29,7 @@
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@biomejs/biome",
+			"@tailwindcss/oxide",
 			"esbuild",
 			"sharp"
 		]

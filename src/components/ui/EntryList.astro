@@ -38,55 +38,72 @@ function getDirTitle(title: string, capitalize: boolean) {
 }
 ---
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<div class="[&>*:not(:first-child)]:mt-4">
 	{
-		dirs.map((dir) => (
-			<EntryWrapper
-				href={addForwardSlashAndBaseUrl(dir.path)}
-				title={getDirTitle(dir.title.toUpperCase(), capitalize)}
-			>
-				<FolderIcon
-					fill={
-						dir.title === "OTHERS" || dir.title === "OLD"
-							? "grey"
-							: "#F5B800"
-					}
-				/>
-			</EntryWrapper>
-		))
+		dirs.length > 0 && (
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				{dirs.map((dir) => (
+					<EntryWrapper
+						href={addForwardSlashAndBaseUrl(dir.path)}
+						title={getDirTitle(dir.title.toUpperCase(), capitalize)}
+					>
+						<FolderIcon
+							fill={
+								dir.title === "OTHERS" || dir.title === "OLD"
+									? "grey"
+									: "#F5B800"
+							}
+						/>
+					</EntryWrapper>
+				))}
+			</div>
+		)
 	}
+
 	{
-		pdfs.map((pdf) => (
-			<EntryWrapper
-				href={addForwardSlashAndBaseUrl(pdf.path).replace(".pdf", "")}
-				title={getPyqTitle(pdf.pyq!)}
-			>
-				<PdfIcon />
-			</EntryWrapper>
-		))
+		pdfs.length > 0 && (
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				{pdfs.map((pdf) => (
+					<EntryWrapper
+						href={addForwardSlashAndBaseUrl(pdf.path).replace(
+							".pdf",
+							"",
+						)}
+						title={getPyqTitle(pdf.pyq!)}
+					>
+						<PdfIcon />
+					</EntryWrapper>
+				))}
+			</div>
+		)
 	}
+
 	{
-		urls.map((url) => (
-			<EntryWrapper href={url.path} title={url.title}>
-				<UrlIcon />
-			</EntryWrapper>
-		))
+		urls.length > 0 && (
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				{urls.map((url) => (
+					<EntryWrapper href={url.path} title={url.title}>
+						<UrlIcon />
+					</EntryWrapper>
+				))}
+			</div>
+		)
+	}
+
+	{
+		pdfs.length > 0 && (
+			<div class="flex justify-center">
+				<Button
+					href={`https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`}
+					target="_blank"
+					class="h-full"
+					variant="default"
+				>
+					<p class="break-words whitespace-normal text-center">
+						Upload PYQs to <span class="font-bold">{title}</span>
+					</p>
+				</Button>
+			</div>
+		)
 	}
 </div>
-
-{
-	pdfs.length > 0 && (
-		<div class="flex justify-center my-4">
-			<Button
-				href={`https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`}
-				target="_blank"
-				class="h-full"
-				variant="default"
-			>
-				<p class="break-words whitespace-normal text-center">
-					Upload PYQs to <span class="font-bold">{title}</span>
-				</p>
-			</Button>
-		</div>
-	)
-}
