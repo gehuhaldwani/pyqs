@@ -32,19 +32,19 @@
 </button>
 
 <script>
-	const themeToggle = document.getElementById("theme-toggle");
-
-	themeToggle?.addEventListener("click", () => {
-		if (document.documentElement.classList.contains("dark")) {
-			document.documentElement.classList.remove("dark");
-			localStorage.theme = "light";
-		} else {
-			document.documentElement.classList.add("dark");
-			localStorage.theme = "dark";
-		}
-	});
-
 	function setInitialTheme() {
+		const themeToggle = document.getElementById("theme-toggle");
+
+		themeToggle?.addEventListener("click", () => {
+			if (document.documentElement.classList.contains("dark")) {
+				document.documentElement.classList.remove("dark");
+				localStorage.theme = "light";
+			} else {
+				document.documentElement.classList.add("dark");
+				localStorage.theme = "dark";
+			}
+		});
+
 		document.documentElement.classList.toggle(
 			"dark",
 			localStorage.theme === "dark" ||
