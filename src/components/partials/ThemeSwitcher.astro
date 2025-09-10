@@ -1,4 +1,4 @@
-<button id="mode_switcher" class="group" title="Switch mode">
+<button id="theme-toggle" class="group" title="Switch mode">
 	<svg
 		height="512"
 		viewBox="0 0 24 24"
@@ -32,24 +32,27 @@
 </button>
 
 <script>
-	const setDarkModeButton = () => {
-		const button = document.querySelector("#mode_switcher");
+	const themeToggle = document.getElementById("theme-toggle");
 
-		button?.addEventListener("click", function () {
-			document.documentElement.classList.toggle("dark");
+	themeToggle?.addEventListener("click", () => {
+		if (document.documentElement.classList.contains("dark")) {
+			document.documentElement.classList.remove("dark");
+			localStorage.theme = "light";
+		} else {
+			document.documentElement.classList.add("dark");
+			localStorage.theme = "dark";
+		}
+	});
 
-			if (document.documentElement.classList.contains("dark")) {
-				localStorage.darkMode = "true";
-			} else {
-				localStorage.darkMode = "false";
-			}
+	function setInitialTheme() {
+		document.documentElement.classList.toggle(
+			"dark",
+			localStorage.theme === "dark" ||
+				(!("theme" in localStorage) &&
+					window.matchMedia("(prefers-color-scheme: dark)").matches),
+		);
+	}
 
-			// fire a custom event to notify other components
-			document.dispatchEvent(new Event("darkModeChanged"));
-		});
-	};
-
-	setDarkModeButton();
-	// Runs on view transitions navigation
-	document.addEventListener("astro:after-swap", setDarkModeButton);
+	document.addEventListener("DOMContentLoaded", setInitialTheme);
+	document.addEventListener("astro:after-swap", setInitialTheme);
 </script>

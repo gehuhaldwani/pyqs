@@ -5,11 +5,7 @@ import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import PathCrumbs from "@/components/ui/PathCrumbs.astro";
 import EntryList from "@/components/ui/EntryList.astro";
 import { base } from "astro:config/server";
-import {
-	Alert,
-	AlertDescription,
-	AlertTitle,
-} from "@/components/starwind/alert";
+import HomePageBanner from "@/components/partials/HomePageBanner.astro";
 
 interface Props {
 	entry: Entry;
@@ -35,17 +31,7 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 
 	<hr class="my-4" />
 
-	{
-		isHomePage && (
-			<Alert variant="info" class="mb-4">
-				<AlertTitle>Disclaimer</AlertTitle>
-				<AlertDescription>
-					This site is not affiliated with Graphic Era. It is
-					independently maintained by students of Haldwani Campus.
-				</AlertDescription>
-			</Alert>
-		)
-	}
+	{isHomePage && <HomePageBanner />}
 
 	<EntryList
 		entries={entry.entries}

@@ -41,7 +41,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 <div class="[&>*:not(:first-child)]:mt-4">
 	{
 		dirs.length > 0 && (
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 gap-4">
 				{dirs.map((dir) => (
 					<EntryWrapper
 						href={addForwardSlashAndBaseUrl(dir.path)}
@@ -62,7 +62,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 
 	{
 		pdfs.length > 0 && (
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 gap-4">
 				{pdfs.map((pdf) => (
 					<EntryWrapper
 						href={addForwardSlashAndBaseUrl(pdf.path).replace(
@@ -80,7 +80,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 
 	{
 		urls.length > 0 && (
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 gap-4">
 				{urls.map((url) => (
 					<EntryWrapper href={url.path} title={url.title}>
 						<UrlIcon />

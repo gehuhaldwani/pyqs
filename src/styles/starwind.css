@@ -2,7 +2,8 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
-@variant dark (&:where(.dark, .dark *));
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
 	--animate-accordion-down: accordion-down 0.2s ease-out;
@@ -139,9 +140,9 @@
 @layer utilities {
 	/* transition-colors but without outline-color transition property */
 	.starwind-transition-colors {
-		transition-property: color, background-color, border-color,
-			text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via,
-			--tw-gradient-to;
+		transition-property:
+			color, background-color, border-color, text-decoration-color, fill, stroke,
+			--tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
 		transition-timing-function: var(--default-transition-timing-function);
 		transition-duration: var(--default-transition-duration);
 	}

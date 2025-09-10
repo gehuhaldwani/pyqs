@@ -9,22 +9,22 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^4.3.4",
+		"@astrojs/mdx": "^4.3.5",
 		"@astrojs/sitemap": "^3.5.1",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/simple-icons": "^1.2.50",
 		"@tabler/icons": "^3.34.1",
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.16",
-		"@tailwindcss/vite": "^4.1.12",
-		"astro": "^5.13.5",
+		"@tailwindcss/vite": "^4.1.13",
+		"astro": "^5.13.7",
 		"astro-icon": "^1.1.5",
-		"tailwind-variants": "^1.0.0",
-		"tailwindcss": "^4.1.12",
-		"tw-animate-css": "^1.3.7"
+		"tailwind-variants": "^3.1.1",
+		"tailwindcss": "^4.1.13",
+		"tw-animate-css": "^1.3.8"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.1.1"
+		"@biomejs/biome": "2.2.4"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

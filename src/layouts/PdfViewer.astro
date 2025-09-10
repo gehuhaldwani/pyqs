@@ -11,11 +11,12 @@ const { entry } = Astro.props;
 
 const link = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
 const thumbnail = `https://raw.githubusercontent.com/gehuhaldwani/pyqs/refs/heads/thumbnails${entry.path.replace("/pyqs", "").replaceAll(" ", "%20").replace(".pdf", ".webp")}`;
+const pdfJsPath = addBaseUrl("vendor/pdfjs");
 
 const scriptElement = `		
 <script type="text/javascript" defer>
 	let FILE_PATH = "${link}";
-	let PDF_JS_PATH = "${addBaseUrl("vendor/pdfjs")}";
+	let PDF_JS_PATH = "${pdfJsPath}";
 
 	function downloadPDF() {
 			var element = document.createElement("a");
