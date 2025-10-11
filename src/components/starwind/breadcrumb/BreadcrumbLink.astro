@@ -6,15 +6,17 @@ type Props = HTMLAttributes<"a"> & {
   asChild?: boolean;
 };
 
-const breadcrumbLink = tv({ base: "hover:text-foreground transition-colors" });
+export const breadcrumbLink = tv({ base: "hover:text-foreground transition-colors" });
 
 const { class: className, asChild = false, ...rest } = Astro.props;
 ---
 
-{asChild ? (
-  <slot />
-) : (
-  <a class={breadcrumbLink({ class: className })} {...rest}>
+{
+  asChild ? (
     <slot />
-  </a>
-)}
+  ) : (
+    <a class={breadcrumbLink({ class: className })} data-slot="breadcrumb-link" {...rest}>
+      <slot />
+    </a>
+  )
+}

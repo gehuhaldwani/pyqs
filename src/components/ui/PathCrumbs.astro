@@ -13,7 +13,7 @@ interface Props {
 	back?: boolean;
 }
 
-const { path, back = true  } = Astro.props;
+const { path, back = true } = Astro.props;
 
 type Crumb = {
 	title: string;
@@ -33,30 +33,40 @@ for (const p of path.split("/")) {
 	}
 }
 ---
-<Breadcrumb class="select-none">
+
+<Breadcrumb class="select-none" transition:name="breadcrumbs">
 	<BreadcrumbList>
-		<Button class="font-bold text-foreground mr-2"  variant="outline" disabled href={back && "../"} about={"Up a folder"}>↑</Button>
+		<Button
+			class="font-bold text-foreground mr-2"
+			variant="outline"
+			disabled
+			href={back && "../"}
+			about={"Up a folder"}>↑</Button
+		>
 		{
-			crumbs.map((crumb, index) => 
-				{
-					if (index + 1 !== crumbs.length)
-						return (
+			crumbs.map((crumb, index) => {
+				if (index + 1 !== crumbs.length)
+					return (
+						<>
 							<BreadcrumbItem>
-								<BreadcrumbLink href={crumb.path} class="text-lg">
+								<BreadcrumbLink
+									href={crumb.path}
+									class="text-lg"
+								>
 									{crumb.title}
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator>/</BreadcrumbSeparator>
-							);
-					return (
-						<BreadcrumbItem>
-							<a class="text-foreground font-bold text-lg">
-								{crumb.title}
-							</a>
-						</BreadcrumbItem>	
+						</>
 					);
-				}
-			)
+				return (
+					<BreadcrumbItem>
+						<a class="text-foreground font-bold text-lg">
+							{crumb.title}
+						</a>
+					</BreadcrumbItem>
+				);
+			})
 		}
 	</BreadcrumbList>
 </Breadcrumb>

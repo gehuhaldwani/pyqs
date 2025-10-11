@@ -20,7 +20,7 @@ const links = [
 ];
 ---
 
-<footer class="border-t bg-muted">
+<footer class="border-t bg-muted" {...Astro.props}>
 	<div class="h-full w-full max-w-screen-xl mx-auto p-10">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			<div class="col-span-2">
@@ -71,7 +71,9 @@ const links = [
 		</div>
 		<br />
 		<p class="w-full text-center">
-			This site was last updated on {new Date().toLocaleString("en-IN")} (IST)
+			This site was last updated on {
+				new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+			} (IST)
 		</p>
 	</div>
 </footer>

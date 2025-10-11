@@ -6,6 +6,7 @@ import PathCrumbs from "@/components/ui/PathCrumbs.astro";
 import EntryList from "@/components/ui/EntryList.astro";
 import { base } from "astro:config/server";
 import HomePageBanner from "@/components/partials/HomePageBanner.astro";
+import Separator from "@/components/starwind/separator";
 
 interface Props {
 	entry: Entry;
@@ -27,9 +28,9 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 ---
 
 <PageLayout title={title}>
-	<PathCrumbs path={path} back={!isHomePage} transition:name="breadcrumbs" />
+	<PathCrumbs path={path} back={!isHomePage} />
 
-	<hr class="my-4" />
+	<Separator class="my-4" />
 
 	{isHomePage && <HomePageBanner />}
 
@@ -39,6 +40,4 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 		path={path}
 		title={title}
 	/>
-
-	<hr class="my-4" />
 </PageLayout>

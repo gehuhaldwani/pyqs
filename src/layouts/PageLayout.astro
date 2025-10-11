@@ -6,13 +6,16 @@ import Footer from "@/components/ui/Footer.astro";
 ---
 
 <BaseLayout {...Astro.props}>
-	<Header transition:name="header" />
+	<Header transition:name="page-header" />
 
-	<main class="w-full max-w-screen-lg mx-auto p-10">
+	<main
+		class="w-full max-w-screen-lg mx-auto p-10"
+		transition:name="page-content"
+	>
 		<slot />
 	</main>
 
-	<Footer transition:name="footer" />
+	<Footer transition:name="page-footer" />
 </BaseLayout>
 
 <style>

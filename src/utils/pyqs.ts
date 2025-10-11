@@ -17,22 +17,30 @@ const monthNames = [
 
 function getPyqTitle(pyq: Pyq): string {
 	return (
-		pyq?.subject_code.toUpperCase() +
+		pyq.subject_code.toUpperCase() +
 		" " +
-		(pyq?.specialization_code
-			? `- ${pyq?.specialization_code!.toUpperCase()} `
+		(pyq.specialization_code
+			? `- ${pyq.specialization_code!.toUpperCase()} `
 			: "") +
 		"• " +
-		(pyq?.set ? `Set ${pyq?.set} • ` : "") +
-		(pyq?.type === "midsem" ? "Mid Sem" : "End Sem") +
+		(pyq.set ? `Set ${pyq.set} • ` : "") +
+		(pyq.type === "midsem" ? "Mid Sem" : "End Sem") +
 		" " +
-		(pyq?.back ? "BACK " : "") +
-		"• " +
-		pyq?.year +
-		(pyq?.month ? ` ${monthNames[pyq?.month! - 1]}` : "") +
-		(pyq?.date ? ` ${pyq?.date!}` : "")
+		(pyq.back ? "BACK " : "")
+		// +
+		// "• " +
+		// pyq.year +
+		// (pyq.month ? ` ${monthNames[pyq.month! - 1]}` : "") +
+		// (pyq.date ? ` ${pyq.date}` : "")
 	);
 }
+
+function getPyqDateString(pyq: Pyq): string {
+	return pyq.year +
+		(pyq.month ? ` ${monthNames[pyq.month! - 1]}` : "") +
+		(pyq.date ? ` ${pyq.date}` : "")
+}
+
 
 function comparePyqs(a: Pyq, b: Pyq): number {
 	if (a === null && b === null) {
@@ -90,4 +98,4 @@ function comparePyqs(a: Pyq, b: Pyq): number {
 	return 0;
 }
 
-export { getPyqTitle, comparePyqs };
+export { getPyqTitle, comparePyqs, getPyqDateString };

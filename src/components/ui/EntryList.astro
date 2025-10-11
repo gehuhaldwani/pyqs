@@ -2,12 +2,10 @@
 import type { Entry } from "@/types/content";
 import { toTitleCase } from "@/utils/string";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import FolderIcon from "@/assets/icons/folder.svg";
-import PdfIcon from "@/assets/icons/pdf.svg";
-import UrlIcon from "@/assets/icons/url.svg";
-import { comparePyqs, getPyqTitle } from "@/utils/pyqs";
-import EntryWrapper from "../partials/EntryWrapper.astro";
+import { comparePyqs, getPyqDateString, getPyqTitle } from "@/utils/pyqs";
 import Button from "../starwind/button";
+import Item from "@/components/starwind/item";
+import { Icon } from "astro-icon/components";
 
 interface Props {
 	title: string;
@@ -41,52 +39,103 @@ function getDirTitle(title: string, capitalize: boolean) {
 <div class="[&>*:not(:first-child)]:mt-4">
 	{
 		dirs.length > 0 && (
-			<div class="grid grid-cols-1 gap-4">
+			<Item.Group>
 				{dirs.map((dir) => (
-					<EntryWrapper
-						href={addForwardSlashAndBaseUrl(dir.path)}
-						title={getDirTitle(dir.title.toUpperCase(), capitalize)}
-					>
-						<FolderIcon
-							fill={
-								dir.title === "OTHERS" || dir.title === "OLD"
-									? "grey"
-									: "#F5B800"
-							}
-						/>
-					</EntryWrapper>
+					<>
+						<Item.Root
+							as="a"
+							href={addForwardSlashAndBaseUrl(dir.path)}
+						>
+							<Item.Media variant="image">
+								<Icon
+									name="folder"
+									width={32}
+									height={32}
+									class:list={
+										dir.title === "OTHERS" ||
+										dir.title === "OLD"
+											? "text-gray-500"
+											: "text-[#F5B800]"
+									}
+								/>
+							</Item.Media>
+							<Item.Content>
+								<Item.Title>
+									{getDirTitle(
+										dir.title.toUpperCase(),
+										capitalize,
+									)}
+								</Item.Title>
+							</Item.Content>
+						</Item.Root>
+						<Item.Separator />
+					</>
 				))}
-			</div>
+			</Item.Group>
 		)
 	}
 
 	{
 		pdfs.length > 0 && (
-			<div class="grid grid-cols-1 gap-4">
+			<Item.Group>
 				{pdfs.map((pdf) => (
-					<EntryWrapper
-						href={addForwardSlashAndBaseUrl(pdf.path).replace(
-							".pdf",
-							"",
-						)}
-						title={getPyqTitle(pdf.pyq!)}
-					>
-						<PdfIcon />
-					</EntryWrapper>
+					<>
+						<Item.Root
+							as="a"
+							href={addForwardSlashAndBaseUrl(pdf.path).replace(
+								".pdf",
+								"",
+							)}
+						>
+							<Item.Media variant="image">
+								<Icon
+									name="pdf"
+									width={32}
+									height={32}
+									class:list={"text-red-500"}
+								/>
+							</Item.Media>
+							<Item.Content>
+								<Item.Title>{getPyqTitle(pdf.pyq!)}</Item.Title>
+								<Item.Description>
+									{getPyqDateString(pdf.pyq!)}
+								</Item.Description>
+							</Item.Content>
+						</Item.Root>
+						<Item.Separator />
+					</>
 				))}
-			</div>
+			</Item.Group>
 		)
 	}
 
 	{
 		urls.length > 0 && (
-			<div class="grid grid-cols-1 gap-4">
+			<Item.Group>
 				{urls.map((url) => (
-					<EntryWrapper href={url.path} title={url.title}>
-						<UrlIcon />
-					</EntryWrapper>
+					<>
+						<Item.Root
+							as="a"
+							href={url.path}
+							title={url.title}
+							target="_blank"
+						>
+							<Item.Media variant="image">
+								<Icon
+									name="url"
+									width={32}
+									height={32}
+									class:list={"text-blue-500"}
+								/>
+							</Item.Media>
+							<Item.Content>
+								<Item.Title>{url.title}</Item.Title>
+							</Item.Content>
+						</Item.Root>
+						<Item.Separator />
+					</>
 				))}
-			</div>
+			</Item.Group>
 		)
 	}
 
