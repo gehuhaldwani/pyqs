@@ -1,0 +1,28 @@
+---
+import Head from "@/components/partials/Head.astro";
+import PdfViewer from "@/components/ui/PdfViewer.astro";
+import siteConfig from "@/configs/site.config";
+import type { FsEntry } from "@/lib/content/schema";
+
+interface Props {
+	entry: FsEntry<"file">;
+}
+
+const { entry } = Astro.props;
+
+const link = `https://raw.githubusercontent.com/${siteConfig.site.githubRepo}/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
+const thumbnail = `https://raw.githubusercontent.com/${siteConfig.site.githubRepo}/refs/heads/thumbnails${entry.path.replace("/pyqs", "").replaceAll(" ", "%20").replace(".pdf", ".webp")}`;
+---
+
+<!doctype html>
+<html dir="ltr">
+	<PdfViewer link={link}>
+		<Head
+			slot="head"
+			title={entry.name.toUpperCase().split("_").join(" ")}
+			description={entry.path.split("/").slice(1).join(" > ")}
+			ogImageUrl={new URL(thumbnail)}
+			transition={false}
+		/>
+	</PdfViewer>
+</html>

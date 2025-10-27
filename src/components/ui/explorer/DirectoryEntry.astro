@@ -1,0 +1,38 @@
+---
+import Item from "@/components/starwind/item";
+import type { FsEntry } from "@/lib/content/schema";
+import { toTitleCase } from "@/utils/string";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	entry: FsEntry<"dir">;
+	capitalize?: boolean;
+}
+
+const { entry: dir, capitalize = false } = Astro.props;
+
+function getDirTitle(title: string, capitalize: boolean) {
+	return capitalize || ["OTHERS", "OLD", "END", "MID"].includes(title)
+		? title
+		: toTitleCase(title);
+}
+---
+
+<Item.Root as="a" href={addForwardSlashAndBaseUrl(dir.path)}>
+	<Item.Media variant="image">
+		<Icon
+			name="folder"
+			width={32}
+			height={32}
+			class:list={dir.name === "OTHERS" || dir.name === "OLD"
+				? "text-gray-500"
+				: "text-[#F5B800]"}
+		/>
+	</Item.Media>
+	<Item.Content>
+		<Item.Title>
+			{getDirTitle(dir.name.toUpperCase(), capitalize)}
+		</Item.Title>
+	</Item.Content>
+</Item.Root>

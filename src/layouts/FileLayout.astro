@@ -1,0 +1,38 @@
+---
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
+import type { FsEntry } from "@/lib/content/schema";
+import PdfLayout from "./PdfLayout.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+	entry: CollectionEntry<"fs">;
+}
+
+const { entry: collectionEntry } = Astro.props;
+
+const entry = collectionEntry.data as FsEntry<"file">;
+---
+
+{entry.extension === ".pdf" && <PdfLayout entry={entry} />}
+
+{
+	entry.extension !== ".pdf" && (
+		<div class="p-4 border border-red-500 rounded-md bg-red-50 text-red-700">
+			<p>
+				Sorry, this file format (
+				<span class="font-mono font-bold">{entry.extension}</span>) is
+				not supported for preview.
+			</p>
+			<p>
+				You can download the file directly by clicking
+				<a
+					href={addForwardSlashAndBaseUrl(entry.path)}
+					class="text-blue-600 underline ml-1"
+				>
+					here
+				</a>
+				.
+			</p>
+		</div>
+	)
+}

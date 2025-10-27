@@ -1,17 +1,31 @@
-import siteConfig from "./settings.json" with { type: "json" };
+import siteConfig from "../../site.config.json" with { type: "json" };
 
 interface NavigationEntry {
+	type: "internal" | "external";
 	name: string;
 	url: string;
 }
 
 interface SiteConfig {
-	title: string;
-	description: string;
-	site: string;
-	favicon: string;
-	logo: string;
-	navigation: NavigationEntry[];
+	site: {
+		title: string;
+		description: string;
+		url: string;
+		githubRepo: string;
+		logo: string;
+		favicon: string;
+		timezone: string;
+	},
+	header: {
+		links: NavigationEntry[];
+	}
+	footer: {
+		maintainer: {
+			title: string;
+			subtitle: string;
+		},
+		links: NavigationEntry[];
+	}
 }
 
 export default siteConfig as SiteConfig;

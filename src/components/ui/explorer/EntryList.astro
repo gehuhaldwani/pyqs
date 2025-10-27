@@ -1,0 +1,58 @@
+---
+import type { FsEntry } from "@/lib/content/schema";
+import Item from "@/components/starwind/item";
+import PdfEntry from "./PdfEntry.astro";
+import DirectoryEntry from "./DirectoryEntry.astro";
+import UploadButton from "./UploadButton.astro";
+import { Pyq } from "@/lib/pyqs";
+
+interface Props {
+	title: string;
+	path: string;
+	entry: FsEntry<"dir">;
+	capitalize?: boolean;
+}
+
+const { entry, capitalize = false, path, title } = Astro.props;
+
+const dirs = entry.directories;
+const pdfs = entry.files.filter((file) => file.extension === ".pdf");
+
+pdfs.sort((a, b) => new Pyq(b).compareTo(new Pyq(a)));
+---
+
+<div class="[&>*:not(:first-child)]:mt-4 select-none">
+	{
+		dirs.length > 0 && (
+			<Item.Group>
+				{dirs.map((dir) => (
+					<>
+						<DirectoryEntry entry={dir} {capitalize} />
+						<Item.Separator />
+					</>
+				))}
+			</Item.Group>
+		)
+	}
+
+	{
+		pdfs.length > 0 && (
+			<Item.Group>
+				{pdfs.map((pdf) => (
+					<>
+						<PdfEntry entry={pdf} />
+						<Item.Separator />
+					</>
+				))}
+			</Item.Group>
+		)
+	}
+
+	{
+		pdfs.length > 0 && (
+			<div class="flex justify-center">
+				<UploadButton title={title} path={path} />
+			</div>
+		)
+	}
+</div>

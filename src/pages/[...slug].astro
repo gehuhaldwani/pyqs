@@ -1,28 +1,28 @@
 ---
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
-import type { Entry } from "@/types/content";
 import ExplorerLayout from "@/layouts/ExplorerLayout.astro";
-import PdfViewer from "@/layouts/PdfViewer.astro";
+import FileLayout from "@/layouts/FileLayout.astro";
+import type { CollectionEntry } from "astro:content";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const entries = await getCollection("entry");
+	const entries = await getCollection("fs");
 	return entries.map((entry) => ({
 		params: {
-			slug: entry.data.path.replace(/.pdf/g, ""),
+			slug: entry.data.path,
 		},
 		props: {
-			entry: entry.data,
+			entry: entry,
 		},
 	}));
 };
 
 interface Props {
-	entry: Entry;
+	entry: CollectionEntry<"fs">;
 }
 
 const { entry } = Astro.props;
 ---
 
-{entry.type === "dir" && <ExplorerLayout entry={entry} />}
-{entry.type === "pdf" && <PdfViewer entry={entry} />}
+{entry.data.type === "dir" && <ExplorerLayout {entry} />}
+{entry.data.type === "file" && <FileLayout {entry} />}

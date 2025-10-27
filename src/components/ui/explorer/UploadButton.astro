@@ -1,0 +1,21 @@
+---
+import Button from "@/components/starwind/button";
+
+interface Props {
+	title: string;
+	path: string;
+}
+
+const { path, title } = Astro.props;
+---
+
+<Button
+	href={`https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`}
+	target="_blank"
+	class="h-full"
+	variant="default"
+>
+	<p class="wrap-break-word whitespace-normal text-center">
+		Upload PYQs to <span class="font-bold">{title}</span>
+	</p>
+</Button>

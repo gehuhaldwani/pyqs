@@ -1,12 +1,6 @@
 ---
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbSeparator,
-} from "../starwind/breadcrumb";
-import Button from "../starwind/button";
+import Breadcrumb from "@/components/starwind/breadcrumb";
+import Button from "@/components/starwind/button";
 
 interface Props {
 	path: string;
@@ -34,13 +28,13 @@ for (const p of path.split("/")) {
 }
 ---
 
-<Breadcrumb class="select-none" transition:name="breadcrumbs">
-	<BreadcrumbList>
+<Breadcrumb.Root class="select-none" transition:name="breadcrumbs">
+	<Breadcrumb.List>
 		<Button
 			class="font-bold text-foreground mr-2"
 			variant="outline"
 			disabled
-			href={back && "../"}
+			href={back ? "../" : null}
 			about={"Up a folder"}>↑</Button
 		>
 		{
@@ -48,25 +42,25 @@ for (const p of path.split("/")) {
 				if (index + 1 !== crumbs.length)
 					return (
 						<>
-							<BreadcrumbItem>
-								<BreadcrumbLink
+							<Breadcrumb.Item>
+								<Breadcrumb.Link
 									href={crumb.path}
 									class="text-lg"
 								>
 									{crumb.title}
-								</BreadcrumbLink>
-							</BreadcrumbItem>
-							<BreadcrumbSeparator>/</BreadcrumbSeparator>
+								</Breadcrumb.Link>
+							</Breadcrumb.Item>
+							<Breadcrumb.Separator>/</Breadcrumb.Separator>
 						</>
 					);
 				return (
-					<BreadcrumbItem>
+					<Breadcrumb.Item>
 						<a class="text-foreground font-bold text-lg">
 							{crumb.title}
 						</a>
-					</BreadcrumbItem>
+					</Breadcrumb.Item>
 				);
 			})
 		}
-	</BreadcrumbList>
-</Breadcrumb>
+	</Breadcrumb.List>
+</Breadcrumb.Root>

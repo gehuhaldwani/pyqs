@@ -17,15 +17,16 @@ export type { Props };
 
 const {
 	title: pageTitle,
-	description = siteConfig.description,
+	description = siteConfig.site.description,
 	ogImage,
 	transition = true,
 } = Astro.props;
 
-const title = `${siteConfig.title}${pageTitle && ` | ${pageTitle}`}`;
+const title = `${siteConfig.site.title}${pageTitle && ` | ${pageTitle}`}`;
 
-let { ogImageUrl = new URL(addBaseUrl(siteConfig.logo), Astro.url.origin) } =
-	Astro.props;
+let {
+	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
+} = Astro.props;
 
 if (ogImage) {
 	const image = await getImage({
@@ -57,12 +58,12 @@ if (ogImage) {
 <!-- Open Graph -->
 
 <meta property="og:title" content={title} />
-<meta property="og:site_name" content={siteConfig.title} />
+<meta property="og:site_name" content={siteConfig.site.title} />
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url.href} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageUrl} />
 
-<link rel="icon" href={addBaseUrl(siteConfig.favicon)} />
+<link rel="icon" href={addBaseUrl(siteConfig.site.favicon)} />
 
 {transition && <ClientRouter fallback="animate" />}

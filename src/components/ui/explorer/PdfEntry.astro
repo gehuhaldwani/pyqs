@@ -1,0 +1,33 @@
+---
+import Item from "@/components/starwind/item";
+import type { FsEntry } from "@/lib/content/schema";
+import { Pyq } from "@/lib/pyqs";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	entry: FsEntry<"file">;
+}
+
+const { entry } = Astro.props;
+
+let pyq: Pyq;
+try {
+	pyq = new Pyq(entry);
+} catch (e) {
+	console.error("Error creating Pyq instance:", (e as Error).message);
+	return;
+}
+---
+
+<Item.Root as="a" href={addForwardSlashAndBaseUrl(entry.path)}>
+	<Item.Media variant="image">
+		<Icon name="pdf" width={32} height={32} class:list={"text-red-500"} />
+	</Item.Media>
+	<Item.Content>
+		<Item.Title>{pyq.title}</Item.Title>
+		<Item.Description>
+			{pyq.dateString}
+		</Item.Description>
+	</Item.Content>
+</Item.Root>

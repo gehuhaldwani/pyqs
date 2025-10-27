@@ -1,12 +1,20 @@
 import { defineCollection } from "astro:content";
-import { entrySchema } from "@/types/content";
-import { entryLoader } from "@/utils/loader";
+import { filesystemLoader } from "@/lib/content/loader";
+import { Pyq } from "@/lib/pyqs";
 
-const entryCollection = defineCollection({
-	loader: entryLoader(),
-	schema: entrySchema,
+
+const fsEntryCollection = defineCollection({
+	loader: filesystemLoader({
+		root: "pyqs",
+		validators: {
+			file: {
+				".pdf": Pyq.validator,
+				"*": (_) => false,
+			}
+		},
+	}),
 });
 
 export const collections = {
-	entry: entryCollection,
+	fs: fsEntryCollection,
 };

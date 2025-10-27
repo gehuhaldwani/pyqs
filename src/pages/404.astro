@@ -1,0 +1,15 @@
+---
+import Button from "@/components/starwind/button";
+import PageLayout from "@/layouts/PageLayout.astro";
+import { addForwardSlashAndBaseUrl } from "@/utils/url";
+---
+
+<PageLayout
+	title="404 Not Found"
+	description="The page you are looking for does not exist."
+>
+	<h1 class="text-7xl font-bold text-center">404 - Page Not Found</h1>
+	<div class="mt-16 w-full flex items-center justify-center">
+		<Button href={addForwardSlashAndBaseUrl("")}>Go Home</Button>
+	</div>
+</PageLayout>

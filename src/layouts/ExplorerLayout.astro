@@ -1,43 +1,44 @@
 ---
-import type { Entry } from "@/types/content";
 import PageLayout from "./PageLayout.astro";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import PathCrumbs from "@/components/ui/PathCrumbs.astro";
-import EntryList from "@/components/ui/EntryList.astro";
+import PathCrumbs from "@/components/ui/explorer/PathCrumbs.astro";
 import { base } from "astro:config/server";
-import HomePageBanner from "@/components/partials/HomePageBanner.astro";
 import Separator from "@/components/starwind/separator";
+import EntryList from "@/components/ui/explorer/EntryList.astro";
+import { render, type CollectionEntry } from "astro:content";
+import type { FsEntry } from "@/lib/content/schema";
 
 interface Props {
-	entry: Entry;
+	entry: CollectionEntry<"fs">;
 }
 
 const { entry } = Astro.props;
+
 const isHomePage = Astro.url.pathname === base;
 
-const path: string = addForwardSlashAndBaseUrl(entry.path);
+const path: string = addForwardSlashAndBaseUrl(entry.data.path);
 const pathList = path.split("/").filter((element) => element);
 
-let title: string = entry.title.toUpperCase();
+let title: string = entry.data.name.toUpperCase();
 
 if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 	title = pathList.splice(-2).join(" > ");
 } else if (["OLD"].includes(title) || title.includes("SEM ")) {
 	title = pathList.splice(-3).join(" > ");
 }
+
+const data = entry.data as FsEntry<"dir">;
+const { Content } = await render(entry);
 ---
 
 <PageLayout title={title}>
-	<PathCrumbs path={path} back={!isHomePage} />
+	<PathCrumbs {path} back={!isHomePage} />
 
 	<Separator class="my-4" />
 
-	{isHomePage && <HomePageBanner />}
+	<EntryList entry={data} {path} {title} capitalize={isHomePage} />
 
-	<EntryList
-		entries={entry.entries}
-		capitalize={isHomePage}
-		path={path}
-		title={title}
-	/>
+	<div class="my-10 mx-5 prose dark:prose-invert">
+		<Content />
+	</div>
 </PageLayout>

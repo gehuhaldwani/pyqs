@@ -1,0 +1,48 @@
+{
+	"site": {
+		"title": "PYQs Archive",
+		"description": "A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations.",
+		"url": "https://gehihualdwani.in/pyqs",
+		"githubRepo": "gehuhaldwani/pyqs",
+		"logo": "/logo.png",
+		"favicon": "/favicon.ico",
+		"timezone": "Asia/Kolkata"
+	},
+	"header": {
+		"links": [
+			{
+				"type": "internal",
+				"name": "Contribute",
+				"url": "/contribute"
+			},
+			{
+				"type": "internal",
+				"name": "About",
+				"url": "/about"
+			}
+		]
+	},
+	"footer": {
+		"maintainer": {
+			"title": "Maintained by Lakshyajeet Jalal",
+			"subtitle": "(B.Tech CSE 2026)"
+		},
+		"links": [
+			{
+				"type": "external",
+				"name": "Join Discord",
+				"url": "https://discord.gg/ZdNcYFZnrB"
+			},
+			{
+				"type": "internal",
+				"name": "Contribute",
+				"url": "/contribute"
+			},
+			{
+				"type": "internal",
+				"name": "About",
+				"url": "/about"
+			}
+		]
+	}
+}
