@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+
+import DesktopLight from "@/assets/desktop_light.png";
+import DesktopDark from "@/assets/desktop_dark.png";
+
+import MobileLight from "@/assets/mobile_light.png";
+import MobileDark from "@/assets/mobile_dark.png";
+---
+
+<div class="mb-4">
+	<a target="_blank" href="https://hack-the-winter.pages.dev/">
+		<Image
+			src={DesktopLight}
+			alt="Banner"
+			class="hidden dark:hidden md:block md:dark:hidden w-full h-auto rounded-lg"
+		/>
+		<Image
+			src={DesktopDark}
+			alt="Banner"
+			class="hidden dark:hidden md:hidden md:dark:block w-full h-auto rounded-lg"
+		/>
+		<Image
+			src={MobileLight}
+			alt="Banner"
+			class="block dark:hidden md:hidden md:dark:hidden w-full h-auto rounded-lg"
+		/>
+		<Image
+			src={MobileDark}
+			alt="Banner"
+			class="hidden dark:block md:hidden md:dark:hidden w-full h-auto rounded-lg"
+		/>
+	</a>
+	<span class="text-sm text-gray-500"
+		>Banner spots are only available to GEHU clubs</span
+	>
+</div>

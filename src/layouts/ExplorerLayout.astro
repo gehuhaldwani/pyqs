@@ -7,6 +7,7 @@ import Separator from "@/components/starwind/separator";
 import EntryList from "@/components/ui/explorer/EntryList.astro";
 import { render, type CollectionEntry } from "astro:content";
 import type { FsEntry } from "@/lib/content/schema";
+import HomePageBanner from "@/components/ui/HomePageBanner.astro";
 
 interface Props {
 	entry: CollectionEntry<"fs">;
@@ -32,6 +33,8 @@ const { Content } = await render(entry);
 ---
 
 <PageLayout title={title}>
+	{isHomePage && <HomePageBanner />}
+
 	<PathCrumbs {path} back={!isHomePage} />
 
 	<Separator class="my-4" />
