@@ -3,7 +3,7 @@ import PageLayout from "./PageLayout.astro";
 ---
 
 <PageLayout title={Astro.props.frontmatter.title}>
-	<div class="prose dark:prose-invert mx-auto">
+	<div class="prose dark:prose-invert mx-5 w-full max-w-none">
 		<slot />
 	</div>
 </PageLayout>
