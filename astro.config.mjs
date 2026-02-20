@@ -6,7 +6,7 @@ import mdx from "@astrojs/mdx";
 import playformCompress from "@playform/compress";
 
 export default defineConfig({
-	site: "https://gehuhaldwani.in",
+	site: "https://haldwani.gehu.in",
 	base: "/pyqs/",
 	trailingSlash: "always",
 	prefetch: {
