@@ -4,11 +4,13 @@ import { tv } from "tailwind-variants";
 
 type Props = HTMLAttributes<"div">;
 
-export const cardFooter = tv({ base: "flex items-center p-8 pt-0" });
+export const cardFooter = tv({
+  base: "bg-muted/50 flex items-center rounded-b-xl border-t p-6 group-data-[size=sm]/card:p-4",
+});
 
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div class={cardFooter({ class: className })} data-slot="card-footer" {...rest}>
+<div class={cardFooter({ class: className })} {...rest} data-slot="card-footer">
   <slot />
 </div>
