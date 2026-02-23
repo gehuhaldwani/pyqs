@@ -32,16 +32,23 @@ jobs:
           clean: false
           path: pyqs
 
-      - name: Set up node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "latest"
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Build Astro Site
-        run: npm install && npm run build
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Cache
+        uses: actions/cache@v5
+        with:
+          path: "./cache"
+          key: build-cache-${{ runner.os }}
+
+      - name: Build
+        run: bun run --bun build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,7 +1,3 @@
-### Discord
-
-GEHU Haldwani B.Tech 2026 Discord [server](https://discord.gg/u5QVwjKWWf)
-
 ### Notes
 
 GitHub [repo](https://github.com/gehuhaldwani/notes/)

@@ -18,47 +18,92 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout main branch to pyqs
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 2
+
+      - name: Checkout existing thumbnails
+        uses: actions/checkout@v4
+        with:
+          ref: thumbnails
+          path: thumbnails
+        continue-on-error: true # First run won't have the branch yet
 
       - name: Install ImageMagick
         run: sudo apt-get install -y imagemagick
 
-      - name: Generate Thumbnails
+      - name: Detect changed PDFs and generate thumbnails
         run: |
-          # Set the output thumbnail size
           THUMBNAIL_SIZE="512x512"
-
-          # Create an output directory for thumbnails (optional)
           OUTPUT_DIR="thumbnails"
           mkdir -p "$OUTPUT_DIR"
 
-          # Find all PDF files in the current directory and its subdirectories
-          find . -type f -name "*.pdf" | while read -r pdf_file; do
-            # Extract the base filename and directory path
-            base_name=$(basename "$pdf_file" .pdf)
-            dir_name=$(dirname "$pdf_file")
+          # On workflow_dispatch, regenerate all thumbnails
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "Manual trigger — regenerating all thumbnails."
+            find . -path ./thumbnails -prune -o -type f -name "*.pdf" -print | while read -r pdf_file; do
+              base_name=$(basename "$pdf_file" .pdf)
+              dir_name=$(dirname "$pdf_file")
+              output_subdir="$OUTPUT_DIR/$dir_name"
+              mkdir -p "$output_subdir"
+              (
+                convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
+                echo "Generated: $output_subdir/$base_name.webp"
+              ) &
+            done
+            wait
+            echo "All thumbnails regenerated."
+            exit 0
+          fi
 
-            # Create a corresponding subdirectory structure in the output directory
-            output_subdir="$OUTPUT_DIR/$dir_name"
-            mkdir -p "$output_subdir"
+          # For push events, only process changed files
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- '*.pdf' || true)
+          DELETED_FILES=$(git diff --name-only --diff-filter=D HEAD~1 HEAD -- '*.pdf' || true)
 
-            (
-              # Convert the first page of the PDF to a .webp thumbnail
-              convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
+          if [[ -z "$CHANGED_FILES" && -z "$DELETED_FILES" ]]; then
+            echo "No PDF changes detected — nothing to do."
+            exit 0
+          fi
 
-              # Notify the user
-              echo "Converted $pdf_file to $output_subdir/$base_name.webp"
-            ) &
-          done
+          # Generate thumbnails for added/changed PDFs
+          if [[ -n "$CHANGED_FILES" ]]; then
+            echo "Generating thumbnails for changed PDFs:"
+            echo "$CHANGED_FILES"
+            echo "$CHANGED_FILES" | while read -r pdf_file; do
+              [[ -z "$pdf_file" ]] && continue
+              base_name=$(basename "$pdf_file" .pdf)
+              dir_name=$(dirname "$pdf_file")
+              output_subdir="$OUTPUT_DIR/$dir_name"
+              mkdir -p "$output_subdir"
+              (
+                convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
+                echo "Generated: $output_subdir/$base_name.webp"
+              ) &
+            done
+            wait
+          fi
 
-          wait
+          # Remove thumbnails for deleted PDFs
+          if [[ -n "$DELETED_FILES" ]]; then
+            echo "Removing thumbnails for deleted PDFs:"
+            echo "$DELETED_FILES"
+            echo "$DELETED_FILES" | while read -r pdf_file; do
+              [[ -z "$pdf_file" ]] && continue
+              base_name=$(basename "$pdf_file" .pdf)
+              dir_name=$(dirname "$pdf_file")
+              thumb_path="$OUTPUT_DIR/$dir_name/$base_name.webp"
+              if [[ -f "$thumb_path" ]]; then
+                rm "$thumb_path"
+                echo "Removed: $thumb_path"
+              fi
+            done
+          fi
 
-          echo "All PDF files have been converted to .webp thumbnails."
+          echo "Incremental thumbnail generation complete."
 
-      - name: push thumbnails to the output branch
+      - name: Push thumbnails to output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: thumbnails
