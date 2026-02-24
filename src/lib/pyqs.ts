@@ -1,7 +1,6 @@
 import { toTitleCase } from "@/utils/string";
 import type { FsEntry } from "./content/schema";
 
-
 const months = [
 	"jan",
 	"feb",
@@ -19,11 +18,13 @@ const months = [
 
 class Pyq {
 	static $pattern =
-		/^(?<subject_code>[a-zA-Z0-9]+)_(?:(?<specialization_code>[a-zA-Z0-9]+)_)?(?<type>(?:midsem)|(?:endsem))_(?:(?<back>back)_)?(?<year>20[0-9]{2})(?:_(?<month>(?:jan)|(?:feb)|(?:mar)|(?:apr)|(?:may)|(?:jun)|(?:jul)|(?:aug)|(?:sep)|(?:oct)|(?:nov)|(?:dec)))?(?:_(?<date>[0-9]{1,2}))?(?:_set(?<set>[a-zA-Z0-9]+))?$/;
+		/^(?<subjects>(?:(?:[a-z]+[A-Z0-9]+)_(?:(?:[A-Z0-9]+)_)?)+)(?<type>(?:midsem)|(?:endsem))_(?:(?<back>back)_)?(?<year>20[0-9]{2})(?:_(?<month>(?:jan)|(?:feb)|(?:mar)|(?:apr)|(?:may)|(?:jun)|(?:jul)|(?:aug)|(?:sep)|(?:oct)|(?:nov)|(?:dec)))?(?:_(?<date>[0-9]{1,2}))?(?:_set(?<set>[A-Z0-9]+))?$/;
 
 	data: {
-		subject_code: string;
-		specialization_code: string | null;
+		subjects: {
+			subject_code: string;
+			specialization_code: string | null
+			}[];
 		type: string;
 		back: boolean;
 		year: number;
@@ -43,8 +44,13 @@ class Pyq {
 
 		this.entry = entry;
 		this.data = {
-			subject_code: match.groups?.subject_code || "",
-			specialization_code: match.groups?.specialization_code || null,
+			subjects: match.groups?.subjects?.match(/([a-z]+[A-Z0-9]+)_(?:(?:[A-Z0-9]+)_)?/g)?.map((subject) => {
+				const [subject_code, specialization_code] = subject.split("_");
+				return {
+					subject_code,
+					specialization_code: specialization_code || null,
+				};
+			}).sort((a, b) => a.subject_code.localeCompare(b.subject_code)) || [],
 			type: match.groups?.type || "",
 			back: match.groups?.back !== undefined,
 			year: Number.parseInt(match.groups?.year || "", 10),
@@ -64,11 +70,15 @@ class Pyq {
 
 	get title(): string {
 		return (
-			this.data.subject_code.toUpperCase() +
-			" " +
-			(this.data.specialization_code
-				? `- ${this.data.specialization_code?.toUpperCase()} `
-				: "") +
+			this.data.subjects.map((subject) => {
+				return (
+					subject.subject_code.toUpperCase() +
+					" " +
+					(subject.specialization_code
+						? `- ${subject.specialization_code?.toUpperCase()} `
+						: "")
+				);
+			}).join(" • ") + 
 			"• " +
 			(this.data.set ? `Set ${this.data.set} • ` : "") +
 			(this.data.type === "midsem" ? "Mid Sem" : "End Sem") +
@@ -117,21 +127,26 @@ class Pyq {
 			return 1;
 		}
 
+		// compare subjects length
+		if (this.data.subjects.length !== other.data.subjects.length) {
+			return this.data.subjects.length - other.data.subjects.length;
+		}
+
 		// Compare subject codes
-		const subject_code_cmp = this.data.subject_code.localeCompare(other.data.subject_code);
+		const subject_code_cmp = this.data.subjects[0].subject_code.localeCompare(other.data.subjects[0].subject_code);
 		if (subject_code_cmp !== 0) {
 			return subject_code_cmp;
 		}
 
 		// Compare specialization codes
-		if (this.data.specialization_code !== null && other.data.specialization_code !== null) {
-			return this.data.specialization_code.localeCompare(other.data.specialization_code);
+		if (this.data.subjects[0].specialization_code !== null && other.data.subjects[0].specialization_code !== null) {
+			return this.data.subjects[0].specialization_code.localeCompare(other.data.subjects[0].specialization_code);
 		}
 		// If one specialization code is null
-		if (this.data.specialization_code === null) {
+		if (this.data.subjects[0].specialization_code === null) {
 			return -1;
 		}
-		if (other.data.specialization_code === null) {
+		if (other.data.subjects[0].specialization_code === null) {
 			return 1;
 		}
 
