@@ -15,7 +15,7 @@ interface Props {
 
 const { entry, capitalize = false, path, title } = Astro.props;
 
-const dirs = entry.directories;
+const dirs = entry.directories.sort((a, b) => b.name.localeCompare(a.name));
 const pdfs = entry.files.filter((file) => file.extension === ".pdf");
 
 pdfs.sort((a, b) => new Pyq(b).compareTo(new Pyq(a)));
