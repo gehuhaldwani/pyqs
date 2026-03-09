@@ -1,13 +1,13 @@
 ---
 import PageLayout from "./PageLayout.astro";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import PathCrumbs from "@/components/ui/explorer/PathCrumbs.astro";
+import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
 import { base } from "astro:config/server";
 import Separator from "@/components/starwind/separator";
-import EntryList from "@/components/ui/explorer/EntryList.astro";
+import EntryList from "@/components/widgets/explorer/EntryList.astro";
 import { render, type CollectionEntry } from "astro:content";
 import type { FsEntry } from "@/lib/content/schema";
-import HomePageBanner from "@/components/ui/HomePageBanner.astro";
+import HomePageBanner from "@/components/widgets/HomePageBanner.astro";
 
 interface Props {
 	entry: CollectionEntry<"fs">;

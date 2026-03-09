@@ -67,3 +67,69 @@ if (ogImage) {
 <link rel="icon" href={addBaseUrl(siteConfig.site.favicon)} />
 
 {transition && <ClientRouter fallback="animate" />}
+
+<script is:inline>
+	function initTheme() {
+		const colorTheme = localStorage.getItem("colorTheme");
+		if (!colorTheme) {
+			if (
+				window.matchMedia &&
+				window.matchMedia("(prefers-color-scheme: dark)").matches
+			) {
+				document.documentElement.classList.add("dark");
+				localStorage.setItem("colorTheme", "dark");
+			} else {
+				document.documentElement.classList.remove("dark");
+				localStorage.setItem("colorTheme", "light");
+			}
+		} else {
+			if (colorTheme === "dark") {
+				document.documentElement.classList.add("dark");
+			} else if (colorTheme === "light") {
+				document.documentElement.classList.remove("dark");
+			} else if (colorTheme === "system") {
+				const prefersDark = window.matchMedia(
+					"(prefers-color-scheme: dark)",
+				).matches;
+				document.documentElement.classList.toggle("dark", prefersDark);
+			}
+		}
+	}
+
+	initTheme();
+
+	document.addEventListener("astro:before-swap", (event) => {
+		const colorTheme = localStorage.getItem("colorTheme");
+		event.newDocument.documentElement.classList.toggle(
+			"dark",
+			colorTheme === "dark",
+		);
+	});
+</script>
+
+<script>
+	import { haptics } from "@/lib/haptics";
+
+	document.addEventListener("astro:page-load", () => {
+		document.querySelectorAll("a").forEach((link) => {
+			link.addEventListener("click", (event) => {
+				const href = link.getAttribute("href");
+				if (!href) return;
+
+				event.preventDefault();
+				Promise.resolve(haptics.trigger())
+					.catch(() => {})
+					.then(() => {
+						window.location.href = href;
+					});
+			});
+		});
+
+		// ignore buttons that are dropdown triggers to prevent interference with dropdown interactions
+		document
+			.querySelectorAll('button:not([data-slot="dropdown-trigger"])')
+			.forEach((button) => {
+				button.addEventListener("click", () => haptics.trigger());
+			});
+	});
+</script>

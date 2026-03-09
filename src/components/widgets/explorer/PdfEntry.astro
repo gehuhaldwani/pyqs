@@ -20,7 +20,11 @@ try {
 }
 ---
 
-<Item.Root as="a" href={addForwardSlashAndBaseUrl(entry.path)}>
+<Item.Root
+	as="a"
+	href={addForwardSlashAndBaseUrl(entry.path)}
+	class="[a]:active:bg-accent/50"
+>
 	<Item.Media variant="image">
 		<Icon name="pdf" width={32} height={32} class:list={"text-red-500"} />
 	</Item.Media>

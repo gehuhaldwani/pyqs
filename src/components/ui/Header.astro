@@ -1,10 +1,10 @@
 ---
 import siteConfig from "@/configs/site.config";
-import ThemeSwitcher from "../partials/ThemeSwitcher.astro";
 import { base } from "astro:config/server";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import Dropdown from "@/components/starwind/dropdown";
 import { Icon } from "astro-icon/components";
+import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
 ---
 
 <header class="border-b" {...Astro.props}>
@@ -15,7 +15,7 @@ import { Icon } from "astro-icon/components";
 			<a href={base}>{siteConfig.site.title}</a>
 		</div>
 
-		<div class="flex flex-row gap-4">
+		<div class="flex flex-row items-center gap-4">
 			<nav class="hidden sm:flex flex-row gap-3">
 				{
 					siteConfig.header.links.map((link) => (
@@ -35,9 +35,13 @@ import { Icon } from "astro-icon/components";
 				}
 			</nav>
 
-			<ThemeSwitcher />
+			<ThemeToggle
+				variant="outline"
+				size="md"
+				transition:name="theme-toggle"
+			/>
 
-			<Dropdown.Root class="inline sm:hidden">
+			<Dropdown.Root class="inline">
 				<Dropdown.Trigger>
 					<Icon name="mdi:menu" class="w-4 h-full" />
 				</Dropdown.Trigger>

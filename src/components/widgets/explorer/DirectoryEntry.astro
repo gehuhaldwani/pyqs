@@ -19,7 +19,11 @@ function getDirTitle(title: string, capitalize: boolean) {
 }
 ---
 
-<Item.Root as="a" href={addForwardSlashAndBaseUrl(dir.path)}>
+<Item.Root
+	as="a"
+	href={addForwardSlashAndBaseUrl(dir.path)}
+	class="[a]:active:bg-accent/50"
+>
 	<Item.Media variant="image">
 		<Icon
 			name="folder"
