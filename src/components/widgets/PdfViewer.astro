@@ -1,0 +1,285 @@
+---
+interface Props {
+	src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<div id="pdf-viewer" class="w-full h-screen" data-src={src}></div>
+
+<script>
+	import EmbedPDF from "@embedpdf/snippet";
+	import { navigate } from "astro:transitions/client";
+
+	const DISABLED_CATEGORIES = [
+		"redaction",
+		"annotation",
+		"document-open",
+		"document-close",
+		"document-capture",
+		"document-protect",
+		"document-fullscreen",
+		"tools",
+		"panel",
+	];
+	const CLOSE_COMMAND_ID = "custom.close-viewer";
+	const CLOSE_ICON_ID = "close-x";
+	const EXPORT_BUTTON = {
+		type: "command-button",
+		id: "document-export-button",
+		commandId: "document:export",
+		variant: "icon",
+	};
+	const CLOSE_BUTTON = {
+		type: "command-button",
+		id: "close-viewer-button",
+		commandId: CLOSE_COMMAND_ID,
+		variant: "icon",
+	};
+	const CENTER_ITEM_IDS = ["zoom-menu-button", "zoom-toolbar"];
+
+	const embedPdfColors = {
+		accent: {
+			primary: "var(--foreground)",
+			primaryHover:
+				"color-mix(in srgb, var(--foreground) 90%, transparent)",
+			primaryActive:
+				"color-mix(in srgb, var(--foreground) 80%, transparent)",
+			primaryLight:
+				"color-mix(in srgb, var(--foreground) 14%, var(--background))",
+			primaryForeground: "var(--background)",
+		},
+		background: {
+			app: "var(--muted)",
+			surface: "var(--card)",
+			surfaceAlt: "var(--muted)",
+			elevated: "var(--popover)",
+			overlay: "color-mix(in srgb, var(--foreground) 24%, transparent)",
+			input: "var(--input)",
+		},
+		foreground: {
+			primary: "var(--foreground)",
+			secondary: "var(--muted-foreground)",
+			muted: "var(--muted-foreground)",
+			disabled:
+				"color-mix(in srgb, var(--muted-foreground) 72%, transparent)",
+			onAccent: "var(--background)",
+		},
+		interactive: {
+			hover: "var(--accent)",
+			active: "color-mix(in srgb, var(--accent) 78%, var(--foreground))",
+			selected:
+				"color-mix(in srgb, var(--foreground) 14%, var(--background))",
+			focus: "var(--outline)",
+			focusRing: "color-mix(in srgb, var(--outline) 28%, transparent)",
+		},
+		border: {
+			default: "var(--border)",
+			subtle: "color-mix(in srgb, var(--border) 65%, var(--background))",
+			strong: "color-mix(in srgb, var(--border) 78%, var(--foreground))",
+		},
+		state: {
+			error: "var(--error)",
+			errorLight:
+				"color-mix(in srgb, var(--error) 16%, var(--background))",
+			warning: "var(--warning)",
+			warningLight:
+				"color-mix(in srgb, var(--warning) 18%, var(--background))",
+			success: "var(--success)",
+			successLight:
+				"color-mix(in srgb, var(--success) 18%, var(--background))",
+			info: "var(--info)",
+			infoLight: "color-mix(in srgb, var(--info) 18%, var(--background))",
+		},
+		tooltip: {
+			background: "var(--foreground)",
+			foreground: "var(--background)",
+		},
+		scrollbar: {
+			track: "var(--muted)",
+			thumb: "var(--border)",
+			thumbHover: "var(--muted-foreground)",
+		},
+	};
+
+	document.addEventListener("astro:page-load", async () => {
+		const container = document.getElementById("pdf-viewer");
+
+		if (container) {
+			const viewer = EmbedPDF.init({
+				type: "container",
+				target: container,
+				src: container.dataset.src,
+				disabledCategories: DISABLED_CATEGORIES,
+				theme: {
+					preference: "system",
+					light: embedPdfColors,
+					dark: embedPdfColors,
+				},
+			});
+
+			if (!viewer) return;
+
+			const registry = await viewer.registry;
+			const commandsPlugin = registry.getPlugin("commands");
+			const uiPlugin = registry.getPlugin("ui");
+
+			if (
+				!commandsPlugin ||
+				!commandsPlugin.provides ||
+				!uiPlugin ||
+				!uiPlugin.provides
+			) {
+				return;
+			}
+
+			// plugins
+			const commands = commandsPlugin.provides();
+			const ui = uiPlugin.provides();
+
+			viewer.registerIcon(CLOSE_ICON_ID, {
+				viewBox: "0 0 24 24",
+				paths: [
+					{
+						d: "M18 6L6 18",
+						stroke: "currentColor",
+						fill: "none",
+					},
+					{
+						d: "M6 6L18 18",
+						stroke: "currentColor",
+						fill: "none",
+					},
+				],
+			});
+
+			commands.registerCommand({
+				id: CLOSE_COMMAND_ID,
+				label: "Close",
+				icon: CLOSE_ICON_ID,
+				action: () => navigate("../"),
+			});
+
+			const schema = ui.getSchema();
+			const toolbar = schema.toolbars["main-toolbar"];
+
+			if (!toolbar) return;
+
+			const items = JSON.parse(JSON.stringify(toolbar.items));
+			let leftGroup;
+			let centerGroup;
+			let rightGroup;
+			let spacer1;
+			let spacer2;
+			const remainingToolbarItems = [];
+
+			for (const item of items) {
+				switch (item.id) {
+					case "left-group":
+						leftGroup = item;
+						continue;
+					case "center-group":
+						centerGroup = item;
+						continue;
+					case "right-group":
+						rightGroup = item;
+						continue;
+					case "spacer-1":
+						spacer1 = item;
+						continue;
+					case "spacer-2":
+						spacer2 = item;
+						continue;
+				}
+
+				remainingToolbarItems.push(item);
+			}
+
+			if (!leftGroup || !centerGroup || !rightGroup) return;
+
+			const remainingLeftItems = [];
+
+			for (const item of leftGroup.items) {
+				if (item.id === "document-menu-button") {
+					continue;
+				}
+
+				remainingLeftItems.push(item);
+			}
+
+			const centerItems = [];
+			const remainingCenterItems = [];
+
+			for (const item of centerGroup.items) {
+				if (CENTER_ITEM_IDS.includes(item.id)) {
+					centerItems.push(item);
+				} else {
+					remainingCenterItems.push(item);
+				}
+			}
+
+			leftGroup.items = [];
+			for (const item of remainingLeftItems) {
+				if (item.type !== "divider") {
+					leftGroup.items.push(item);
+				}
+			}
+			let pageSettingsIndex = -1;
+			for (const [index, item] of leftGroup.items.entries()) {
+				if (item.id === "page-settings-button") {
+					pageSettingsIndex = index;
+					break;
+				}
+			}
+			if (pageSettingsIndex === -1) {
+				leftGroup.items.push(EXPORT_BUTTON);
+			} else {
+				leftGroup.items.splice(pageSettingsIndex + 1, 0, EXPORT_BUTTON);
+			}
+			centerGroup.items = [];
+			for (const item of [...centerItems, ...remainingCenterItems]) {
+				if (item.type !== "divider") {
+					centerGroup.items.push(item);
+				}
+			}
+			const existingRightItems = rightGroup.items;
+			rightGroup.items = [];
+			for (const item of existingRightItems) {
+				if (item.type !== "divider") {
+					rightGroup.items.push(item);
+				}
+			}
+			rightGroup.items.push(CLOSE_BUTTON);
+
+			const reorderedItems = [leftGroup];
+			const filteredToolbarItems = [];
+			for (const item of remainingToolbarItems) {
+				if (item.type !== "divider") {
+					filteredToolbarItems.push(item);
+				}
+			}
+
+			if (spacer1) {
+				reorderedItems.push(spacer1);
+			}
+
+			reorderedItems.push(centerGroup);
+
+			if (spacer2) {
+				reorderedItems.push(spacer2);
+			}
+
+			reorderedItems.push(...filteredToolbarItems, rightGroup);
+
+			ui.mergeSchema({
+				toolbars: {
+					"main-toolbar": {
+						...toolbar,
+						items: reorderedItems,
+					},
+				},
+			});
+		}
+	});
+</script>

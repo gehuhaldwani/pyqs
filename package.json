@@ -10,7 +10,8 @@
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^4.3.13",
-		"@astrojs/sitemap": "^3.7.0",
+		"@astrojs/sitemap": "^3.7.1",
+		"@embedpdf/snippet": "^2.8.0",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/simple-icons": "^1.2.72",
 		"@tabler/icons": "^3.40.0",
