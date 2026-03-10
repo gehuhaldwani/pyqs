@@ -108,30 +108,10 @@ if (ogImage) {
 	});
 </script>
 
-<!-- <script>
-	import { navigate } from "astro:transitions/client";
-	import { haptics } from "@/lib/haptics";
+<script>
+	import { haptics, defaultPatterns } from "@/lib/haptics";
 
-	document.addEventListener("astro:page-load", () => {
-		document.querySelectorAll("a").forEach((link) => {
-			link.addEventListener("click", (event) => {
-				const href = link.getAttribute("href");
-				if (!href) return;
-
-				event.preventDefault();
-				Promise.resolve(haptics.trigger())
-					.catch(() => {})
-					.then(() => {
-						navigate(href);
-					});
-			});
-		});
-
-		// ignore buttons that are dropdown triggers to prevent interference with dropdown interactions
-		document
-			.querySelectorAll('button:not([data-slot="dropdown-trigger"])')
-			.forEach((button) => {
-				button.addEventListener("click", () => haptics.trigger());
-			});
+	document.addEventListener("astro:before-preparation", () => {
+		haptics.trigger(defaultPatterns.selection);
 	});
-</script> -->
+</script>
