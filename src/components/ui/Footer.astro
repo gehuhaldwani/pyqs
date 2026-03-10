@@ -3,10 +3,15 @@ import siteConfig, { SOCIALS } from "@/configs/site.config";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import { Icon } from "astro-icon/components";
 import GithubButton from "../widgets/GithubButton.astro";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"footer"> {}
+
+const { class: className, ...props } = Astro.props;
 ---
 
-<footer class="border-t bg-muted" {...Astro.props}>
-	<div class="h-full w-full max-w-screen-xl mx-auto p-10">
+<footer class:list={["border-t bg-muted", className]} {...props}>
+	<div class="h-full w-full max-w-7xl mx-auto p-10">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			<div class="col-span-2">
 				<p class="text-xl font-semibold">

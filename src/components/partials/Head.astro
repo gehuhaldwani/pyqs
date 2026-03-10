@@ -66,7 +66,7 @@ if (ogImage) {
 
 <link rel="icon" href={addBaseUrl(siteConfig.site.favicon)} />
 
-{transition && <ClientRouter fallback="animate" />}
+{transition && <ClientRouter fallback="none" />}
 
 <script is:inline>
 	function initTheme() {
@@ -108,7 +108,7 @@ if (ogImage) {
 	});
 </script>
 
-<script>
+<!-- <script>
 	import { navigate } from "astro:transitions/client";
 	import { haptics } from "@/lib/haptics";
 
@@ -134,4 +134,4 @@ if (ogImage) {
 				button.addEventListener("click", () => haptics.trigger());
 			});
 	});
-</script>
+</script> -->

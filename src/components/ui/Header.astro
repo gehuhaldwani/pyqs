@@ -5,9 +5,14 @@ import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import Dropdown from "@/components/starwind/dropdown";
 import { Icon } from "astro-icon/components";
 import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"header"> {}
+
+const { class: className, ...props } = Astro.props;
 ---
 
-<header class="border-b" {...Astro.props}>
+<header class:list={["border-b", className]} {...props}>
 	<div
 		class="h-full flex items-center justify-between max-w-7xl mx-auto px-10 py-2"
 	>
@@ -36,12 +41,12 @@ import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
 			</nav>
 
 			<ThemeToggle
-				variant="outline"
+				variant="default"
 				size="md"
 				transition:name="theme-toggle"
 			/>
 
-			<Dropdown.Root class="inline">
+			<Dropdown.Root class="inline sm:hidden">
 				<Dropdown.Trigger>
 					<Icon name="mdi:menu" class="w-4 h-full" />
 				</Dropdown.Trigger>

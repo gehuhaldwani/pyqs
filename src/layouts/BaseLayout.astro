@@ -1,13 +1,21 @@
 ---
-import Head, { type Props } from "@/components/partials/Head.astro";
+import Head, {
+	type Props as HeadProps,
+} from "@/components/partials/Head.astro";
 import "@/styles/starwind.css";
+
+export interface Props extends HeadProps {
+	bodyClass?: string;
+}
+
+const { bodyClass, ...props } = Astro.props;
 ---
 
 <html lang="en">
 	<head>
-		<Head {...Astro.props} />
+		<Head {...props} />
 	</head>
-	<body class="min-h-screen">
+	<body class:list={["min-h-screen", bodyClass]}>
 		<slot />
 	</body>
 </html>
