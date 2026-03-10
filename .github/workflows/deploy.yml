@@ -38,14 +38,21 @@ jobs:
       - name: Set up bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
       - name: Install dependencies
         run: bun install
 
-      - name: Cache
+      - name: Build Cache
         uses: actions/cache@v5
         with:
           path: "./cache"
-          key: build-cache-${{ runner.os }}
+          key: ${{ runner.os }}-build-cache
 
       - name: Build
         run: bun run --bun build
