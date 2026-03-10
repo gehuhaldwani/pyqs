@@ -18,7 +18,7 @@ const months = [
 
 class Pyq {
 	static $pattern =
-		/^(?<subjects>(?:(?:[a-z]+[A-Z0-9]+)_(?:(?:[A-Z0-9]+)_)?)+)(?<type>(?:midsem)|(?:endsem))_(?:(?<back>back)_)?(?<year>20[0-9]{2})(?:_(?<month>(?:jan)|(?:feb)|(?:mar)|(?:apr)|(?:may)|(?:jun)|(?:jul)|(?:aug)|(?:sep)|(?:oct)|(?:nov)|(?:dec)))?(?:_(?<date>[0-9]{1,2}))?(?:_set(?<set>[A-Z0-9]+))?$/;
+		/^(?<subjects>(?:(?:[a-z]+[A-Z0-9]+)_(?:(?:[A-Z0-9]+)_)?)+)(?<type>(?:midsem)|(?:endsem)|(?:sessional))_(?:(?<no>[0-9])_)?(?:(?<back>back)_)?(?<year>20[0-9]{2})(?:_(?<month>(?:jan)|(?:feb)|(?:mar)|(?:apr)|(?:may)|(?:jun)|(?:jul)|(?:aug)|(?:sep)|(?:oct)|(?:nov)|(?:dec)))?(?:_(?<date>[0-9]{1,2}))?(?:_set(?<set>[A-Z0-9]+))?$/;
 
 	data: {
 		subjects: {
@@ -26,6 +26,7 @@ class Pyq {
 			specialization_code: string | null
 			}[];
 		type: string;
+		no: number | null;
 		back: boolean;
 		year: number;
 		month: number | null;
@@ -52,6 +53,7 @@ class Pyq {
 				};
 			}).sort((a, b) => a.subject_code.localeCompare(b.subject_code)) || [],
 			type: match.groups?.type || "",
+			no: match.groups?.no ? Number.parseInt(match.groups.no, 10) : null,
 			back: match.groups?.back !== undefined,
 			year: Number.parseInt(match.groups?.year || "", 10),
 			month: match.groups?.month
@@ -81,8 +83,9 @@ class Pyq {
 			}).join(" • ") + 
 			"• " +
 			(this.data.set ? `Set ${this.data.set} • ` : "") +
-			(this.data.type === "midsem" ? "Mid Sem" : "End Sem") +
+			(this.data.type === "midsem" ? "Mid Sem" : this.data.type === "endsem" ? "End Sem" : "Sessional") +
 			" " +
+			(this.data.no ? `${this.data.no} ` : "") +
 			(this.data.back ? "BACK " : "")
 		);
 	}
