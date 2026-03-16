@@ -4,4 +4,4 @@ Give this repo a ⭐ on [GitHub](https://github.com/gehuhaldwani/pyqs)! 😎
 
 ## Discord
 
-Join our [Discord](https://discord.gg/techgeeksgehu)
+Join our [Discord](https://discord.gg/xgp4F9MXeG)
