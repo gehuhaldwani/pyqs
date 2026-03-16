@@ -14,11 +14,15 @@ const { class: className, ...props } = Astro.props;
 	<div class="h-full w-full max-w-7xl mx-auto p-10">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			<div class="col-span-2">
-				<p class="text-xl font-semibold">
-					{siteConfig.footer.maintainer.title}
+				<p class="text-xl">
+					Maintained by <span class="font-excalifont"
+						>{siteConfig.footer.maintainer.name}</span
+					>
 				</p>
-				<p class="text-xl font-semibold">
-					{siteConfig.footer.maintainer.subtitle}
+				<p class="text-lg font-medium">
+					(<span class="font-excalifont"
+						>{siteConfig.footer.maintainer.designation}</span
+					>)
 				</p>
 				<br />
 				<div class="flex gap-4 mt-3">
@@ -37,8 +41,8 @@ const { class: className, ...props } = Astro.props;
 				<p>{siteConfig.site.description}</p>
 			</div>
 			<div class="col-span-1">
-				<p class="text-lg font-bold mb-2">Quick Links</p>
-				<ul class="">
+				<p class="text-lg font-medium mb-2">Quick Links</p>
+				<ul class="font-excalifont">
 					<li>
 						<GithubButton />
 					</li>
@@ -76,7 +80,16 @@ const { class: className, ...props } = Astro.props;
 		</div>
 		<br />
 		<p class="w-full text-center">
-			This site was last updated on {
+			Built with <a
+				href="https://astro.build"
+				target="_blank"
+				class="underline"
+			>
+				<Icon name="astro" class="inline" />
+			</a>
+		</p>
+		<p class="w-full text-center">
+			Last updated on {
 				new Date().toLocaleString("en-IN", {
 					timeZone: siteConfig.site.timezone,
 				})

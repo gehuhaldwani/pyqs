@@ -12,11 +12,11 @@ interface Props extends HTMLAttributes<"header"> {}
 const { class: className, ...props } = Astro.props;
 ---
 
-<header class:list={["border-b", className]} {...props}>
+<header class:list={["border-b font-excalifont", className]} {...props}>
 	<div
 		class="h-full flex items-center justify-between max-w-7xl mx-auto px-10 py-2"
 	>
-		<div class="text-xl md:text-2xl font-black">
+		<div class="text-xl md:text-2xl font-bold">
 			<a href={base}>{siteConfig.site.title}</a>
 		</div>
 

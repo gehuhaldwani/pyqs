@@ -9,16 +9,17 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^4.3.13",
+		"@astrojs/compiler-rs": "^0.1.4",
+		"@astrojs/mdx": "5.0.0",
 		"@astrojs/sitemap": "^3.7.1",
 		"@embedpdf/snippet": "^2.8.0",
 		"@iconify-json/mdi": "^1.2.3",
-		"@iconify-json/simple-icons": "^1.2.72",
+		"@iconify-json/simple-icons": "^1.2.74",
 		"@tabler/icons": "^3.40.0",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.1",
-		"astro": "^5.18.0",
+		"astro": "6.0.4",
 		"astro-icon": "^1.1.5",
 		"sharp": "^0.34.5",
 		"tailwind-merge": "^3.5.0",
@@ -28,7 +29,7 @@
 		"web-haptics": "^0.0.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6"
+		"@biomejs/biome": "2.4.7"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

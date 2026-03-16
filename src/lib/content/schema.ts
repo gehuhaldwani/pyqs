@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 
 export interface FsEntry<T extends "dir" | "file"> {
     type: T;

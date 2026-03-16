@@ -1,9 +1,10 @@
 ---
+import Prose from "@/components/partials/Prose.astro";
 import PageLayout from "./PageLayout.astro";
 ---
 
 <PageLayout title={Astro.props.frontmatter.title}>
-	<div class="prose dark:prose-invert mx-5 w-full max-w-none">
+	<Prose>
 		<slot />
-	</div>
+	</Prose>
 </PageLayout>

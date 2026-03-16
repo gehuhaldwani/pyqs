@@ -24,14 +24,14 @@
 	},
 	"footer": {
 		"maintainer": {
-			"title": "Maintained by Lakshyajeet Jalal",
-			"subtitle": "(B.Tech CSE 2026)"
+			"name": "Lakshyajeet Jalal",
+			"designation": "B.Tech CSE 2026"
 		},
 		"links": [
 			{
 				"type": "external",
 				"name": "Join Discord",
-				"url": "https://discord.gg/techgeeksgehu"
+				"url": "https://discord.gg/xgp4F9MXeG"
 			},
 			{
 				"type": "internal",

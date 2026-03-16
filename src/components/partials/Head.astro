@@ -4,6 +4,7 @@ import { addBaseUrl } from "@/utils/url";
 import type { ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
+import Fonts from "./Fonts.astro";
 
 interface Props {
 	title?: string;
@@ -115,3 +116,5 @@ if (ogImage) {
 		haptics.trigger(defaultPatterns.selection);
 	});
 </script>
+
+<Fonts />

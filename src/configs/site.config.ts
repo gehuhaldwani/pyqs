@@ -21,8 +21,8 @@ interface SiteConfig {
 	}
 	footer: {
 		maintainer: {
-			title: string;
-			subtitle: string;
+			name: string;
+			designation: string;
 		},
 		links: NavigationEntry[];
 	}
