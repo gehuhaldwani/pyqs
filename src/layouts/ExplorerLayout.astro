@@ -9,6 +9,7 @@ import { render, type CollectionEntry } from "astro:content";
 import type { FsEntry } from "@/lib/content/schema";
 import HomePageBanner from "@/components/widgets/HomePageBanner.astro";
 import Prose from "@/components/partials/Prose.astro";
+import FinalPopup from "@/components/widgets/FinalPopup.astro";
 
 interface Props {
 	entry: CollectionEntry<"fs">;
@@ -34,6 +35,8 @@ const { Content } = await render(entry);
 ---
 
 <PageLayout title={title}>
+	<FinalPopup />
+
 	{isHomePage && <HomePageBanner />}
 
 	<PathCrumbs {path} back={!isHomePage} />

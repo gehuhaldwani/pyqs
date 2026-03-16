@@ -43,6 +43,10 @@
     {
       "name": "item",
       "version": "1.0.2"
+    },
+    {
+      "name": "alert-dialog",
+      "version": "1.0.4"
     }
   ]
 }

@@ -1,0 +1,109 @@
+---
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogFooter,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+} from "@/components/starwind/alert-dialog";
+import { Button } from "@/components/starwind/button";
+---
+
+<AlertDialog>
+    <AlertDialogTrigger asChild>
+        <tag id="final-popup-trigger"></tag>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle class="font-excalifont"
+                >A final note</AlertDialogTitle
+            >
+            <AlertDialogDescription class="text-left">
+                Hi it's me, Lakshyajeet Jalal, a final year student of B.Tech
+                CSE at GEHU Haldwani. For the past 4 years, I've been
+                maintaining this project and I am nearing the end of my journey
+                at GEHU.
+                <br />
+                <br />
+                This project started in my fist year, as a young college fresher found
+                it difficult to find PYQs for his preparation. What started as a small
+                personal project, I started sharing it with my friends. And in no
+                time, the url was being shared across various groups and platforms.
+                From 5 users to 5000+ in just a single week.
+                <br />
+                <br />
+                Initially this was just a onedrive link. But as the project grew,
+                I had to create a website to accommodate the growing userbase and
+                content. I started with Jekyll as that was the goto for github pages.
+                Then I switched to hugo for while. And then finally I switched to
+                Astro, the framework that I fell in love with.
+                <br />
+                <br />
+                Enough technical talk, I just want to say that this project has been
+                a huge part of my college life. It has been a great learning experience
+                for me and I have had a lot of fun building and maintaining it. I
+                am glad that it has been able to help so many students in their preparation.
+                <br />
+                <br />
+                So, as I am nearing the end of my journey at GEHU, I just want to
+                say thank you to everyone who has used this project, contributed to
+                it, and supported me throughout these years. It has been an amazing
+                journey and I am grateful for all the memories and experiences that
+                I have had with this project.
+                <br />
+                <br />
+                Give me a follow on my <a
+                    href="https://linktr.ee/mglsj"
+                    target="_blank"
+                    class="text-blue-500 underline">social media handles</a
+                > to stay in touch and see what I am up to next or just say hi!
+                <br />
+                <p class="text-right font-excalifont">- Lakshyajeet Jalal</p>
+            </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+                <Button variant="outline" id="final-popup-close">
+                    Close
+                </Button>
+            </AlertDialogCancel>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>
+
+<script>
+    function triggerFinalPopup() {
+        const trigger = document.getElementById("final-popup-trigger");
+        if (trigger) {
+            trigger.click();
+        }
+
+        localStorage.setItem("final-popup-shown", "true");
+        localStorage.setItem(
+            "final-popup-shown-timestamp",
+            Date.now().toString(),
+        );
+    }
+    // Open the dialog when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+        const finalPopupShown = localStorage.getItem("final-popup-shown");
+        const finalPopupTimestamp = localStorage.getItem(
+            "final-popup-shown-timestamp",
+        );
+
+        if (finalPopupShown && finalPopupTimestamp) {
+            const now = Date.now();
+            const timeSinceShown = now - parseInt(finalPopupTimestamp, 10);
+
+            // If the popup was shown more than 1 week, show it again
+            if (timeSinceShown > 7 * 24 * 60 * 60 * 1000) {
+                triggerFinalPopup();
+            }
+        } else if (!finalPopupShown) {
+            triggerFinalPopup();
+        }
+    });
+</script>

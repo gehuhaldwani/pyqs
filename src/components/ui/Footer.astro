@@ -89,11 +89,13 @@ const { class: className, ...props } = Astro.props;
 			</a>
 		</p>
 		<p class="w-full text-center">
-			Last updated on {
-				new Date().toLocaleString("en-IN", {
-					timeZone: siteConfig.site.timezone,
-				})
-			} (IST)
+			Last updated on <span class="font-excalifont"
+				>{
+					new Date().toLocaleString("en-IN", {
+						timeZone: siteConfig.site.timezone,
+					})
+				}
+			</span> (IST)
 		</p>
 	</div>
 </footer>
