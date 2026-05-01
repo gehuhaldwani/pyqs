@@ -1,4 +1,4 @@
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, fontProviders, svgoOptimizer} from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
@@ -42,8 +42,8 @@ export default defineConfig({
 	cacheDir: "./cache/astro",
 	compressHTML:true,
 	experimental: {
-		svgo: true,
 		clientPrerender: true,
+		svgOptimizer: svgoOptimizer(),
 		queuedRendering: {
 			poolSize: 10000,
 			enabled: true,
