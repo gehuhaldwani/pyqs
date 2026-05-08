@@ -20,30 +20,36 @@ Bun.js or Node.js >= v24.XX
 
 ## Steps
 
-1. Clone `gh-pages` branch
+0. Clone `gh-pages` branch
 
   ```sh
   git clone --branch gh-pages --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web
   ```
-2. Clone `main` branch
+0. Clone `main` branch
 
   ```sh
   git clone --branch main --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web/pyqs
   ```
 
-3. Install dependencies
+0. Change directory
+
+  ```sh
+  cd pyqs-web
+  ```
+
+0. Install dependencies
 
   ```sh
   bun i
   ```
 
-4. Run
+0. Run
 
   ```sh
   bun --bun dev
   ```
 
-5. Build
+0. Build
 
   ```sh
   bun --bun run build
