@@ -9,3 +9,42 @@ See [contribution guide](https://gehuhaldwani.github.io/pyqs/contribute/)
 ## Credits
 
 <https://gehuhaldwani.github.io/pyqs/about/>
+
+---
+
+# Local Development
+
+## Requirements
+
+Bun.js or Node.js >= v24.XX
+
+## Steps
+
+1. Clone `gh-pages` branch
+
+  ```sh
+  git clone --branch gh-pages --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web
+  ```
+2. Clone `main` branch
+
+  ```sh
+  git clone --branch main --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web/pyqs
+  ```
+
+3. Install dependencies
+
+  ```sh
+  bun i
+  ```
+
+4. Run
+
+  ```sh
+  bun --bun dev
+  ```
+
+5. Build
+
+  ```sh
+  bun --bun run build
+  ```
