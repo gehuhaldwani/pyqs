@@ -99,8 +99,8 @@ import { Button } from "@/components/starwind/button";
             const now = Date.now();
             const timeSinceShown = now - parseInt(finalPopupTimestamp, 10);
 
-            // If the popup was shown more than 1 week, show it again
-            if (timeSinceShown > 7 * 24 * 60 * 60 * 1000) {
+            // If the popup was shown more than 2 weeks, show it again
+            if (timeSinceShown > 2 * 7 * 24 * 60 * 60 * 1000) {
                 triggerFinalPopup();
             }
         } else if (!finalPopupShown) {

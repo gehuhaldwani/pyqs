@@ -13,12 +13,12 @@
 		"@astrojs/sitemap": "3.7.2",
 		"@embedpdf/snippet": "^2.14.2",
 		"@iconify-json/mdi": "^1.2.3",
-		"@iconify-json/simple-icons": "^1.2.80",
-		"@tabler/icons": "^3.41.1",
+		"@iconify-json/simple-icons": "^1.2.81",
+		"@tabler/icons": "^3.43.0",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.4",
-		"astro": "6.2.1",
+		"astro": "6.3.1",
 		"astro-icon": "^1.1.5",
 		"sharp": "^0.34.5",
 		"tailwind-merge": "^3.5.0",
@@ -28,7 +28,7 @@
 		"web-haptics": "^0.0.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.13"
+		"@biomejs/biome": "2.4.14"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
