@@ -70,6 +70,10 @@ class Pyq {
 		return Pyq.$pattern.test(entry.name);
 	}
 
+	toString(): string {
+		return this.title;
+	}
+
 	get title(): string {
 		return (
 			this.data.subjects.map((subject) => {
