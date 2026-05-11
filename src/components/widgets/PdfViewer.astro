@@ -9,19 +9,23 @@ const { src } = Astro.props;
 <div id="pdf-viewer" class="w-full h-screen" data-src={src}></div>
 
 <script>
+	// https://www.embedpdf.com/docs/snippet/introduction
+
 	import EmbedPDF from "@embedpdf/snippet";
 	import { navigate } from "astro:transitions/client";
 
 	const DISABLED_CATEGORIES = [
-		"redaction",
-		"annotation",
 		"document-open",
 		"document-close",
 		"document-capture",
 		"document-protect",
 		"document-fullscreen",
+		"redaction",
+		"annotation",
 		"tools",
 		"panel",
+		"form",
+		"insert",
 	];
 	const CLOSE_COMMAND_ID = "custom.close-viewer";
 	const CLOSE_ICON_ID = "close-x";
@@ -103,7 +107,7 @@ const { src } = Astro.props;
 		},
 	};
 
-	document.addEventListener("astro:page-load", async () => {
+	async function setupViewer() {
 		const container = document.getElementById("pdf-viewer");
 
 		if (container) {
@@ -281,5 +285,7 @@ const { src } = Astro.props;
 				},
 			});
 		}
-	});
+	}
+
+	document.addEventListener("astro:page-load", setupViewer);
 </script>
