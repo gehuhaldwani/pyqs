@@ -1,44 +1,62 @@
-import siteConfig from "../../site.config.json" with { type: "json" };
+import type { SiteConfig, Social } from "./types";
 
-interface NavigationEntry {
-	type: "internal" | "external";
-	name: string;
-	url: string;
-}
-
-interface SiteConfig {
-	site: {
-		title: string;
-		description: string;
-		url: string;
-		githubRepo: string;
-		logo: string;
-		favicon: string;
-		timezone: string;
+const siteConfig: SiteConfig = {
+	"site": {
+		"title": "PYQs Archive",
+		"description": "A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations.",
+		"url": "https://hualdwani.gehu.in/pyqs",
+		"githubRepo": "gehuhaldwani/pyqs",
+		"logo": "/logo.png",
+		"favicon": "/favicon.ico",
+		"timezone": "Asia/Kolkata"
 	},
-	header: {
-		links: NavigationEntry[];
-	}
-	footer: {
-		maintainer: {
-			name: string;
-			designation: string;
+	"header": {
+		"links": [
+			{
+				"type": "internal",
+				"name": "Contribute",
+				"url": "/contribute"
+			},
+			{
+				"type": "internal",
+				"name": "About",
+				"url": "/about"
+			}
+		]
+	},
+	"footer": {
+		"maintainer": {
+			"name": "Lakshyajeet Jalal",
+			"designation": "B.Tech CSE 2026"
 		},
-		links: NavigationEntry[];
+		"links": [
+			{
+				"type": "external",
+				"name": "Join Discord",
+				"url": "https://discord.gg/xgp4F9MXeG"
+			},
+			{
+				"type": "internal",
+				"name": "Contribute",
+				"url": "/contribute"
+			},
+			{
+				"type": "internal",
+				"name": "About",
+				"url": "/about"
+			}
+		]
 	}
-}
-
-export default siteConfig as SiteConfig;
-
-type Social = {
-	id: string;
-	name: string;
-	url: string;
-	iconify: string;
 };
+
+export default siteConfig;
+
 
 const response = await fetch(
 	"https://raw.githubusercontent.com/mglsj/socials/refs/heads/main/socials.json",
-).then((res) => res.json());
+).then((res) => res.json()).catch((err) => {
+	console.error("Failed to fetch socials data:", err);
+	return { primary: [] };
+});
 
 export const SOCIALS: Social[] = response.primary as Social[];
