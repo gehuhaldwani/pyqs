@@ -21,6 +21,7 @@ interface SiteConfig {
 		maintainer: {
 			name: string;
 			designation: string;
+			support: string;
 		},
 		links: NavigationEntry[];
 	}

@@ -13,6 +13,11 @@ const siteConfig: SiteConfig = {
 	"header": {
 		"links": [
 			{
+				"type": "external",
+				"name": "Support",
+				"url": "https://link2.jalal.uk.in/support"
+			},
+			{
 				"type": "internal",
 				"name": "Contribute",
 				"url": "/contribute"
@@ -27,9 +32,15 @@ const siteConfig: SiteConfig = {
 	"footer": {
 		"maintainer": {
 			"name": "Lakshyajeet Jalal",
-			"designation": "B.Tech CSE 2026"
+			"designation": "B.Tech CSE 2026",
+			"support": "https://link2.jalal.uk.in/support"
 		},
 		"links": [
+			{
+				"type": "external",
+				"name": "Support my work",
+				"url": "https://link2.jalal.uk.in/support"
+			},
 			{
 				"type": "external",
 				"name": "Join Discord",
