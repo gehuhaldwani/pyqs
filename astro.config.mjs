@@ -44,10 +44,6 @@ export default defineConfig({
 	experimental: {
 		clientPrerender: true,
 		svgOptimizer: svgoOptimizer(),
-		queuedRendering: {
-			poolSize: 10000,
-			enabled: true,
-		},
 	},
 	integrations: [sitemap(), icon(), mdx()],
 	vite: {
