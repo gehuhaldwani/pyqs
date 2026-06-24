@@ -18,7 +18,7 @@
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.1",
-		"astro": "7.0.0",
+		"astro": "7.0.2",
 		"astro-icon": "^1.1.5",
 		"sharp": "^0.35.2",
 		"tailwind-merge": "^3.6.0",
@@ -28,7 +28,7 @@
 		"web-haptics": "^0.0.6"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.0"
+		"@biomejs/biome": "2.5.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
