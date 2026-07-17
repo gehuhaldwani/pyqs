@@ -10,43 +10,43 @@
   "components": [
     {
       "name": "card",
-      "version": "2.0.1"
+      "version": "2.0.2"
     },
     {
       "name": "alert",
-      "version": "1.3.1"
+      "version": "1.3.2"
     },
     {
       "name": "separator",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "breadcrumb",
-      "version": "1.1.2"
+      "version": "1.1.3"
     },
     {
       "name": "toggle",
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     {
       "name": "theme-toggle",
-      "version": "1.0.1"
-    },
-    {
-      "name": "button",
-      "version": "2.3.2"
-    },
-    {
-      "name": "dropdown",
-      "version": "1.3.1"
-    },
-    {
-      "name": "item",
       "version": "1.0.2"
     },
     {
+      "name": "button",
+      "version": "2.3.3"
+    },
+    {
+      "name": "dropdown",
+      "version": "2.0.0"
+    },
+    {
+      "name": "item",
+      "version": "1.0.3"
+    },
+    {
       "name": "alert-dialog",
-      "version": "1.0.4"
+      "version": "1.0.5"
     }
   ]
 }
