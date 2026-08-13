@@ -15,7 +15,7 @@ const { bodyClass, ...props } = Astro.props;
 	<head>
 		<Head {...props} />
 	</head>
-	<body class:list={["min-h-screen", bodyClass]}>
+	<body class:list={["min-h-screen w-full", bodyClass]}>
 		<slot />
 	</body>
 </html>

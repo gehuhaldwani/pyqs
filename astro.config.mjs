@@ -44,6 +44,7 @@ export default defineConfig({
 	experimental: {
 		clientPrerender: true,
 		svgOptimizer: svgoOptimizer(),
+    	incrementalBuild: true,
 	},
 	integrations: [sitemap(), icon(), mdx()],
 	vite: {
