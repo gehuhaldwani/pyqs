@@ -121,8 +121,7 @@ if (ogImage) {
 	is:inline
 	async
 	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9523971842257474"
-	crossorigin="anonymous"
-></script>
+	crossorigin="anonymous"></script>
 <script is:inline>
 	function initAds() {
 		document
@@ -131,6 +130,7 @@ if (ogImage) {
 				(window.adsbygoogle = window.adsbygoogle || []).push({});
 			});
 	}
+	document.addEventListener("onload", initAds);
 	document.addEventListener("astro:page-load", initAds);
 </script>
 
