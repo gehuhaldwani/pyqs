@@ -123,5 +123,15 @@ if (ogImage) {
 	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9523971842257474"
 	crossorigin="anonymous"
 ></script>
+<script is:inline>
+	function initAds() {
+		document
+			.querySelectorAll("ins.adsbygoogle:not([data-adsbygoogle-status])")
+			.forEach(() => {
+				(window.adsbygoogle = window.adsbygoogle || []).push({});
+			});
+	}
+	document.addEventListener("astro:page-load", initAds);
+</script>
 
 <Fonts />
