@@ -44,7 +44,7 @@ const siteConfig: SiteConfig = {
 			{
 				"type": "external",
 				"name": "Join Discord",
-				"url": "https://discord.gg/xgp4F9MXeG"
+				"url": "https://discord.gg/9tGGBV7tK8"
 			},
 			{
 				"type": "internal",
