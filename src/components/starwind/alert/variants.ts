@@ -13,10 +13,14 @@ export const alert = tv({
       error: "border-error bg-error/7 [&>h5>svg]:text-error",
     },
   },
-  defaultVariants: { variant: "default" },
+  defaultVariants: {
+    variant: "default",
+  },
 });
 
-export const alertDescription = tv({ base: "leading-relaxed" });
+export const alertDescription = tv({
+  base: "leading-relaxed",
+});
 
 export const alertTitle = tv({
   base: "font-heading mb-2 flex items-center gap-2 text-lg leading-none font-medium tracking-tight",

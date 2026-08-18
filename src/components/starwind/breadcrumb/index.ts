@@ -13,6 +13,7 @@ import {
   breadcrumbPage,
   breadcrumbSeparator,
 } from "./variants";
+
 const BreadcrumbVariants = {
   breadcrumbEllipsis,
   breadcrumbItem,
@@ -20,6 +21,16 @@ const BreadcrumbVariants = {
   breadcrumbList,
   breadcrumbPage,
   breadcrumbSeparator,
+};
+
+const BreadcrumbParts = {
+  Root: Breadcrumb,
+  List: BreadcrumbList,
+  Ellipsis: BreadcrumbEllipsis,
+  Item: BreadcrumbItem,
+  Link: BreadcrumbLink,
+  Separator: BreadcrumbSeparator,
+  Page: BreadcrumbPage,
 };
 
 export {
@@ -33,12 +44,4 @@ export {
   BreadcrumbVariants,
 };
 
-export default {
-  Root: Breadcrumb,
-  List: BreadcrumbList,
-  Ellipsis: BreadcrumbEllipsis,
-  Item: BreadcrumbItem,
-  Link: BreadcrumbLink,
-  Separator: BreadcrumbSeparator,
-  Page: BreadcrumbPage,
-};
+export default BreadcrumbParts;

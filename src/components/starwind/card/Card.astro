@@ -6,13 +6,14 @@ import { card } from "./variants";
 
 type Props = HTMLAttributes<"div"> & VariantProps<typeof card>;
 
-const { class: className, size, ...rest } = Astro.props;
+const { size = "md", class: className, ...rest } = Astro.props;
 ---
 
 <div
+  data-sw-card
   class={card({ size, class: className })}
-  data-size={size ?? "default"}
   {...rest}
+  data-size={size}
   data-slot="card"
 >
   <slot />

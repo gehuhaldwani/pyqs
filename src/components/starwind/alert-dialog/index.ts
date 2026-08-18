@@ -8,7 +8,11 @@ import AlertDialogHeader from "./AlertDialogHeader.astro";
 import AlertDialogTitle from "./AlertDialogTitle.astro";
 import AlertDialogTrigger from "./AlertDialogTrigger.astro";
 import {
+  alertDialogAction,
+  alertDialogActionAsChild,
   alertDialogBackdrop,
+  alertDialogCancel,
+  alertDialogCancelAsChild,
   alertDialogContent,
   alertDialogDescription,
   alertDialogFooter,
@@ -17,12 +21,28 @@ import {
 } from "./variants";
 
 const AlertDialogVariants = {
+  alertDialogAction,
+  alertDialogActionAsChild,
   alertDialogBackdrop,
+  alertDialogCancel,
+  alertDialogCancelAsChild,
   alertDialogContent,
   alertDialogDescription,
   alertDialogFooter,
   alertDialogHeader,
   alertDialogTitle,
+};
+
+const AlertDialogParts = {
+  Root: AlertDialog,
+  Trigger: AlertDialogTrigger,
+  Content: AlertDialogContent,
+  Header: AlertDialogHeader,
+  Footer: AlertDialogFooter,
+  Title: AlertDialogTitle,
+  Description: AlertDialogDescription,
+  Action: AlertDialogAction,
+  Cancel: AlertDialogCancel,
 };
 
 export {
@@ -38,14 +58,4 @@ export {
   AlertDialogVariants,
 };
 
-export default {
-  Root: AlertDialog,
-  Trigger: AlertDialogTrigger,
-  Content: AlertDialogContent,
-  Header: AlertDialogHeader,
-  Footer: AlertDialogFooter,
-  Title: AlertDialogTitle,
-  Description: AlertDialogDescription,
-  Action: AlertDialogAction,
-  Cancel: AlertDialogCancel,
-};
+export default AlertDialogParts;

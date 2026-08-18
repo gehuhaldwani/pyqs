@@ -1,6 +1,6 @@
 ---
+import AlertDialogPrimitive from "@starwind-ui/astro/alert-dialog";
 import type { HTMLAttributes } from "astro/types";
-
 import { alertDialogDescription } from "./variants";
 
 type Props = HTMLAttributes<"p">;
@@ -8,10 +8,10 @@ type Props = HTMLAttributes<"p">;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<p
+<AlertDialogPrimitive.Description
   class={alertDialogDescription({ class: className })}
   {...rest}
   data-slot="alert-dialog-description"
 >
   <slot />
-</p>
+</AlertDialogPrimitive.Description>

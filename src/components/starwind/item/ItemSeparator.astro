@@ -1,13 +1,12 @@
 ---
 import type { ComponentProps } from "astro/types";
 
-import { Separator } from "@/components/starwind/separator";
-
+import { Separator } from "../separator";
 import { itemSeparator } from "./variants";
 
 type Props = ComponentProps<typeof Separator>;
 
-const { class: className, orientation = "horizontal", ...rest } = Astro.props;
+const { orientation = "horizontal", class: className, ...rest } = Astro.props;
 ---
 
 <Separator

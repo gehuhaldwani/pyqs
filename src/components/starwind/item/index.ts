@@ -20,6 +20,7 @@ import {
   itemSeparator,
   itemTitle,
 } from "./variants";
+
 const ItemVariants = {
   item,
   itemActions,
@@ -31,6 +32,19 @@ const ItemVariants = {
   itemMedia,
   itemSeparator,
   itemTitle,
+};
+
+const ItemParts = {
+  Root: Item,
+  Actions: ItemActions,
+  Content: ItemContent,
+  Description: ItemDescription,
+  Footer: ItemFooter,
+  Group: ItemGroup,
+  Header: ItemHeader,
+  Media: ItemMedia,
+  Separator: ItemSeparator,
+  Title: ItemTitle,
 };
 
 export {
@@ -47,15 +61,4 @@ export {
   ItemVariants,
 };
 
-export default {
-  Root: Item,
-  Actions: ItemActions,
-  Content: ItemContent,
-  Description: ItemDescription,
-  Footer: ItemFooter,
-  Group: ItemGroup,
-  Header: ItemHeader,
-  Media: ItemMedia,
-  Separator: ItemSeparator,
-  Title: ItemTitle,
-};
+export default ItemParts;

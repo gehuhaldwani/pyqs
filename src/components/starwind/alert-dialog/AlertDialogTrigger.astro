@@ -1,48 +1,37 @@
 ---
+import AlertDialogPrimitive from "@starwind-ui/astro/alert-dialog";
 import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"button"> & {
-  /**
-   * When true, the component will render its child element with a simple wrapper instead of a button component
-   */
   asChild?: boolean;
-  /**
-   * Optional ID of the dialog to trigger. If not provided and the trigger is inside a Dialog component,
-   * it will automatically target that dialog. Required when used outside a Dialog component.
-   */
-  for?: string;
+  targetId?: string;
 };
 
-const { class: className, asChild = false, for: dialogFor, ...rest } = Astro.props;
+const { asChild = false, targetId, class: className, ...rest } = Astro.props;
 
-// Get the first child element if asChild is true
-let hasChildren = false;
-if (Astro.slots.has("default")) {
-  hasChildren = true;
-}
+const triggerClassName = className;
 ---
 
 {
-  asChild && hasChildren ? (
+  asChild ? (
     <div
-      class:list={["starwind-alert-dialog-trigger", className]}
-      data-dialog-for={dialogFor}
+      class={triggerClassName}
       data-as-child
+      data-sw-alert-dialog-target-id={targetId}
       {...rest}
       data-slot="alert-dialog-trigger"
+      data-sw-alert-dialog-trigger
     >
       <slot />
     </div>
   ) : (
-    <button
-      type="button"
-      aria-haspopup="dialog"
-      class:list={["starwind-alert-dialog-trigger", className]}
-      data-dialog-for={dialogFor}
+    <AlertDialogPrimitive.Trigger
+      class={triggerClassName}
+      targetId={targetId}
       {...rest}
       data-slot="alert-dialog-trigger"
     >
       <slot />
-    </button>
+    </AlertDialogPrimitive.Trigger>
   )
 }

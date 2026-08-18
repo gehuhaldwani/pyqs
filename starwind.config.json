@@ -1,52 +1,78 @@
 {
-  "$schema": "https://starwind.dev/config-schema.json",
+  "$schema": "https://starwind.dev/config-schema.v2.json",
+  "version": 2,
+  "framework": "astro",
+  "registry": {
+    "source": "bundled",
+    "version": "2.1.0"
+  },
+  "components": [
+    {
+      "name": "card",
+      "version": "2.3.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "alert",
+      "version": "1.4.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "separator",
+      "version": "1.1.0",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "breadcrumb",
+      "version": "1.2.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "toggle",
+      "version": "2.0.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "theme-toggle",
+      "version": "2.0.0",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "button",
+      "version": "3.0.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "dropdown",
+      "version": "3.1.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "item",
+      "version": "1.2.1",
+      "framework": "astro",
+      "registry": "default"
+    },
+    {
+      "name": "alert-dialog",
+      "version": "2.0.2",
+      "framework": "astro",
+      "registry": "default"
+    }
+  ],
   "tailwind": {
     "css": "src/styles/starwind.css",
     "baseColor": "neutral",
     "cssVariables": true
   },
-  "componentDir": "src/components",
-  "utilsDir": "src/lib/utils",
-  "components": [
-    {
-      "name": "card",
-      "version": "2.0.2"
-    },
-    {
-      "name": "alert",
-      "version": "1.3.2"
-    },
-    {
-      "name": "separator",
-      "version": "1.0.2"
-    },
-    {
-      "name": "breadcrumb",
-      "version": "1.1.3"
-    },
-    {
-      "name": "toggle",
-      "version": "1.0.3"
-    },
-    {
-      "name": "theme-toggle",
-      "version": "1.0.2"
-    },
-    {
-      "name": "button",
-      "version": "2.3.3"
-    },
-    {
-      "name": "dropdown",
-      "version": "2.0.0"
-    },
-    {
-      "name": "item",
-      "version": "1.0.3"
-    },
-    {
-      "name": "alert-dialog",
-      "version": "1.0.5"
-    }
-  ]
+  "componentDir": "src/components/starwind",
+  "utilsDir": "src/lib/utils"
 }

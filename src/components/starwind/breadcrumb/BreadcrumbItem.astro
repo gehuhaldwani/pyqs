@@ -8,6 +8,11 @@ type Props = HTMLAttributes<"li">;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<li class={breadcrumbItem({ class: className })} {...rest} data-slot="breadcrumb-item">
+<li
+  data-sw-breadcrumb-item
+  class={breadcrumbItem({ class: className })}
+  {...rest}
+  data-slot="breadcrumb-item"
+>
   <slot />
 </li>

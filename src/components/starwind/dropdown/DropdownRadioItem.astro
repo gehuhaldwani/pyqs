@@ -1,10 +1,10 @@
 ---
 import MenuPrimitive from "@starwind-ui/astro/menu";
-import Check from "@tabler/icons/outline/check.svg";
 import type { HTMLAttributes } from "astro/types";
-import { dropdownCheckboxItem, dropdownCheckboxItemIndicator } from "./variants";
+import { dropdownRadioItem, dropdownRadioItemIndicator } from "./variants";
 
 type Props = Omit<HTMLAttributes<"div">, "aria-checked" | "role"> & {
+  value: string;
   checked?: boolean;
   defaultChecked?: boolean;
   closeOnClick?: boolean;
@@ -16,6 +16,7 @@ type Props = Omit<HTMLAttributes<"div">, "aria-checked" | "role"> & {
 
 const {
   class: className,
+  value,
   checked,
   defaultChecked = false,
   closeOnClick = false,
@@ -27,27 +28,28 @@ const {
 } = Astro.props;
 ---
 
-<MenuPrimitive.CheckboxItem
-  class={dropdownCheckboxItem({ inset, disabled, class: className })}
+<MenuPrimitive.RadioItem
+  class={dropdownRadioItem({ inset, disabled, class: className })}
+  value={value}
   checked={checked}
   defaultChecked={defaultChecked}
   closeOnClick={closeOnClick}
   disabled={disabled}
   {...rest}
-  data-slot="dropdown-checkbox-item"
+  data-slot="dropdown-radio-item"
 >
   {
     showIndicator && (
-      <MenuPrimitive.CheckboxItemIndicator
-        class={dropdownCheckboxItemIndicator({ class: indicatorClassName })}
-        data-slot="dropdown-checkbox-item-indicator"
+      <MenuPrimitive.RadioItemIndicator
+        class={dropdownRadioItemIndicator({ class: indicatorClassName })}
+        data-slot="dropdown-radio-item-indicator"
       >
         <slot name="indicator">
-          <Check class="size-4" />
+          <span class="size-2 rounded-full bg-current" />
         </slot>
-      </MenuPrimitive.CheckboxItemIndicator>
+      </MenuPrimitive.RadioItemIndicator>
     )
   }
 
   <slot />
-</MenuPrimitive.CheckboxItem>
+</MenuPrimitive.RadioItem>

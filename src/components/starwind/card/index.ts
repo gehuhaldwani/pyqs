@@ -14,6 +14,7 @@ import {
   cardHeader,
   cardTitle,
 } from "./variants";
+
 const CardVariants = {
   card,
   cardAction,
@@ -22,6 +23,16 @@ const CardVariants = {
   cardFooter,
   cardHeader,
   cardTitle,
+};
+
+const CardParts = {
+  Root: Card,
+  Header: CardHeader,
+  Footer: CardFooter,
+  Title: CardTitle,
+  Description: CardDescription,
+  Content: CardContent,
+  Action: CardAction,
 };
 
 export {
@@ -35,12 +46,4 @@ export {
   CardVariants,
 };
 
-export default {
-  Root: Card,
-  Header: CardHeader,
-  Footer: CardFooter,
-  Title: CardTitle,
-  Description: CardDescription,
-  Content: CardContent,
-  Action: CardAction,
-};
+export default CardParts;

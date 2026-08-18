@@ -1,6 +1,6 @@
 ---
+import MenuPrimitive from "@starwind-ui/astro/menu";
 import type { HTMLAttributes } from "astro/types";
-
 import { dropdownSeparator } from "./variants";
 
 type Props = HTMLAttributes<"div">;
@@ -8,11 +8,8 @@ type Props = HTMLAttributes<"div">;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div
+<MenuPrimitive.Separator
   class={dropdownSeparator({ class: className })}
-  role="separator"
-  aria-orientation="horizontal"
   {...rest}
   data-slot="dropdown-separator"
->
-</div>
+/>

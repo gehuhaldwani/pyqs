@@ -1,36 +1,28 @@
 ---
+import AlertDialogPrimitive from "@starwind-ui/astro/alert-dialog";
 import type { HTMLAttributes } from "astro/types";
-
 import { alertDialogBackdrop, alertDialogContent } from "./variants";
 
-type Props = HTMLAttributes<"dialog"> & {
-  /**
-   * Open and close animation duration in milliseconds
-   */
-  animationDuration?: number;
-};
+type Props = HTMLAttributes<"dialog">;
 
-const { class: className, animationDuration = 200, ...rest } = Astro.props;
+const { class: className, ...rest } = Astro.props;
 ---
 
-<!-- dialog overlay -->
 <slot name="backdrop">
-  <div
+  <AlertDialogPrimitive.Backdrop
     class={alertDialogBackdrop()}
     data-state="closed"
-    style={{ animationDuration: `${animationDuration}ms` }}
+    hidden
     data-slot="alert-dialog-backdrop"
-  >
-  </div>
+  />
 </slot>
 
-<dialog
+<AlertDialogPrimitive.Popup
   class={alertDialogContent({ class: className })}
-  data-state="closed"
   role="alertdialog"
-  style={{ animationDuration: `${animationDuration}ms` }}
+  data-state="closed"
   {...rest}
   data-slot="alert-dialog-content"
 >
   <slot />
-</dialog>
+</AlertDialogPrimitive.Popup>

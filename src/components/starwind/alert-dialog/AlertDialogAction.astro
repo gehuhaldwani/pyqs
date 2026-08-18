@@ -1,44 +1,43 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import type { ComponentProps } from "astro/types";
 
-import { ButtonVariants } from "@/components/starwind/button";
+import { Button } from "../button";
+import { alertDialogAction, alertDialogActionAsChild } from "./variants";
 
-type Props = HTMLAttributes<"button"> & {
-  /**
-   * When true, the component will render its child element instead of a button
-   */
+type Props = ComponentProps<typeof Button> & {
   asChild?: boolean;
 };
 
-const { class: className, asChild = false, ...rest } = Astro.props;
-
-// Get the first child element if asChild is true
-let hasChildren = false;
-if (Astro.slots.has("default")) {
-  hasChildren = true;
-}
+const {
+  asChild = false,
+  variant = "default",
+  size = "md",
+  class: className,
+  ...rest
+} = Astro.props;
 ---
 
 {
-  asChild && hasChildren ? (
+  asChild ? (
     <div
-      class:list={["starwind-alert-dialog-action", className]}
-      data-slot="alert-dialog-action"
+      class={alertDialogActionAsChild({ variant, size, class: className })}
       data-as-child
+      {...rest}
+      data-slot="alert-dialog-action"
+      data-sw-alert-dialog-close
     >
       <slot />
     </div>
   ) : (
-    <button
-      type="button"
-      class={ButtonVariants.button({
-        variant: "default",
-        class: `starwind-alert-dialog-action ${className || ""}`,
-      })}
+    <Button
+      variant={variant}
+      size={size}
+      class={alertDialogAction({ class: className })}
       {...rest}
       data-slot="alert-dialog-action"
+      data-sw-alert-dialog-close
     >
       <slot />
-    </button>
+    </Button>
   )
 }
