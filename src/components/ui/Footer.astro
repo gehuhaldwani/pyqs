@@ -5,9 +5,14 @@ import { Icon } from "astro-icon/components";
 import GithubButton from "../widgets/GithubButton.astro";
 import type { HTMLAttributes } from "astro/types";
 
+import { formatBuildTime } from "@/utils/date";
+
 interface Props extends HTMLAttributes<"footer"> {}
 
 const { class: className, ...props } = Astro.props;
+
+const SOCIAL_ICON_CLASS = "w-7 h-7 text-muted-foreground hover:text-foreground";
+const builtAt = new Date();
 ---
 
 <footer
@@ -42,13 +47,22 @@ const { class: className, ...props } = Astro.props;
 					</a>
 				</p>
 				<br />
-				<div class="flex gap-4 mt-3">
+				<div
+					class="flex gap-4 mt-3"
+					data-footer-socials
+					data-icon-class={SOCIAL_ICON_CLASS}
+				>
 					{
 						SOCIALS.map((social) => (
-							<a href={social.url} target="_blank">
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noopener"
+								aria-label={social.name}
+							>
 								<Icon
 									name={social.iconify}
-									class="w-7 h-7 text-muted-foreground hover:text-foreground"
+									class={SOCIAL_ICON_CLASS}
 								/>
 							</a>
 						))
@@ -106,13 +120,68 @@ const { class: className, ...props } = Astro.props;
 			</a>
 		</p>
 		<p class="w-full text-center">
-			Last updated on <span class="font-excalifont"
-				>{
-					new Date().toLocaleString("en-IN", {
-						timeZone: siteConfig.site.timezone,
-					})
-				}
-			</span> (IST)
+			Last updated on <span
+				class="font-excalifont"
+				data-footer-built-at={builtAt.toISOString()}
+				data-timezone={siteConfig.site.timezone}
+				>{formatBuildTime(builtAt, siteConfig.site.timezone)}</span
+			> (IST)
 		</p>
 	</div>
 </footer>
+
+<script>
+	// With incremental builds, a page's HTML can be reused from an older build,
+	// so the build time and socials rendered above may be stale. Refresh them
+	// from build-info.json, which is regenerated on every build.
+	import { BUILD_INFO_PATH, type BuildInfo } from "@/lib/build-info";
+	import { formatBuildTime } from "@/utils/date";
+	import { addBaseUrl } from "@/utils/url";
+
+	let buildInfo: Promise<BuildInfo | null> | undefined;
+
+	// Fetched once per visit; the client router keeps this module alive across navigations.
+	function loadBuildInfo() {
+		buildInfo ??= fetch(addBaseUrl(BUILD_INFO_PATH), { cache: "no-cache" })
+			.then((res) => (res.ok ? (res.json() as Promise<BuildInfo>) : null))
+			.catch(() => null);
+		return buildInfo;
+	}
+
+	function renderSocialLink(social: BuildInfo["socials"][number], iconClass: string) {
+		const link = document.createElement("a");
+		link.href = social.url;
+		link.target = "_blank";
+		link.rel = "noopener";
+		link.setAttribute("aria-label", social.name);
+		// SVG markup comes from our own build output, not user input
+		link.innerHTML = social.svg;
+		link.firstElementChild?.setAttribute("class", iconClass);
+		return link;
+	}
+
+	async function refreshFooter() {
+		const info = await loadBuildInfo();
+		if (!info) return;
+
+		const builtAt = document.querySelector<HTMLElement>("[data-footer-built-at]");
+		if (builtAt && builtAt.dataset.footerBuiltAt !== info.builtAt) {
+			builtAt.dataset.footerBuiltAt = info.builtAt;
+			builtAt.textContent = formatBuildTime(
+				new Date(info.builtAt),
+				builtAt.dataset.timezone ?? "Asia/Kolkata",
+			);
+		}
+
+		const socials = document.querySelector<HTMLElement>("[data-footer-socials]");
+		if (socials && info.socials.length > 0) {
+			socials.replaceChildren(
+				...info.socials.map((social) =>
+					renderSocialLink(social, socials.dataset.iconClass ?? ""),
+				),
+			);
+		}
+	}
+
+	document.addEventListener("astro:page-load", refreshFooter);
+</script>
