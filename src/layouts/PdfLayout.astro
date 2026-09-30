@@ -30,6 +30,7 @@ const title = entry.pyq ? formatPyqTitle(entry.pyq) : displayName(entry);
     ogImageUrl={new URL(thumbnail)}
     lockZoom
     preconnect={[new URL(src).origin]}
+    ads={false}
 >
     <h1 class="sr-only">{title}</h1>
     <PdfViewer {src} />

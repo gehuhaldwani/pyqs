@@ -15,6 +15,8 @@ interface Props {
 	lockZoom?: boolean;
 	// Origins the page fetches from early, such as the host of a PDF.
 	preconnect?: string[];
+	// Turn off on pages that should not load AdSense, such as the PDF viewer.
+	ads?: boolean;
 }
 
 export type { Props };
@@ -26,6 +28,7 @@ const {
 	transition = true,
 	lockZoom = false,
 	preconnect = [],
+	ads = true,
 } = Astro.props;
 
 const viewport = lockZoom
@@ -49,7 +52,8 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 	media="(prefers-color-scheme: dark)"
 />
 
-<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+<meta name="ads" content={ads ? "on" : "off"} />
+{ads && <link rel="preconnect" href="https://pagead2.googlesyndication.com" />}
 {preconnect.map((origin) => <link rel="preconnect" href={origin} />)}
 
 <title>{title}</title>
@@ -82,20 +86,39 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 	});
 </script>
 
-<script
-	is:inline
-	async
-	src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9523971842257474"
-	crossorigin="anonymous"></script>
 <script is:inline>
-	function initAds() {
-		document
-			.querySelectorAll("ins.adsbygoogle:not([data-adsbygoogle-status])")
-			.forEach(() => {
-				(window.adsbygoogle = window.adsbygoogle || []).push({});
-			});
+	// This script is the same on every page, so client-side navigation never re-runs it.
+	// It loads AdSense once, on the first page whose ads meta is "on", and then fills ad slots on each page load.
+	if (!window.__pyqsAds) {
+		window.__pyqsAds = { loaded: false };
+
+		const adsEnabled = () =>
+			document.querySelector('meta[name="ads"]')?.content === "on";
+
+		const loadAdSense = () => {
+			if (window.__pyqsAds.loaded || !adsEnabled()) return;
+			window.__pyqsAds.loaded = true;
+			const script = document.createElement("script");
+			script.async = true;
+			script.crossOrigin = "anonymous";
+			script.src =
+				"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9523971842257474";
+			document.head.append(script);
+		};
+
+		// Start the download while the first page is still parsing, as the old <script> tag did.
+		loadAdSense();
+
+		document.addEventListener("astro:page-load", () => {
+			if (!adsEnabled()) return;
+			loadAdSense();
+			document
+				.querySelectorAll("ins.adsbygoogle:not([data-adsbygoogle-status])")
+				.forEach(() => {
+					(window.adsbygoogle = window.adsbygoogle || []).push({});
+				});
+		});
 	}
-	document.addEventListener("astro:page-load", initAds);
 </script>
 
 <Fonts />

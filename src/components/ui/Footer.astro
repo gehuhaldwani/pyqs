@@ -13,6 +13,7 @@ const { class: className, ...props } = Astro.props;
 const builtAt = new Date();
 ---
 
+<!-- AdSense Auto ads skip elements that already have this status, so it keeps ads out of the footer. -->
 <footer
 	data-adsbygoogle-status="done"
 	class:list={["border-t bg-muted", className]}
