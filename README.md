@@ -12,46 +12,6 @@ See [contribution guide](https://gehuhaldwani.github.io/pyqs/contribute/)
 
 ---
 
-# Local Development
+# Website
 
-## Requirements
-
-Bun.js or Node.js >= v24.XX
-
-## Steps
-
-0. Clone `gh-pages` branch
-
-  ```sh
-  git clone --branch gh-pages --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web
-  ```
-
-1. Change directory
-
-  ```sh
-  cd pyqs-web
-  ```
-
-2. Clone `main` branch
-
-  ```sh
-  git clone --branch main --single-branch https://github.com/gehuhaldwani/pyqs.git pyqs-web/pyqs
-  ```
-
-3. Install dependencies
-
-  ```sh
-  bun i
-  ```
-
-4. Run
-
-  ```sh
-  bun --bun dev
-  ```
-
-5. Build
-
-  ```sh
-  bun --bun run build
-  ```
+The website code lives on the [`gh-pages`](https://github.com/gehuhaldwani/pyqs/tree/gh-pages) branch. Its [README](https://github.com/gehuhaldwani/pyqs/blob/gh-pages/README.md) explains how to run it locally, and its [docs](https://github.com/gehuhaldwani/pyqs/tree/gh-pages/docs) cover how this folder becomes the site.
