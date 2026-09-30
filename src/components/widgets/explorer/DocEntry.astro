@@ -1,0 +1,31 @@
+---
+import { Icon } from "astro-icon/components";
+import Item from "@/components/starwind/item";
+import { displayName, type FileEntry } from "@/lib/content/schema";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
+
+interface Props {
+	entry: FileEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<Item.Root
+	as="a"
+	href={addForwardSlashAndBaseUrl(entry.path)}
+	data-astro-prefetch="viewport"
+	class="item-link"
+>
+	<Item.Media variant="image">
+		<Icon
+			name="mdi:file-document-outline"
+			width={32}
+			height={32}
+			class="text-doc"
+		/>
+	</Item.Media>
+	<Item.Content>
+		<Item.Title>{displayName(entry)}</Item.Title>
+	</Item.Content>
+</Item.Root>

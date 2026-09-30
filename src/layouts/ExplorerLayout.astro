@@ -2,13 +2,10 @@
 import { base } from "astro:config/server";
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
-import Separator from "@/components/starwind/separator";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
-import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
-import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
 import type { DirEntry } from "@/lib/content/schema";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
-import PageLayout from "./PageLayout.astro";
+import BrowseLayout from "./BrowseLayout.astro";
 
 interface Props {
 	// The collection entry is needed to render the folder's index.md
@@ -34,18 +31,10 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 const { Content } = await render(entry);
 ---
 
-<PageLayout title={title}>
-	<EntryListContentBlock />
-
-	<Separator class="my-4" />
-
-	<PathCrumbs {path} back={!isHomePage} />
-
-	<Separator class="my-4" />
-
+<BrowseLayout {title} {path} back={!isHomePage}>
 	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 
 	<Prose class="my-10">
 		<Content />
 	</Prose>
-</PageLayout>
+</BrowseLayout>

@@ -9,6 +9,7 @@
 	--color-folder: var(--folder);
 	--color-folder-muted: var(--folder-muted);
 	--color-pdf: var(--pdf);
+	--color-doc: var(--doc);
 	--color-support: var(--support);
 	--color-support-hover: var(--support-hover);
 }
@@ -19,6 +20,7 @@
 		--folder: #f5b800;
 		--folder-muted: var(--color-gray-500);
 		--pdf: var(--color-red-500);
+		--doc: var(--color-sky-500);
 		--support: var(--color-green-500);
 		--support-hover: var(--color-green-600);
 	}

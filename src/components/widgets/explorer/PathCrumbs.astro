@@ -5,9 +5,11 @@ import { Button } from "@/components/starwind/button";
 interface Props {
 	path: string;
 	back?: boolean;
+	// Label for the last crumb, instead of the last path segment
+	current?: string;
 }
 
-const { path, back = true } = Astro.props;
+const { path, back = true, current } = Astro.props;
 
 type Crumb = {
 	title: string;
@@ -63,7 +65,7 @@ for (const p of path.split("/")) {
 				return (
 					<Breadcrumb.Item>
 						<Breadcrumb.Page class="text-foreground font-medium text-lg">
-							{crumb.title}
+							{current ?? crumb.title}
 						</Breadcrumb.Page>
 					</Breadcrumb.Item>
 				);

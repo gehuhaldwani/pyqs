@@ -1,33 +1,39 @@
 ---
+// Picks the page layout for a file by its kind (set by the loader rules).
+import type { CollectionEntry } from "astro:content";
 import Alert from "@/components/starwind/alert";
 import siteConfig from "@/configs/site.config";
 import type { FileEntry } from "@/lib/content/schema";
 import { githubRawUrl } from "@/utils/url";
+import DocLayout from "./DocLayout.astro";
 import PdfLayout from "./PdfLayout.astro";
 
 interface Props {
+	entry: CollectionEntry<"fs">;
 	file: FileEntry;
 }
 
-const { file: entry } = Astro.props;
+const { entry, file } = Astro.props;
 
 const downloadUrl = githubRawUrl(
 	siteConfig.site.githubRepo,
 	siteConfig.site.contentBranch,
-	entry.path,
+	file.path,
 );
 ---
 
-{entry.extension === ".pdf" && <PdfLayout entry={entry} />}
+{file.kind === "pdf" && <PdfLayout entry={file} />}
+
+{file.kind === "doc" && <DocLayout {entry} doc={file} />}
 
 {
-	entry.extension !== ".pdf" && (
+	file.kind === "file" && (
 		<Alert.Root variant="error">
 			<Alert.Title>Preview not supported</Alert.Title>
 			<Alert.Description>
 				<p>
 					Sorry, this file format (
-					<span class="font-mono font-bold">{entry.extension}</span>) is
+					<span class="font-mono font-bold">{file.extension}</span>) is
 					not supported for preview.
 				</p>
 				<p>

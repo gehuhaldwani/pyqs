@@ -10,11 +10,27 @@ type LoadState = {
 	// Paths rejected by the loader rules, reported in a summary at the end
 	skippedFiles: string[];
 	skippedDirectories: string[];
+	// Directories left out because nothing inside them was kept
+	emptyDirectories: string[];
 };
+
+type SkippedSummary = Pick<
+	LoadState,
+	"skippedFiles" | "skippedDirectories" | "emptyDirectories"
+>;
 
 // "" -> "/", "a/b" -> "/a/b/"
 function toDirPath(relativePath: string): string {
 	return relativePath ? `/${relativePath}/` : "/";
+}
+
+// Stored file paths use forward slashes on every OS.
+function toPosixPath(filePath: string): string {
+	return filePath.split(path.sep).join("/");
+}
+
+function plural(count: number, singular: string, pluralForm: string): string {
+	return `${count} ${count === 1 ? singular : pluralForm}`;
 }
 
 // Lists skipped paths, with files grouped by extension so that e.g. badly
@@ -22,8 +38,13 @@ function toDirPath(relativePath: string): string {
 export function formatSkippedSummary({
 	skippedFiles,
 	skippedDirectories,
-}: Pick<LoadState, "skippedFiles" | "skippedDirectories">): string | null {
-	if (skippedFiles.length === 0 && skippedDirectories.length === 0) {
+	emptyDirectories,
+}: SkippedSummary): string | null {
+	if (
+		skippedFiles.length === 0 &&
+		skippedDirectories.length === 0 &&
+		emptyDirectories.length === 0
+	) {
 		return null;
 	}
 
@@ -31,9 +52,16 @@ export function formatSkippedSummary({
 
 	if (skippedDirectories.length > 0) {
 		lines.push(
-			`Skipped ${skippedDirectories.length} director${skippedDirectories.length === 1 ? "y" : "ies"}:`,
+			`Skipped ${plural(skippedDirectories.length, "directory", "directories")}:`,
 		);
 		lines.push(...skippedDirectories.toSorted().map((p) => `    ${p}`));
+	}
+
+	if (emptyDirectories.length > 0) {
+		lines.push(
+			`Left out ${plural(emptyDirectories.length, "empty directory", "empty directories")}:`,
+		);
+		lines.push(...emptyDirectories.toSorted().map((p) => `    ${p}`));
 	}
 
 	if (skippedFiles.length > 0) {
@@ -42,7 +70,7 @@ export function formatSkippedSummary({
 			(p) => path.posix.extname(p).toLowerCase() || "(no extension)",
 		);
 		lines.push(
-			`Skipped ${skippedFiles.length} file${skippedFiles.length === 1 ? "" : "s"} that did not match the loader rules:`,
+			`Skipped ${plural(skippedFiles.length, "file", "files")} that did not match the loader rules:`,
 		);
 		for (const extension of [...byExtension.keys()].sort()) {
 			const paths = byExtension.get(extension) ?? [];
@@ -54,6 +82,26 @@ export function formatSkippedSummary({
 	return lines.join("\n");
 }
 
+type RenderedContent = Awaited<ReturnType<LoaderContext["renderMarkdown"]>>;
+
+// Markdown source and its rendered HTML, for entries that have a page body
+// (a directory's index.md, or a markdown file).
+type Markdown = { source: string; rendered: RenderedContent };
+
+async function renderMarkdownFile(
+	context: LoaderContext,
+	filePath: string,
+): Promise<Markdown> {
+	const source = await fs.readFile(filePath, "utf-8");
+	return { source, rendered: await context.renderMarkdown(source) };
+}
+
+// A string `title` from the markdown's frontmatter, if any.
+function frontmatterTitle(markdown: Markdown): string | undefined {
+	const title = markdown.rendered.metadata?.frontmatter?.title;
+	return typeof title === "string" && title.trim() ? title.trim() : undefined;
+}
+
 // Validates an entry against the collection schema and stores it.
 async function storeEntry(
 	context: LoaderContext,
@@ -62,23 +110,25 @@ async function storeEntry(
 		id: string;
 		data: FsEntry;
 		filePath: string;
-		content?: string;
+		markdown?: Markdown;
 	},
 ) {
 	state.seen.add(entry.id);
+	const filePath = toPosixPath(entry.filePath);
 	const data = await context.parseData({
 		id: entry.id,
 		data: entry.data,
-		filePath: entry.filePath,
+		filePath,
 	});
 	context.store.set({
 		id: entry.id,
 		data,
-		filePath: entry.filePath,
-		digest: context.generateDigest({ data, content: entry.content ?? "" }),
-		rendered: entry.content
-			? await context.renderMarkdown(entry.content)
-			: undefined,
+		filePath,
+		digest: context.generateDigest({
+			data,
+			content: entry.markdown?.source ?? "",
+		}),
+		rendered: entry.markdown?.rendered,
 	});
 }
 
@@ -143,23 +193,25 @@ async function processDirectory({
 			}
 		}
 
-		let content: string | undefined;
+		// The directory's own index.md, shown below its listing
+		let index: Markdown | undefined;
 
 		// Process files
 		for (const entry of visibleEntries.filter((e) => e.isFile())) {
 			const filePath = path.join(dirPath, entry.name);
 
 			if (entry.name === "index.md" || entry.name === "index.mdx") {
-				content = await fs.readFile(filePath, "utf-8");
+				index = await renderMarkdownFile(context, filePath);
 				continue;
 			}
 
 			const fileRelativePath = `${directoryRelativePath}${entry.name}`;
 			const { name, ext } = path.parse(entry.name);
 
-			const fileEntry = processFile(
+			let fileEntry = processFile(
 				{
 					type: "file",
+					kind: "file",
 					name,
 					path: fileRelativePath,
 					parentPath: directoryRelativePath,
@@ -167,6 +219,16 @@ async function processDirectory({
 				},
 				rules,
 			);
+
+			// Kept markdown files get a rendered page body, titled by their frontmatter
+			let markdown: Markdown | undefined;
+			if (fileEntry && fileEntry.extension === ".md") {
+				markdown = await renderMarkdownFile(context, filePath);
+				const title = frontmatterTitle(markdown);
+				if (title) {
+					fileEntry = { ...fileEntry, title };
+				}
+			}
 
 			if (!fileEntry) {
 				state.skippedFiles.push(fileRelativePath);
@@ -182,14 +244,27 @@ async function processDirectory({
 				id: fileRelativePath,
 				data: fileEntry,
 				filePath,
+				markdown,
 			});
+		}
+
+		// Leave out directories with nothing to show (the root is always kept).
+		// Subdirectories are processed first, so this also removes directories
+		// that only contain empty directories.
+		const isEmpty =
+			directoryEntry.files.length === 0 &&
+			directoryEntry.directories.length === 0 &&
+			index === undefined;
+		if (isEmpty && relativePath !== "") {
+			state.emptyDirectories.push(directoryRelativePath);
+			return;
 		}
 
 		await storeEntry(context, state, {
 			id: directoryRelativePath,
 			data: directoryEntry,
 			filePath: dirPath,
-			content,
+			markdown: index,
 		});
 
 		return directoryEntry;
@@ -212,6 +287,7 @@ export function filesystemLoader(options: {
 				seen: new Set(),
 				skippedFiles: [],
 				skippedDirectories: [],
+				emptyDirectories: [],
 			};
 
 			await processDirectory({

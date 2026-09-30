@@ -16,6 +16,7 @@ const dir: DirEntry = {
 };
 const file = (extension: string): FileEntry => ({
 	type: "file",
+	kind: "file",
 	name: "x",
 	path: `/bca/x${extension}`,
 	parentPath: "/bca/",

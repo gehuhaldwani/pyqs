@@ -1,0 +1,32 @@
+---
+// Shared frame for pages you navigate the archive through (folders and docs):
+// an ad block and the path crumbs, followed by the page's own content.
+import Separator from "@/components/starwind/separator";
+import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
+import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
+import PageLayout from "./PageLayout.astro";
+
+interface Props {
+	title: string;
+	// Page URL including the base, e.g. "/pyqs/bca/sem 1/"
+	path: string;
+	// Show the "up a folder" button as enabled
+	back?: boolean;
+	// Label for the last crumb, instead of the last path segment
+	current?: string;
+}
+
+const { title, path, back = true, current } = Astro.props;
+---
+
+<PageLayout {title}>
+	<EntryListContentBlock />
+
+	<Separator class="my-4" />
+
+	<PathCrumbs {path} {back} {current} />
+
+	<Separator class="my-4" />
+
+	<slot />
+</PageLayout>

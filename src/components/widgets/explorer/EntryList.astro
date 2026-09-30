@@ -1,8 +1,9 @@
 ---
 import Item from "@/components/starwind/item";
-import { type DirEntry, isPyqFile } from "@/lib/content/schema";
+import { type DirEntry, displayName, isPyqFile } from "@/lib/content/schema";
 import { comparePyqs } from "@/lib/pyqs";
 import DirectoryEntry from "./DirectoryEntry.astro";
+import DocEntry from "./DocEntry.astro";
 import EntryListContentBlock from "./EntryListContentBlock.astro";
 import PdfEntry from "./PdfEntry.astro";
 import UploadButton from "./UploadButton.astro";
@@ -17,6 +18,9 @@ interface Props {
 const { entry, capitalize = false, path, title } = Astro.props;
 
 const dirs = entry.directories.toSorted((a, b) => a.name.localeCompare(b.name));
+const docs = entry.files
+	.filter((file) => file.kind === "doc")
+	.toSorted((a, b) => displayName(a).localeCompare(displayName(b)));
 // Newest first
 const pdfs = entry.files
 	.filter(isPyqFile)
@@ -40,6 +44,19 @@ const pdfs = entry.files
 					<EntryListContentBlock />
 				</Item.Group>
 			</>
+		)
+	}
+
+	{
+		docs.length > 0 && (
+			<Item.Group>
+				{docs.map((doc) => (
+					<>
+						<DocEntry entry={doc} />
+						<Item.Separator />
+					</>
+				))}
+			</Item.Group>
 		)
 	}
 

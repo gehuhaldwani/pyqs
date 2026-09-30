@@ -1,0 +1,26 @@
+---
+// A markdown "doc" file: the folder-style frame (crumbs) with the rendered
+// markdown as the page body, and no entry list.
+import { type CollectionEntry, render } from "astro:content";
+import Prose from "@/components/partials/Prose.astro";
+import { displayName, type FileEntry } from "@/lib/content/schema";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
+import BrowseLayout from "./BrowseLayout.astro";
+
+interface Props {
+	// The collection entry is needed to render the markdown
+	entry: CollectionEntry<"fs">;
+	doc: FileEntry;
+}
+
+const { entry, doc } = Astro.props;
+
+const title = displayName(doc);
+const { Content } = await render(entry);
+---
+
+<BrowseLayout {title} path={addForwardSlashAndBaseUrl(doc.path)} current={title}>
+	<Prose class="my-10">
+		<Content />
+	</Prose>
+</BrowseLayout>

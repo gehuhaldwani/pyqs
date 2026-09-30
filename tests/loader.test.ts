@@ -18,6 +18,7 @@ type StoredEntry = {
 	data: FsEntry;
 	digest?: string;
 	rendered?: { html: string };
+	filePath?: string;
 };
 
 function createContext() {
@@ -48,9 +49,18 @@ function createContext() {
 		},
 		generateDigest: (data: unknown) =>
 			Bun.hash(JSON.stringify(data)).toString(),
-		renderMarkdown: async (content: string) => ({
-			html: `<p>${content.trim()}</p>`,
-		}),
+		// Minimal stand-in for Astro's renderer: `key: value` frontmatter + body
+		renderMarkdown: async (content: string) => {
+			const match = /^---\n([\s\S]*?)\n---\n?/.exec(content);
+			const frontmatter = Object.fromEntries(
+				(match?.[1] ?? "")
+					.split("\n")
+					.map((line) => line.split(/:\s*/, 2))
+					.filter((pair) => pair.length === 2),
+			);
+			const body = match ? content.slice(match[0].length) : content;
+			return { html: `<p>${body.trim()}</p>`, metadata: { frontmatter } };
+		},
 		// Like Astro, validate against the collection schema (and strip unknown keys)
 		parseData: async ({ data }: { data: unknown }) => fsEntrySchema.parse(data),
 	};
@@ -313,7 +323,11 @@ describe("skipped summary", () => {
 describe("formatSkippedSummary", () => {
 	test("returns null when nothing was skipped", () => {
 		expect(
-			formatSkippedSummary({ skippedFiles: [], skippedDirectories: [] }),
+			formatSkippedSummary({
+				skippedFiles: [],
+				skippedDirectories: [],
+				emptyDirectories: [],
+			}),
 		).toBeNull();
 	});
 
@@ -322,6 +336,7 @@ describe("formatSkippedSummary", () => {
 			formatSkippedSummary({
 				skippedFiles: ["/b/y.PDF", "/README.md", "/LICENSE", "/a/x.pdf"],
 				skippedDirectories: [],
+				emptyDirectories: [],
 			}),
 		).toBe(
 			[
@@ -334,6 +349,161 @@ describe("formatSkippedSummary", () => {
 				"    /a/x.pdf",
 				"    /b/y.PDF",
 			].join("\n"),
+		);
+	});
+});
+
+describe("empty directories", () => {
+	test("leaves out directories with nothing kept inside them", async () => {
+		await writeTree(root, [
+			// only an invalid paper
+			"bhm/sem 7/food production 2 a/BHM701 .pdf",
+			// nested: only contains an empty directory
+			"bba/sem 2/old/notes.txt",
+		]);
+		const { context, entries, dir, warnings } = createContext();
+		await loader().load(context);
+
+		for (const id of [
+			"/bhm/",
+			"/bhm/sem 7/",
+			"/bhm/sem 7/food production 2 a/",
+			"/bba/",
+			"/bba/sem 2/",
+			"/bba/sem 2/old/",
+		]) {
+			expect(entries.has(id)).toBe(false);
+		}
+		expect(
+			dir("/")
+				?.directories.map((d) => d.path)
+				.sort(),
+		).toEqual(["/ba jmc/", "/bca/"]);
+		expect(warnings.at(-1)).toContain(
+			[
+				"Left out 6 empty directories:",
+				"    /bba/",
+				"    /bba/sem 2/",
+				"    /bba/sem 2/old/",
+				"    /bhm/",
+				"    /bhm/sem 7/",
+				"    /bhm/sem 7/food production 2 a/",
+			].join("\n"),
+		);
+	});
+
+	test("keeps a directory that only has an index.md", async () => {
+		await writeTree(root, ["notes/index.md"]);
+		const { context, dir } = createContext();
+		await loader().load(context);
+
+		expect(dir("/notes/")?.files).toEqual([]);
+		expect(dir("/")?.directories.map((d) => d.path)).toContain("/notes/");
+	});
+
+	test("always keeps the root", async () => {
+		const emptyRoot = await fs.mkdtemp(path.join(os.tmpdir(), "pyqs-empty-"));
+		try {
+			const { context, dir } = createContext();
+			await filesystemLoader({ root: emptyRoot, rules: pyqRules }).load(
+				context,
+			);
+			expect(dir("/")).toMatchObject({ path: "/", directories: [], files: [] });
+		} finally {
+			await fs.rm(emptyRoot, { recursive: true, force: true });
+		}
+	});
+
+	test("removes a directory from the store once it becomes empty", async () => {
+		const { context, entries } = createContext();
+		await loader().load(context);
+		expect(entries.has("/ba jmc/radio production & podcast/")).toBe(true);
+
+		await fs.rm(
+			path.join(
+				root,
+				"ba jmc/radio production & podcast/tcs101_midsem_2024.pdf",
+			),
+		);
+		await loader().load(context);
+
+		expect(entries.has("/ba jmc/radio production & podcast/")).toBe(false);
+		expect(entries.has("/ba jmc/")).toBe(false);
+	});
+});
+
+describe("stored file paths", () => {
+	test("use forward slashes on every OS", async () => {
+		const { context, entries } = createContext();
+		await loader().load(context);
+
+		for (const entry of entries.values()) {
+			expect(entry.filePath).not.toContain("\\");
+		}
+		expect(
+			entries.get("/bca/sem 1/tcs101_midsem_2023.pdf")?.filePath,
+		).toEndWith("/bca/sem 1/tcs101_midsem_2023.pdf");
+	});
+});
+
+describe("markdown docs", () => {
+	test("lists markdown files as docs, without name filtering", async () => {
+		await writeTree(root, [
+			"bca/sem 1/syllabus notes.md",
+			"bca/sem 1/README.md",
+			"bca/guides/how to study.md",
+		]);
+		await fs.writeFile(
+			path.join(root, "bca/guides/how to study.md"),
+			"---\ntitle: How to Study\n---\n# Tips",
+		);
+		const { context, dir, file, entries, warnings } = createContext();
+		await loader().load(context);
+
+		const notes = file("/bca/sem 1/syllabus notes.md");
+		expect(notes).toMatchObject({ kind: "doc", name: "syllabus notes" });
+		expect(notes?.title).toBeUndefined();
+		expect(entries.get("/bca/sem 1/syllabus notes.md")?.rendered?.html).toBe(
+			"<p>Hello</p>",
+		);
+
+		// Title comes from frontmatter, which is not part of the page body
+		expect(file("/bca/guides/how to study.md")?.title).toBe("How to Study");
+		expect(entries.get("/bca/guides/how to study.md")?.rendered?.html).toBe(
+			"<p># Tips</p>",
+		);
+
+		// Listed in the parent directory next to papers
+		expect(
+			dir("/bca/sem 1/")
+				?.files.map((f) => `${f.kind}:${f.name}`)
+				.sort(),
+		).toEqual([
+			"doc:syllabus notes",
+			"pdf:tcs101_endsem_2023_may",
+			"pdf:tcs101_midsem_2023",
+		]);
+
+		// A folder with only docs is not empty
+		expect(dir("/bca/")?.directories.map((d) => d.path)).toContain(
+			"/bca/guides/",
+		);
+
+		// README.md is repository metadata and stays hidden
+		expect(entries.has("/bca/sem 1/README.md")).toBe(false);
+		expect(warnings.at(-1)).toContain("/bca/sem 1/README.md");
+	});
+
+	test("the doc's digest changes with its content", async () => {
+		await writeTree(root, ["bca/notes.md"]);
+		const first = createContext();
+		await loader().load(first.context);
+		await fs.writeFile(path.join(root, "bca/notes.md"), "Changed");
+		const second = createContext();
+		await loader().load(second.context);
+
+		expect(first.entries.get("/bca/notes.md")?.digest).not.toBe(
+			second.entries.get("/bca/notes.md")?.digest,
 		);
 	});
 });
