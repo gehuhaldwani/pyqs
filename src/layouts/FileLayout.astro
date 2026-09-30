@@ -1,9 +1,9 @@
 ---
-import siteConfig from "@/configs/site.config";
-import { githubRawUrl } from "@/utils/links";
-import type { FileEntry } from "@/lib/content/schema";
-import PdfLayout from "./PdfLayout.astro";
 import Alert from "@/components/starwind/alert";
+import siteConfig from "@/configs/site.config";
+import type { FileEntry } from "@/lib/content/schema";
+import { githubRawUrl } from "@/utils/url";
+import PdfLayout from "./PdfLayout.astro";
 
 interface Props {
 	file: FileEntry;

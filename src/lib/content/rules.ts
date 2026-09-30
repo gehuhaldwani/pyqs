@@ -10,18 +10,18 @@ type DirectoryRule = (entry: DirEntry) => boolean;
 type FileRule = (entry: FileEntry) => FileEntry | null;
 
 type LoaderRules = {
-    directory?: DirectoryRule;
-    // Keyed by lower-case extension (".pdf"); "*" applies to any other extension.
-    file?: Record<string, FileRule>;
+	directory?: DirectoryRule;
+	// Keyed by lower-case extension (".pdf"); "*" applies to any other extension.
+	file?: Record<string, FileRule>;
 };
 
 function acceptDirectory(entry: DirEntry, rules?: LoaderRules): boolean {
-    return rules?.directory?.(entry) ?? true;
+	return rules?.directory?.(entry) ?? true;
 }
 
 function processFile(entry: FileEntry, rules?: LoaderRules): FileEntry | null {
-    const rule = rules?.file?.[entry.extension] ?? rules?.file?.["*"];
-    return rule ? rule(entry) : entry;
+	const rule = rules?.file?.[entry.extension] ?? rules?.file?.["*"];
+	return rule ? rule(entry) : entry;
 }
 
 export type { DirectoryRule, FileRule, LoaderRules };

@@ -1,9 +1,9 @@
 ---
+import { Icon } from "astro-icon/components";
 import Item from "@/components/starwind/item";
 import type { DirSummary } from "@/lib/content/schema";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import { toTitleCase } from "@/utils/string";
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import { Icon } from "astro-icon/components";
 
 interface Props {
 	entry: DirSummary;

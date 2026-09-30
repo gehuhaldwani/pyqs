@@ -1,7 +1,4 @@
 {
-  "enabledMcpjsonServers": [
-    "astro-docs",
-    "starwind-ui"
-  ],
-  "enableAllProjectMcpServers": true
+	"enabledMcpjsonServers": ["astro-docs", "starwind-ui"],
+	"enableAllProjectMcpServers": true
 }

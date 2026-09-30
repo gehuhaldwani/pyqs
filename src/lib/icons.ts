@@ -1,7 +1,7 @@
-import { icons as mdi } from "@iconify-json/mdi";
-import { icons as simpleIcons } from "@iconify-json/simple-icons";
 import type { IconifyJSON } from "@iconify/types";
 import { getIconData, iconToHTML, iconToSVG, replaceIDs } from "@iconify/utils";
+import { icons as mdi } from "@iconify-json/mdi";
+import { icons as simpleIcons } from "@iconify-json/simple-icons";
 
 // Icon sets available for rendering outside of astro-icon's <Icon> component.
 const collections: Record<string, IconifyJSON> = {

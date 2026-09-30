@@ -1,8 +1,8 @@
-import { defineConfig, fontProviders, svgoOptimizer} from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
-import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, fontProviders, svgoOptimizer } from "astro/config";
+import icon from "astro-icon";
 
 export default defineConfig({
 	site: "https://haldwani.gehu.in",
@@ -26,23 +26,26 @@ export default defineConfig({
 			cssVariable: "--font-noto-sans-mono",
 		},
 		{
-		provider: fontProviders.local(),
-		name: "Excalifont",
-		cssVariable: "--font-excalifont",
-		options:{
-			variants:[{
-				src: ["./src/assets/fonts/excalifont.woff2"],
-				weight: "normal",
-				style: "normal",
-			}]
-		}
-	}],
+			provider: fontProviders.local(),
+			name: "Excalifont",
+			cssVariable: "--font-excalifont",
+			options: {
+				variants: [
+					{
+						src: ["./src/assets/fonts/excalifont.woff2"],
+						weight: "normal",
+						style: "normal",
+					},
+				],
+			},
+		},
+	],
 	cacheDir: "./cache/astro",
-	compressHTML:true,
+	compressHTML: true,
 	experimental: {
 		clientPrerender: true,
 		svgOptimizer: svgoOptimizer(),
-    	incrementalBuild: true,
+		incrementalBuild: true,
 	},
 	integrations: [sitemap(), icon(), mdx()],
 	vite: {

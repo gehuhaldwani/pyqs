@@ -1,14 +1,14 @@
 ---
-import PageLayout from "./PageLayout.astro";
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
 import { base } from "astro:config/server";
+import { type CollectionEntry, render } from "astro:content";
+import Prose from "@/components/partials/Prose.astro";
 import Separator from "@/components/starwind/separator";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
-import { render, type CollectionEntry } from "astro:content";
-import type { DirEntry } from "@/lib/content/schema";
-import Prose from "@/components/partials/Prose.astro";
 import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
+import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
+import type { DirEntry } from "@/lib/content/schema";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
+import PageLayout from "./PageLayout.astro";
 
 interface Props {
 	// The collection entry is needed to render the folder's index.md

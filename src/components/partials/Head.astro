@@ -1,9 +1,9 @@
 ---
-import siteConfig from "@/configs/site.config";
-import { addBaseUrl } from "@/utils/url";
-import { formatPageTitle } from "@/utils/string";
-import { ThemeInitScript } from "@starwind-ui/astro/theme";
 import { ClientRouter } from "astro:transitions";
+import { ThemeInitScript } from "@starwind-ui/astro/theme";
+import siteConfig from "@/configs/site.config";
+import { addBaseUrl } from "@/utils/site-url";
+import { formatPageTitle } from "@/utils/string";
 import Fonts from "./Fonts.astro";
 
 interface Props {

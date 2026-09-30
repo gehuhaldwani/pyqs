@@ -1,11 +1,12 @@
 ---
+import NavLink from "@/components/ui/NavLink.astro";
 import siteConfig from "@/configs/site.config";
 ---
 
-<a
+<NavLink
 	class="flex items-center gap-2 link-muted"
 	href={`https://github.com/${siteConfig.site.githubRepo}`}
-	target="_blank"
+	external
 >
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -19,4 +20,4 @@ import siteConfig from "@/configs/site.config";
 		</path>
 	</svg>
 	<div class="">Star on GitHub</div>
-</a>
+</NavLink>

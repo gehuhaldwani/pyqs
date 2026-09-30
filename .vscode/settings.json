@@ -1,16 +1,11 @@
 {
-    "cSpell.words": [
-        "Bhimtal",
-        "GEHU",
-        "Jalal",
-        "Lakshyajeet",
-        "pdfjs",
-        "starwind"
-    ],
-    "tailwindCSS.classAttributes": [
-        "class",
-        "className",
-        "ngClass",
-        ".*Class" 
-    ]
+	"cSpell.words": [
+		"Bhimtal",
+		"GEHU",
+		"Jalal",
+		"Lakshyajeet",
+		"pdfjs",
+		"starwind"
+	],
+	"tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Class"]
 }

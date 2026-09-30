@@ -1,19 +1,23 @@
 ---
 import PdfViewer from "@/components/widgets/PdfViewer.astro";
-import BaseLayout from "./BaseLayout.astro";
 import siteConfig from "@/configs/site.config";
 import type { FileEntry } from "@/lib/content/schema";
-import { githubRawUrl, pdfThumbnailPath } from "@/utils/links";
+import { githubRawUrl, pdfThumbnailPath } from "@/utils/url";
+import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
-    entry: FileEntry;
+	entry: FileEntry;
 }
 
 const { entry } = Astro.props;
 const { githubRepo, contentBranch, thumbnailsBranch } = siteConfig.site;
 
 const src = githubRawUrl(githubRepo, contentBranch, entry.path);
-const thumbnail = githubRawUrl(githubRepo, thumbnailsBranch, pdfThumbnailPath(entry.path));
+const thumbnail = githubRawUrl(
+	githubRepo,
+	thumbnailsBranch,
+	pdfThumbnailPath(entry.path),
+);
 ---
 
 <BaseLayout

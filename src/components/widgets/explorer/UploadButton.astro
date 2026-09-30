@@ -1,6 +1,6 @@
 ---
 import { Button } from "@/components/starwind/button";
-import { uploaderUrl } from "@/utils/links";
+import { EXTERNAL_LINK_ATTRIBUTES, uploaderUrl } from "@/utils/url";
 
 interface Props {
 	title: string;
@@ -12,7 +12,7 @@ const { path, title } = Astro.props;
 
 <Button
 	href={uploaderUrl(path, title)}
-	target="_blank"
+	{...EXTERNAL_LINK_ATTRIBUTES}
 	variant="default"
 >
 	<p class="wrap-break-word whitespace-normal text-center">

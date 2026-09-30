@@ -1,9 +1,9 @@
 ---
+import { Icon } from "astro-icon/components";
 import Item from "@/components/starwind/item";
 import type { PyqFileEntry } from "@/lib/content/schema";
 import { formatPyqDate, formatPyqTitle } from "@/lib/pyqs";
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import { Icon } from "astro-icon/components";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 
 interface Props {
 	entry: PyqFileEntry;

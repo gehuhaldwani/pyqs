@@ -1,9 +1,9 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import ExplorerLayout from "@/layouts/ExplorerLayout.astro";
 import FileLayout from "@/layouts/FileLayout.astro";
-import type { CollectionEntry } from "astro:content";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const entries = await getCollection("fs");

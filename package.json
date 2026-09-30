@@ -15,7 +15,10 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"test": "bun test",
-		"check": "astro check && tsc -p tests"
+		"check": "astro check && tsc -p tests",
+		"lint": "biome check .",
+		"format": "biome check --write .",
+		"ci": "bun run lint && bun run test && bun run check"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.0.2",

@@ -1,11 +1,11 @@
 {
-  "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "preview",
-      "runtimeExecutable": "bun",
-      "runtimeArgs": ["run", "preview", "--port", "4322"],
-      "port": 4322
-    }
-  ]
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "preview",
+			"runtimeExecutable": "bun",
+			"runtimeArgs": ["run", "preview", "--port", "4322"],
+			"port": 4322
+		}
+	]
 }

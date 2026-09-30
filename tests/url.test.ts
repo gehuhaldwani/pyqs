@@ -1,23 +1,69 @@
 import { describe, expect, test } from "bun:test";
 import {
+	applyTrailingSlash,
+	EXTERNAL_LINK_ATTRIBUTES,
 	encodePath,
 	githubRawUrl,
+	joinBase,
 	pdfThumbnailPath,
 	sitemapIndexUrl,
 	uploaderUrl,
-} from "@/utils/links";
+} from "@/utils/url";
+
+describe("joinBase", () => {
+	test.each([
+		["/pyqs/", "/about", "/pyqs/about"],
+		["/pyqs/", "about", "/pyqs/about"],
+		["/pyqs", "/about", "/pyqs/about"],
+		["/pyqs/", "", "/pyqs/"],
+		["/pyqs/", "/", "/pyqs/"],
+		["/", "/logo.png", "/logo.png"],
+		["/", "", "/"],
+	])("joinBase(%p, %p) -> %p", (base, path, expected) => {
+		expect(joinBase(base, path)).toBe(expected);
+	});
+});
+
+describe("applyTrailingSlash", () => {
+	test.each([
+		["/pyqs/about", "always", "/pyqs/about/"],
+		["/pyqs/about/", "always", "/pyqs/about/"],
+		["/pyqs/about/", "never", "/pyqs/about"],
+		["/pyqs/about", "never", "/pyqs/about"],
+		["/", "never", "/"],
+		["/pyqs/about", "ignore", "/pyqs/about"],
+		["/pyqs/about/", "ignore", "/pyqs/about/"],
+	] as const)("applyTrailingSlash(%p, %p) -> %p", (url, mode, expected) => {
+		expect(applyTrailingSlash(url, mode)).toBe(expected);
+	});
+});
+
+describe("EXTERNAL_LINK_ATTRIBUTES", () => {
+	test("opens in a new tab without giving the target window.opener", () => {
+		expect(EXTERNAL_LINK_ATTRIBUTES).toEqual({
+			target: "_blank",
+			rel: "noopener",
+		});
+	});
+});
 
 describe("encodePath", () => {
 	test("encodes each segment and keeps slashes", () => {
-		expect(encodePath("/ba jmc/sem 4/radio production & podcast/a#b?.pdf")).toBe(
-			"/ba%20jmc/sem%204/radio%20production%20%26%20podcast/a%23b%3F.pdf",
-		);
+		expect(
+			encodePath("/ba jmc/sem 4/radio production & podcast/a#b?.pdf"),
+		).toBe("/ba%20jmc/sem%204/radio%20production%20%26%20podcast/a%23b%3F.pdf");
 	});
 });
 
 describe("githubRawUrl", () => {
 	test("builds an encoded raw.githubusercontent URL", () => {
-		expect(githubRawUrl("gehuhaldwani/pyqs", "main", "/bca/sem 1/tcs101_midsem_2023.pdf")).toBe(
+		expect(
+			githubRawUrl(
+				"gehuhaldwani/pyqs",
+				"main",
+				"/bca/sem 1/tcs101_midsem_2023.pdf",
+			),
+		).toBe(
 			"https://raw.githubusercontent.com/gehuhaldwani/pyqs/main/bca/sem%201/tcs101_midsem_2023.pdf",
 		);
 	});
@@ -48,10 +94,15 @@ describe("pdfThumbnailPath", () => {
 describe("uploaderUrl", () => {
 	test("encodes query values so '&' in folder names survives", () => {
 		const url = new URL(
-			uploaderUrl("/pyqs/ba jmc/sem 4/radio production & podcast/", "SEM 4 > RADIO & PODCAST"),
+			uploaderUrl(
+				"/pyqs/ba jmc/sem 4/radio production & podcast/",
+				"SEM 4 > RADIO & PODCAST",
+			),
 		);
 		expect(url.origin).toBe("https://pyqs-uploader.pages.dev");
-		expect(url.searchParams.get("path")).toBe("/pyqs/ba jmc/sem 4/radio production & podcast/");
+		expect(url.searchParams.get("path")).toBe(
+			"/pyqs/ba jmc/sem 4/radio production & podcast/",
+		);
 		expect(url.searchParams.get("title")).toBe("SEM 4 > RADIO & PODCAST");
 		expect([...url.searchParams.keys()]).toEqual(["path", "title"]);
 	});

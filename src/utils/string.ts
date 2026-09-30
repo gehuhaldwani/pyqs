@@ -9,4 +9,4 @@ function formatPageTitle(siteTitle: string, pageTitle?: string): string {
 	return pageTitle ? `${siteTitle} | ${pageTitle}` : siteTitle;
 }
 
-export { toTitleCase, formatPageTitle };
+export { formatPageTitle, toTitleCase };

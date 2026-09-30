@@ -1,8 +1,19 @@
 import { describe, expect, test } from "bun:test";
-import { acceptDirectory, processFile, type LoaderRules } from "@/lib/content/rules";
+import {
+	acceptDirectory,
+	type LoaderRules,
+	processFile,
+} from "@/lib/content/rules";
 import type { DirEntry, FileEntry } from "@/lib/content/schema";
 
-const dir: DirEntry = { type: "dir", name: "bca", path: "/bca/", parentPath: "/", directories: [], files: [] };
+const dir: DirEntry = {
+	type: "dir",
+	name: "bca",
+	path: "/bca/",
+	parentPath: "/",
+	directories: [],
+	files: [],
+};
 const file = (extension: string): FileEntry => ({
 	type: "file",
 	name: "x",
@@ -18,7 +29,9 @@ describe("acceptDirectory", () => {
 	});
 
 	test("uses the directory rule", () => {
-		expect(acceptDirectory(dir, { directory: (d) => d.name !== "bca" })).toBe(false);
+		expect(acceptDirectory(dir, { directory: (d) => d.name !== "bca" })).toBe(
+			false,
+		);
 	});
 });
 
@@ -43,6 +56,8 @@ describe("processFile", () => {
 	});
 
 	test("keeps files with no matching rule and no fallback", () => {
-		expect(processFile(file(".txt"), { file: { ".pdf": () => null } })).toEqual(file(".txt"));
+		expect(processFile(file(".txt"), { file: { ".pdf": () => null } })).toEqual(
+			file(".txt"),
+		);
 	});
 });

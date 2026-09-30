@@ -3,9 +3,9 @@ import {
 	comparePyqs,
 	formatPyqDate,
 	formatPyqTitle,
+	type PyqData,
 	parsePyqName,
 	pyqDataSchema,
-	type PyqData,
 } from "@/lib/pyqs";
 
 function pyq(name: string): PyqData {
@@ -61,7 +61,10 @@ describe("parsePyqName", () => {
 	});
 
 	test("output always satisfies the stored schema", () => {
-		for (const name of ["tcs101_midsem_2023", "tcs102_tcs101_AI_sessional_2_back_2024_mar_15_setB"]) {
+		for (const name of [
+			"tcs101_midsem_2023",
+			"tcs102_tcs101_AI_sessional_2_back_2024_mar_15_setB",
+		]) {
 			expect(pyqDataSchema.parse(pyq(name))).toEqual(pyq(name));
 		}
 	});
@@ -73,13 +76,15 @@ describe("formatPyqTitle", () => {
 	});
 
 	test("multiple subjects, specialization, set, number and back", () => {
-		expect(formatPyqTitle(pyq("tcs101_F1_tcs102_endsem_2_back_2023_setA"))).toBe(
-			"TCS101 - F1 • TCS102 • Set A • End Sem 2 BACK",
-		);
+		expect(
+			formatPyqTitle(pyq("tcs101_F1_tcs102_endsem_2_back_2023_setA")),
+		).toBe("TCS101 - F1 • TCS102 • Set A • End Sem 2 BACK");
 	});
 
 	test("has no double or trailing spaces", () => {
-		expect(formatPyqTitle(pyq("tcs101_AI_sessional_2023"))).not.toMatch(/\s{2}|\s$|^\s/);
+		expect(formatPyqTitle(pyq("tcs101_AI_sessional_2023"))).not.toMatch(
+			/\s{2}|\s$|^\s/,
+		);
 	});
 });
 
@@ -94,16 +99,20 @@ describe("formatPyqDate", () => {
 });
 
 describe("comparePyqs", () => {
-	const cmp = (a: string, b: string) => Math.sign(comparePyqs(pyq(a), pyq(b))) || 0;
+	const cmp = (a: string, b: string) =>
+		Math.sign(comparePyqs(pyq(a), pyq(b))) || 0;
 	const sortNames = (names: string[]) =>
-		names.map((name) => ({ name, data: pyq(name) }))
+		names
+			.map((name) => ({ name, data: pyq(name) }))
 			.sort((a, b) => comparePyqs(a.data, b.data))
 			.map((p) => p.name);
 
 	test("orders by year, then month, then date", () => {
 		expect(cmp("tcs101_midsem_2022_dec", "tcs101_midsem_2023_jan")).toBe(-1);
 		expect(cmp("tcs101_midsem_2023_jan", "tcs101_midsem_2023_feb")).toBe(-1);
-		expect(cmp("tcs101_midsem_2023_jan_20", "tcs101_midsem_2023_jan_3")).toBe(1);
+		expect(cmp("tcs101_midsem_2023_jan_20", "tcs101_midsem_2023_jan_3")).toBe(
+			1,
+		);
 	});
 
 	test("missing month/date sort before present ones", () => {
@@ -154,7 +163,9 @@ describe("comparePyqs", () => {
 		];
 		const expected = sortNames(names);
 		for (let i = 0; i < 20; i++) {
-			expect(sortNames([...names].sort(() => Math.random() - 0.5))).toEqual(expected);
+			expect(sortNames([...names].sort(() => Math.random() - 0.5))).toEqual(
+				expected,
+			);
 		}
 	});
 });

@@ -15,18 +15,18 @@ interface SiteConfig {
 		logo: string;
 		favicon: string;
 		timezone: string;
-	},
+	};
 	header: {
 		links: NavigationEntry[];
-	}
+	};
 	footer: {
 		maintainer: {
 			name: string;
 			designation: string;
 			support: string;
-		},
+		};
 		links: NavigationEntry[];
-	}
+	};
 }
 
 type Social = {
@@ -36,5 +36,4 @@ type Social = {
 	iconify: string;
 };
 
-
-export type { SiteConfig, NavigationEntry, Social };
+export type { NavigationEntry, SiteConfig, Social };

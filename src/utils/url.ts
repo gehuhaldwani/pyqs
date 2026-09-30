@@ -1,23 +1,63 @@
-import { trailingSlash, base } from "astro:config/client";
+// Pure URL helpers. Keep this module free of `astro:*` imports so it can be
+// unit tested; `site-url.ts` binds these to the site's Astro config.
 
-function addBaseUrl(path: string) {
-	const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-	// remove trailing slash from base to prevent double slashes
-	const basePath = base.endsWith("/") ? base.slice(0, -1) : base;
-	return `${basePath}${normalizedPath}`;
+type TrailingSlash = "always" | "never" | "ignore";
+
+const UPLOADER_URL = "https://pyqs-uploader.pages.dev/";
+
+// Attributes for links that leave the site.
+const EXTERNAL_LINK_ATTRIBUTES = { target: "_blank", rel: "noopener" } as const;
+
+function ensureLeadingSlash(path: string): string {
+	return path.startsWith("/") ? path : `/${path}`;
 }
 
-// This method adds a forward slash to paths, and prepends the `base`
-function addForwardSlashAndBaseUrl(path: string) {
-	let url = addBaseUrl(path);
+// joinBase("/pyqs/", "about") -> "/pyqs/about"
+function joinBase(base: string, path: string): string {
+	const basePath = base.endsWith("/") ? base.slice(0, -1) : base;
+	return `${basePath}${ensureLeadingSlash(path)}`;
+}
 
+// Adds or removes the trailing slash to match Astro's `trailingSlash` option.
+function applyTrailingSlash(url: string, trailingSlash: TrailingSlash): string {
 	if (trailingSlash === "always" && !url.endsWith("/")) {
-		url += "/";
-	} else if (trailingSlash === "never" && url.endsWith("/")) {
-		url = url.slice(0, -1);
+		return `${url}/`;
 	}
-
+	if (trailingSlash === "never" && url.endsWith("/") && url !== "/") {
+		return url.slice(0, -1);
+	}
 	return url;
 }
 
-export { addForwardSlashAndBaseUrl, addBaseUrl };
+// Encodes each segment of a slash-separated path while keeping the slashes.
+function encodePath(path: string): string {
+	return path.split("/").map(encodeURIComponent).join("/");
+}
+
+function githubRawUrl(repo: string, branch: string, path: string): string {
+	return `https://raw.githubusercontent.com/${repo}/${branch}${encodePath(ensureLeadingSlash(path))}`;
+}
+
+function pdfThumbnailPath(path: string): string {
+	return path.replace(/\.pdf$/i, ".webp");
+}
+
+function uploaderUrl(path: string, title: string): string {
+	return `${UPLOADER_URL}?path=${encodeURIComponent(path)}&title=${encodeURIComponent(title)}`;
+}
+
+function sitemapIndexUrl(site: URL | string, base: string): URL {
+	return new URL(joinBase(base, "sitemap-index.xml"), site);
+}
+
+export type { TrailingSlash };
+export {
+	applyTrailingSlash,
+	EXTERNAL_LINK_ATTRIBUTES,
+	encodePath,
+	githubRawUrl,
+	joinBase,
+	pdfThumbnailPath,
+	sitemapIndexUrl,
+	uploaderUrl,
+};

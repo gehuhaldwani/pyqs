@@ -5,7 +5,12 @@ import path from "node:path";
 import type { LoaderContext } from "astro/loaders";
 import { filesystemLoader, formatSkippedSummary } from "@/lib/content/loader";
 import { pyqRules } from "@/lib/content/pyq-rules";
-import { fsEntrySchema, type DirEntry, type FileEntry, type FsEntry } from "@/lib/content/schema";
+import {
+	type DirEntry,
+	type FileEntry,
+	type FsEntry,
+	fsEntrySchema,
+} from "@/lib/content/schema";
 import type { PyqData } from "@/lib/pyqs";
 
 type StoredEntry = {
@@ -41,8 +46,11 @@ function createContext() {
 			warn: (msg: string) => warnings.push(msg),
 			error: (msg: string) => errors.push(msg),
 		},
-		generateDigest: (data: unknown) => Bun.hash(JSON.stringify(data)).toString(),
-		renderMarkdown: async (content: string) => ({ html: `<p>${content.trim()}</p>` }),
+		generateDigest: (data: unknown) =>
+			Bun.hash(JSON.stringify(data)).toString(),
+		renderMarkdown: async (content: string) => ({
+			html: `<p>${content.trim()}</p>`,
+		}),
 		// Like Astro, validate against the collection schema (and strip unknown keys)
 		parseData: async ({ data }: { data: unknown }) => fsEntrySchema.parse(data),
 	};
@@ -117,7 +125,9 @@ describe("filesystemLoader", () => {
 		// Regression: top-level folders used to get "/./"
 		expect(entries.get("/bca/")?.data.parentPath).toBe("/");
 		expect(entries.get("/bca/sem 1/")?.data.parentPath).toBe("/bca/");
-		expect(entries.get("/bca/sem 1/tcs101_midsem_2023.pdf")?.data.parentPath).toBe("/bca/sem 1/");
+		expect(
+			entries.get("/bca/sem 1/tcs101_midsem_2023.pdf")?.data.parentPath,
+		).toBe("/bca/sem 1/");
 	});
 
 	test("file entries have a bare name and lower-case extension", async () => {
@@ -137,10 +147,11 @@ describe("filesystemLoader", () => {
 			{ type: "dir", name: "sem 1", path: "/bca/sem 1/", parentPath: "/bca/" },
 		]);
 		expect(dir("/bca/")?.files).toEqual([]);
-		expect(dir("/bca/sem 1/")?.files.map((f) => f.name).sort()).toEqual([
-			"tcs101_endsem_2023_may",
-			"tcs101_midsem_2023",
-		]);
+		expect(
+			dir("/bca/sem 1/")
+				?.files.map((f) => f.name)
+				.sort(),
+		).toEqual(["tcs101_endsem_2023_may", "tcs101_midsem_2023"]);
 	});
 
 	test("stores parsed PYQ details on file entries and in the parent listing", async () => {
@@ -157,9 +168,12 @@ describe("filesystemLoader", () => {
 			date: null,
 			set: null,
 		};
-		expect(file("/bca/sem 1/tcs101_endsem_2023_may.PDF")?.pyq).toEqual(expected);
+		expect(file("/bca/sem 1/tcs101_endsem_2023_may.PDF")?.pyq).toEqual(
+			expected,
+		);
 		expect(
-			dir("/bca/sem 1/")?.files.find((f) => f.name === "tcs101_endsem_2023_may")?.pyq,
+			dir("/bca/sem 1/")?.files.find((f) => f.name === "tcs101_endsem_2023_may")
+				?.pyq,
 		).toEqual(expected);
 	});
 
@@ -184,9 +198,17 @@ describe("filesystemLoader", () => {
 		const { context, entries, warnings, errors } = createContext();
 		await loader().load(context);
 
-		expect([...entries.keys()].some((id) => id.includes(".github") || id.includes(".hidden"))).toBe(false);
-		expect(warnings).toContain("Skipping file /bca/sem 1/random notes.pdf due to validation");
-		expect(warnings).toContain("Skipping file /bca/sem 1/readme.txt due to validation");
+		expect(
+			[...entries.keys()].some(
+				(id) => id.includes(".github") || id.includes(".hidden"),
+			),
+		).toBe(false);
+		expect(warnings).toContain(
+			"Skipping file /bca/sem 1/random notes.pdf due to validation",
+		);
+		expect(warnings).toContain(
+			"Skipping file /bca/sem 1/readme.txt due to validation",
+		);
 		expect(errors).toEqual([]);
 	});
 
@@ -217,8 +239,12 @@ describe("filesystemLoader", () => {
 		await loader().load(second.context);
 
 		expect(first.entries.get("/bca/")?.digest).toBeString();
-		expect(first.entries.get("/bca/")?.digest).not.toBe(second.entries.get("/bca/")?.digest);
-		expect(first.entries.get("/bca/sem 1/")?.digest).toBe(second.entries.get("/bca/sem 1/")?.digest);
+		expect(first.entries.get("/bca/")?.digest).not.toBe(
+			second.entries.get("/bca/")?.digest,
+		);
+		expect(first.entries.get("/bca/sem 1/")?.digest).toBe(
+			second.entries.get("/bca/sem 1/")?.digest,
+		);
 	});
 
 	// Regression: the cached data store kept entries for deleted files.
@@ -232,7 +258,9 @@ describe("filesystemLoader", () => {
 
 		expect(entries.has("/bca/sem 1/tcs101_midsem_2023.pdf")).toBe(false);
 		expect(entries.has("/ba jmc/")).toBe(false);
-		expect(entries.has("/ba jmc/radio production & podcast/tcs101_midsem_2024.pdf")).toBe(false);
+		expect(
+			entries.has("/ba jmc/radio production & podcast/tcs101_midsem_2024.pdf"),
+		).toBe(false);
 		expect(entries.has("/bca/sem 1/tcs101_endsem_2023_may.PDF")).toBe(true);
 	});
 });
@@ -246,7 +274,9 @@ describe("skipped summary", () => {
 		}).load(context);
 
 		// Per-file warnings are kept
-		expect(warnings).toContain("Skipping file /bca/sem 1/random notes.pdf due to validation");
+		expect(warnings).toContain(
+			"Skipping file /bca/sem 1/random notes.pdf due to validation",
+		);
 		expect(warnings.at(-1)).toBe(
 			[
 				"Skipped 1 directory:",
@@ -282,7 +312,9 @@ describe("skipped summary", () => {
 
 describe("formatSkippedSummary", () => {
 	test("returns null when nothing was skipped", () => {
-		expect(formatSkippedSummary({ skippedFiles: [], skippedDirectories: [] })).toBeNull();
+		expect(
+			formatSkippedSummary({ skippedFiles: [], skippedDirectories: [] }),
+		).toBeNull();
 	});
 
 	test("sorts groups and paths, and labels files without an extension", () => {

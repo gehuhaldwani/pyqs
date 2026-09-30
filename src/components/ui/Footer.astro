@@ -1,11 +1,10 @@
 ---
-import siteConfig, { SOCIALS } from "@/configs/site.config";
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import { Icon } from "astro-icon/components";
-import GithubButton from "../widgets/GithubButton.astro";
 import type { HTMLAttributes } from "astro/types";
-
+import { Icon } from "astro-icon/components";
+import siteConfig, { SOCIALS } from "@/configs/site.config";
 import { formatBuildTime } from "@/utils/date";
+import GithubButton from "../widgets/GithubButton.astro";
+import NavLink from "./NavLink.astro";
 
 interface Props extends HTMLAttributes<"footer"> {}
 
@@ -34,16 +33,14 @@ const builtAt = new Date();
 				</p>
 
 				<p class="text-lg font-medium">
-					<a
+					<NavLink
 						class="font-excalifont link-support flex"
 						href={siteConfig.footer.maintainer.support}
-						target="_blank"
+						external
+						externalIcon
 					>
-						Support my work <Icon
-							name="mdi:arrow-top-right"
-							class="w-3 h-3"
-						/>
-					</a>
+						Support my work
+					</NavLink>
 				</p>
 				<br />
 				<div
@@ -52,17 +49,9 @@ const builtAt = new Date();
 				>
 					{
 						SOCIALS.map((social) => (
-							<a
-								href={social.url}
-								target="_blank"
-								rel="noopener"
-								aria-label={social.name}
-							>
-								<Icon
-									name={social.iconify}
-									class="social-icon"
-								/>
-							</a>
+							<NavLink href={social.url} external aria-label={social.name}>
+								<Icon name={social.iconify} class="social-icon" />
+							</NavLink>
 						))
 					}
 				</div>
@@ -78,29 +67,14 @@ const builtAt = new Date();
 					{
 						siteConfig.footer.links.map((link) => (
 							<li class="my-2">
-								<a
-									href={
-										link.type === "external"
-											? link.url
-											: addForwardSlashAndBaseUrl(
-													link.url,
-												)
-									}
+								<NavLink
+									href={link.url}
+									external={link.type === "external"}
+									externalIcon
 									class="flex link-muted"
-									target={
-										link.type === "external"
-											? "_blank"
-											: "_self"
-									}
 								>
 									{link.name}
-									{link.type === "external" && (
-										<Icon
-											name="mdi:arrow-top-right"
-											class="w-3 h-3"
-										/>
-									)}
-								</a>
+								</NavLink>
 							</li>
 						))
 					}
@@ -109,13 +83,14 @@ const builtAt = new Date();
 		</div>
 		<br />
 		<p class="w-full text-center">
-			Built with <a
+			Built with <NavLink
 				href="https://astro.build"
-				target="_blank"
+				external
 				class="underline"
+				aria-label="Astro"
 			>
 				<Icon name="astro" class="inline" />
-			</a>
+			</NavLink>
 		</p>
 		<p class="w-full text-center">
 			Last updated on <span
@@ -134,7 +109,8 @@ const builtAt = new Date();
 	// from build-info.json, which is regenerated on every build.
 	import { BUILD_INFO_PATH, type BuildInfo } from "@/lib/build-info";
 	import { formatBuildTime } from "@/utils/date";
-	import { addBaseUrl } from "@/utils/url";
+	import { addBaseUrl } from "@/utils/site-url";
+	import { EXTERNAL_LINK_ATTRIBUTES } from "@/utils/url";
 
 	let buildInfo: Promise<BuildInfo | null> | undefined;
 
@@ -147,10 +123,11 @@ const builtAt = new Date();
 	}
 
 	function renderSocialLink(social: BuildInfo["socials"][number]) {
+		// Mirrors <NavLink external> in the markup above
 		const link = document.createElement("a");
 		link.href = social.url;
-		link.target = "_blank";
-		link.rel = "noopener";
+		link.target = EXTERNAL_LINK_ATTRIBUTES.target;
+		link.rel = EXTERNAL_LINK_ATTRIBUTES.rel;
 		link.setAttribute("aria-label", social.name);
 		// SVG markup comes from our own build output, not user input
 		link.innerHTML = social.svg;

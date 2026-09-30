@@ -1,11 +1,12 @@
 ---
-import siteConfig from "@/configs/site.config";
 import { base } from "astro:config/server";
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
-import Dropdown from "@/components/starwind/dropdown";
-import { Icon } from "astro-icon/components";
-import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
 import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import Dropdown from "@/components/starwind/dropdown";
+import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
+import siteConfig from "@/configs/site.config";
+import { linkAttributes } from "@/utils/site-url";
+import NavLink from "./NavLink.astro";
 
 interface Props extends HTMLAttributes<"header"> {}
 
@@ -24,18 +25,9 @@ const { class: className, ...props } = Astro.props;
 			<nav class="hidden sm:flex flex-row gap-3">
 				{
 					siteConfig.header.links.map((link) => (
-						<a
-							href={
-								link.type === "external"
-									? link.url
-									: addForwardSlashAndBaseUrl(link.url)
-							}
-							target={
-								link.type === "external" ? "_blank" : "_self"
-							}
-						>
+						<NavLink href={link.url} external={link.type === "external"}>
 							{link.name}
-						</a>
+						</NavLink>
 					))
 				}
 			</nav>
@@ -47,24 +39,15 @@ const { class: className, ...props } = Astro.props;
 			/>
 
 			<Dropdown.Root class="inline sm:hidden">
-				<Dropdown.Trigger class="flex items-center justify-center">
-					<Icon name="mdi:menu" class="w-5 h-full" />
+				<Dropdown.Trigger class="flex items-center justify-center" aria-label="Menu">
+					<Icon name="mdi:menu" class="w-5 h-full" aria-hidden="true" />
 				</Dropdown.Trigger>
 				<Dropdown.Content align="end">
 					{
 						siteConfig.header.links.map((link) => (
 							<Dropdown.LinkItem
 								closeOnClick
-								href={
-									link.type === "external"
-										? link.url
-										: addForwardSlashAndBaseUrl(link.url)
-								}
-								target={
-									link.type === "external"
-										? "_blank"
-										: "_self"
-								}
+								{...linkAttributes(link.url, link.type === "external")}
 							>
 								{link.name}
 							</Dropdown.LinkItem>

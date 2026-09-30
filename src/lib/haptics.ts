@@ -1,10 +1,7 @@
-import { WebHaptics, defaultPatterns } from "web-haptics";
+import { defaultPatterns, WebHaptics } from "web-haptics";
 
 const haptics = new WebHaptics({
-    debug: import.meta.env.DEV,
+	debug: import.meta.env.DEV,
 });
 
-export {
-    haptics,
-    defaultPatterns,
-};
+export { defaultPatterns, haptics };

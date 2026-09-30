@@ -1,11 +1,11 @@
 ---
-import { isPyqFile, type DirEntry } from "@/lib/content/schema";
 import Item from "@/components/starwind/item";
-import PdfEntry from "./PdfEntry.astro";
-import DirectoryEntry from "./DirectoryEntry.astro";
-import UploadButton from "./UploadButton.astro";
+import { type DirEntry, isPyqFile } from "@/lib/content/schema";
 import { comparePyqs } from "@/lib/pyqs";
+import DirectoryEntry from "./DirectoryEntry.astro";
 import EntryListContentBlock from "./EntryListContentBlock.astro";
+import PdfEntry from "./PdfEntry.astro";
+import UploadButton from "./UploadButton.astro";
 
 interface Props {
 	title: string;

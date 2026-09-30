@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { linkAttributes } from "@/utils/site-url";
+
+interface Props extends Omit<HTMLAttributes<"a">, "href" | "target" | "rel"> {
+	// A site path ("/about") or, when `external`, a full URL
+	href: string;
+	// Open in a new tab instead of resolving `href` against the site's base
+	external?: boolean;
+	// Show a ↗ icon after external links
+	externalIcon?: boolean;
+}
+
+const { href, external = false, externalIcon = false, ...rest } = Astro.props;
+---
+
+<a {...linkAttributes(href, external)} {...rest}>
+	<slot />
+	{
+		external && externalIcon && (
+			<Icon name="mdi:arrow-top-right" class="size-3" aria-hidden="true" />
+		)
+	}
+</a>

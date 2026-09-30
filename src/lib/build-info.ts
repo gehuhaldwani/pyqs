@@ -12,5 +12,5 @@ type BuildInfo = {
 
 const BUILD_INFO_PATH = "/build-info.json";
 
-export { BUILD_INFO_PATH };
 export type { BuildInfo };
+export { BUILD_INFO_PATH };

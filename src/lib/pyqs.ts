@@ -59,7 +59,9 @@ function parsePyqName(name: string): PyqData | null {
 		return null;
 	}
 
-	const subjects = (groups.subjects.match(/[a-z]+[A-Z0-9]+_(?:[A-Z0-9]+_)?/g) ?? [])
+	const subjects = (
+		groups.subjects.match(/[a-z]+[A-Z0-9]+_(?:[A-Z0-9]+_)?/g) ?? []
+	)
 		.map((subject) => {
 			const [subject_code, specialization_code] = subject.split("_");
 			return {
@@ -87,17 +89,13 @@ function formatPyqTitle(pyq: PyqData): string {
 			? `${subject_code.toUpperCase()} - ${specialization_code.toUpperCase()}`
 			: subject_code.toUpperCase(),
 	);
-	const exam = [
-		EXAM_TYPE_LABELS[pyq.type],
-		pyq.no,
-		pyq.back ? "BACK" : null,
-	].filter((part) => part !== null).join(" ");
+	const exam = [EXAM_TYPE_LABELS[pyq.type], pyq.no, pyq.back ? "BACK" : null]
+		.filter((part) => part !== null)
+		.join(" ");
 
-	return [
-		...subjects,
-		pyq.set ? `Set ${pyq.set}` : null,
-		exam,
-	].filter((part) => part !== null).join(" • ");
+	return [...subjects, pyq.set ? `Set ${pyq.set}` : null, exam]
+		.filter((part) => part !== null)
+		.join(" • ");
 }
 
 function formatPyqDate(pyq: PyqData): string {
@@ -105,7 +103,9 @@ function formatPyqDate(pyq: PyqData): string {
 		pyq.year,
 		pyq.month ? toTitleCase(MONTHS[pyq.month - 1]) : null,
 		pyq.date,
-	].filter((part) => part !== null).join(" ");
+	]
+		.filter((part) => part !== null)
+		.join(" ");
 }
 
 // Missing values sort before present ones.
@@ -156,12 +156,12 @@ function comparePyqs(a: PyqData, b: PyqData): number {
 	);
 }
 
+export type { ExamType, PyqData, Subject };
 export {
-	PYQ_NAME_PATTERN,
-	pyqDataSchema,
-	parsePyqName,
-	formatPyqTitle,
-	formatPyqDate,
 	comparePyqs,
+	formatPyqDate,
+	formatPyqTitle,
+	PYQ_NAME_PATTERN,
+	parsePyqName,
+	pyqDataSchema,
 };
-export type { PyqData, Subject, ExamType };
