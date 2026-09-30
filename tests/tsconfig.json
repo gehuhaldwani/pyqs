@@ -1,0 +1,13 @@
+{
+  // Tests run under Bun, so they get Bun's types; the site code does not.
+  "extends": "../tsconfig.json",
+  "include": [
+    "../.astro/types.d.ts",
+    "./**/*.ts"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "types": ["bun"],
+    "noEmit": true
+  }
+}

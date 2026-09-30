@@ -28,5 +28,5 @@ interface Props {
 const { entry } = Astro.props;
 ---
 
-{entry.data.type === "dir" && <ExplorerLayout {entry} />}
-{entry.data.type === "file" && <FileLayout {entry} />}
+{entry.data.type === "dir" && <ExplorerLayout {entry} dir={entry.data} />}
+{entry.data.type === "file" && <FileLayout file={entry.data} />}

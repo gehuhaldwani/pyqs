@@ -4,8 +4,8 @@
     {
       "name": "preview",
       "runtimeExecutable": "bun",
-      "runtimeArgs": ["run", "preview", "--port", "4321"],
-      "port": 4321
+      "runtimeArgs": ["run", "preview", "--port", "4322"],
+      "port": 4322
     }
   ]
 }

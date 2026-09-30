@@ -3,13 +3,14 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import type { LoaderContext } from "astro/loaders";
-import { filesystemLoader } from "@/lib/content/loader";
-import type { FsEntry } from "@/lib/content/schema";
-import { Pyq } from "@/lib/pyqs";
+import { filesystemLoader, formatSkippedSummary } from "@/lib/content/loader";
+import { pyqRules } from "@/lib/content/pyq-rules";
+import { fsEntrySchema, type DirEntry, type FileEntry, type FsEntry } from "@/lib/content/schema";
+import type { PyqData } from "@/lib/pyqs";
 
 type StoredEntry = {
 	id: string;
-	data: FsEntry<"dir"> & FsEntry<"file">;
+	data: FsEntry;
 	digest?: string;
 	rendered?: { html: string };
 };
@@ -42,6 +43,8 @@ function createContext() {
 		},
 		generateDigest: (data: unknown) => Bun.hash(JSON.stringify(data)).toString(),
 		renderMarkdown: async (content: string) => ({ html: `<p>${content.trim()}</p>` }),
+		// Like Astro, validate against the collection schema (and strip unknown keys)
+		parseData: async ({ data }: { data: unknown }) => fsEntrySchema.parse(data),
 	};
 
 	return {
@@ -49,6 +52,8 @@ function createContext() {
 		entries,
 		warnings,
 		errors,
+		dir: (id: string) => entries.get(id)?.data as DirEntry | undefined,
+		file: (id: string) => entries.get(id)?.data as FileEntry | undefined,
 	};
 }
 
@@ -83,12 +88,7 @@ afterEach(async () => {
 function loader() {
 	return filesystemLoader({
 		root,
-		validators: {
-			file: {
-				".pdf": Pyq.validator,
-				"*": () => false,
-			},
-		},
+		rules: pyqRules,
 	});
 }
 
@@ -126,23 +126,50 @@ describe("filesystemLoader", () => {
 
 		const upper = entries.get("/bca/sem 1/tcs101_endsem_2023_may.PDF")?.data;
 		expect(upper?.name).toBe("tcs101_endsem_2023_may");
-		expect(upper?.extension).toBe(".pdf");
+		expect(upper?.type === "file" && upper.extension).toBe(".pdf");
 	});
 
-	test("directory entries list shallow children", async () => {
-		const { context, entries } = createContext();
+	test("directory entries list child directories as summaries", async () => {
+		const { context, dir } = createContext();
 		await loader().load(context);
 
-		const bca = entries.get("/bca/")?.data;
-		expect(bca?.directories.map((d) => d.path)).toEqual(["/bca/sem 1/"]);
-		expect(bca?.directories[0].files).toEqual([]);
-		expect(bca?.files).toEqual([]);
-
-		const sem1 = entries.get("/bca/sem 1/")?.data;
-		expect(sem1?.files.map((f) => f.name).sort()).toEqual([
+		expect(dir("/bca/")?.directories).toEqual([
+			{ type: "dir", name: "sem 1", path: "/bca/sem 1/", parentPath: "/bca/" },
+		]);
+		expect(dir("/bca/")?.files).toEqual([]);
+		expect(dir("/bca/sem 1/")?.files.map((f) => f.name).sort()).toEqual([
 			"tcs101_endsem_2023_may",
 			"tcs101_midsem_2023",
 		]);
+	});
+
+	test("stores parsed PYQ details on file entries and in the parent listing", async () => {
+		const { context, dir, file } = createContext();
+		await loader().load(context);
+
+		const expected: PyqData = {
+			subjects: [{ subject_code: "tcs101", specialization_code: null }],
+			type: "endsem",
+			no: null,
+			back: false,
+			year: 2023,
+			month: 5,
+			date: null,
+			set: null,
+		};
+		expect(file("/bca/sem 1/tcs101_endsem_2023_may.PDF")?.pyq).toEqual(expected);
+		expect(
+			dir("/bca/sem 1/")?.files.find((f) => f.name === "tcs101_endsem_2023_may")?.pyq,
+		).toEqual(expected);
+	});
+
+	test("every stored entry satisfies the collection schema", async () => {
+		const { context, entries } = createContext();
+		await loader().load(context);
+
+		for (const { data } of entries.values()) {
+			expect(fsEntrySchema.parse(data)).toEqual(data);
+		}
 	});
 
 	test("renders index.md into the directory entry", async () => {
@@ -163,12 +190,13 @@ describe("filesystemLoader", () => {
 		expect(errors).toEqual([]);
 	});
 
-	test("validates each directory only once", async () => {
-		const { context } = createContext();
+	test("checks each directory only once", async () => {
+		const { context, dir } = createContext();
 		const seen: string[] = [];
 		await filesystemLoader({
 			root,
-			validators: {
+			rules: {
+				...pyqRules,
 				directory: (entry) => {
 					seen.push(entry.path);
 					return entry.path !== "/ba jmc/";
@@ -178,8 +206,7 @@ describe("filesystemLoader", () => {
 
 		expect(seen.filter((p) => p === "/bca/sem 1/")).toHaveLength(1);
 		expect(seen).not.toContain("/ba jmc/radio production & podcast/");
-		const rootDir = context.store.get("/")?.data as unknown as FsEntry<"dir">;
-		expect(rootDir.directories.map((d) => d.path)).toEqual(["/bca/"]);
+		expect(dir("/")?.directories.map((d) => d.path)).toEqual(["/bca/"]);
 	});
 
 	test("sets a digest that changes with content", async () => {
@@ -207,5 +234,74 @@ describe("filesystemLoader", () => {
 		expect(entries.has("/ba jmc/")).toBe(false);
 		expect(entries.has("/ba jmc/radio production & podcast/tcs101_midsem_2024.pdf")).toBe(false);
 		expect(entries.has("/bca/sem 1/tcs101_endsem_2023_may.PDF")).toBe(true);
+	});
+});
+
+describe("skipped summary", () => {
+	test("is logged once after loading, grouped by extension", async () => {
+		const { context, warnings } = createContext();
+		await filesystemLoader({
+			root,
+			rules: { ...pyqRules, directory: (entry) => entry.path !== "/ba jmc/" },
+		}).load(context);
+
+		// Per-file warnings are kept
+		expect(warnings).toContain("Skipping file /bca/sem 1/random notes.pdf due to validation");
+		expect(warnings.at(-1)).toBe(
+			[
+				"Skipped 1 directory:",
+				"    /ba jmc/",
+				"Skipped 2 files that did not match the loader rules:",
+				"  .pdf (1)",
+				"    /bca/sem 1/random notes.pdf",
+				"  .txt (1)",
+				"    /bca/sem 1/readme.txt",
+			].join("\n"),
+		);
+	});
+
+	test("is not logged when nothing is skipped", async () => {
+		const { context, warnings } = createContext();
+		await fs.rm(path.join(root, "bca/sem 1/random notes.pdf"));
+		await fs.rm(path.join(root, "bca/sem 1/readme.txt"));
+		await loader().load(context);
+
+		expect(warnings).toEqual([]);
+	});
+
+	test("does not carry skipped paths over between loads", async () => {
+		const { context, warnings } = createContext();
+		await loader().load(context);
+		await loader().load(context);
+
+		const summaries = warnings.filter((w) => w.startsWith("Skipped"));
+		expect(summaries).toHaveLength(2);
+		expect(summaries[0]).toBe(summaries[1]);
+	});
+});
+
+describe("formatSkippedSummary", () => {
+	test("returns null when nothing was skipped", () => {
+		expect(formatSkippedSummary({ skippedFiles: [], skippedDirectories: [] })).toBeNull();
+	});
+
+	test("sorts groups and paths, and labels files without an extension", () => {
+		expect(
+			formatSkippedSummary({
+				skippedFiles: ["/b/y.PDF", "/README.md", "/LICENSE", "/a/x.pdf"],
+				skippedDirectories: [],
+			}),
+		).toBe(
+			[
+				"Skipped 4 files that did not match the loader rules:",
+				"  (no extension) (1)",
+				"    /LICENSE",
+				"  .md (1)",
+				"    /README.md",
+				"  .pdf (2)",
+				"    /a/x.pdf",
+				"    /b/y.PDF",
+			].join("\n"),
+		);
 	});
 });

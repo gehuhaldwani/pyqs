@@ -1,25 +1,26 @@
 ---
-import type { FsEntry } from "@/lib/content/schema";
+import { isPyqFile, type DirEntry } from "@/lib/content/schema";
 import Item from "@/components/starwind/item";
 import PdfEntry from "./PdfEntry.astro";
 import DirectoryEntry from "./DirectoryEntry.astro";
 import UploadButton from "./UploadButton.astro";
-import { Pyq } from "@/lib/pyqs";
+import { comparePyqs } from "@/lib/pyqs";
 import EntryListContentBlock from "./EntryListContentBlock.astro";
 
 interface Props {
 	title: string;
 	path: string;
-	entry: FsEntry<"dir">;
+	entry: DirEntry;
 	capitalize?: boolean;
 }
 
 const { entry, capitalize = false, path, title } = Astro.props;
 
-const dirs = entry.directories.sort((a, b) => a.name.localeCompare(b.name));
-const pdfs = entry.files.filter((file) => file.extension === ".pdf");
-
-pdfs.sort((a, b) => new Pyq(b).compareTo(new Pyq(a)));
+const dirs = entry.directories.toSorted((a, b) => a.name.localeCompare(b.name));
+// Newest first
+const pdfs = entry.files
+	.filter(isPyqFile)
+	.toSorted((a, b) => comparePyqs(b.pyq, a.pyq));
 ---
 
 <div class="[&>*:not(:first-child)]:mt-4 select-none">

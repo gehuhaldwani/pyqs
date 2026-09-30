@@ -14,7 +14,8 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"test": "bun test"
+		"test": "bun test",
+		"check": "astro check && tsc -p tests"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.0.2",
@@ -38,7 +39,9 @@
 		"web-haptics": "^0.0.6"
 	},
 	"devDependencies": {
+		"@astrojs/check": "^0.9.10",
 		"@biomejs/biome": "2.5.14",
-		"@types/bun": "^1.4.2"
+		"@types/bun": "^1.4.2",
+		"typescript": "^6"
 	}
 }

@@ -1,34 +1,81 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { validateDirectory, validateFile, type Validators } from "./validator";
-import { fsEntrySchema, type FsEntry } from "./schema";
+import { acceptDirectory, processFile, type LoaderRules } from "./rules";
+import { fsEntrySchema, type DirEntry, type FsEntry } from "./schema";
+
+type LoadState = {
+    // Ids stored during this load; anything else in the store is stale
+    seen: Set<string>;
+    // Paths rejected by the loader rules, reported in a summary at the end
+    skippedFiles: string[];
+    skippedDirectories: string[];
+};
 
 // "" -> "/", "a/b" -> "/a/b/"
 function toDirPath(relativePath: string): string {
     return relativePath ? `/${relativePath}/` : "/";
 }
 
-function toDataEntry(
+// Lists skipped paths, with files grouped by extension so that e.g. badly
+// named PDFs stand out from unrelated files. Returns null if nothing was skipped.
+export function formatSkippedSummary({
+    skippedFiles,
+    skippedDirectories,
+}: Pick<LoadState, "skippedFiles" | "skippedDirectories">): string | null {
+    if (skippedFiles.length === 0 && skippedDirectories.length === 0) {
+        return null;
+    }
+
+    const lines: string[] = [];
+
+    if (skippedDirectories.length > 0) {
+        lines.push(`Skipped ${skippedDirectories.length} director${skippedDirectories.length === 1 ? "y" : "ies"}:`);
+        lines.push(...skippedDirectories.toSorted().map((p) => `    ${p}`));
+    }
+
+    if (skippedFiles.length > 0) {
+        const byExtension = Map.groupBy(
+            skippedFiles,
+            (p) => path.posix.extname(p).toLowerCase() || "(no extension)",
+        );
+        lines.push(`Skipped ${skippedFiles.length} file${skippedFiles.length === 1 ? "" : "s"} that did not match the loader rules:`);
+        for (const extension of [...byExtension.keys()].sort()) {
+            const paths = byExtension.get(extension) ?? [];
+            lines.push(`  ${extension} (${paths.length})`);
+            lines.push(...paths.toSorted().map((p) => `    ${p}`));
+        }
+    }
+
+    return lines.join("\n");
+}
+
+// Validates an entry against the collection schema and stores it.
+async function storeEntry(
     context: LoaderContext,
-    seen: Set<string>,
+    state: LoadState,
     entry: {
         id: string;
-        data: FsEntry<"dir"> | FsEntry<"file">;
+        data: FsEntry;
         filePath: string;
         content?: string;
     },
 ) {
-    seen.add(entry.id);
-    return {
+    state.seen.add(entry.id);
+    const data = await context.parseData({
         id: entry.id,
-        data: entry.data as unknown as Record<string, unknown>,
+        data: entry.data,
         filePath: entry.filePath,
-        digest: context.generateDigest({
-            data: entry.data as unknown as Record<string, unknown>,
-            content: entry.content ?? "",
-        }),
-    };
+    });
+    context.store.set({
+        id: entry.id,
+        data,
+        filePath: entry.filePath,
+        digest: context.generateDigest({ data, content: entry.content ?? "" }),
+        rendered: entry.content
+            ? await context.renderMarkdown(entry.content)
+            : undefined,
+    });
 }
 
 // Recursively stores a directory and its contents. Returns the directory entry,
@@ -37,20 +84,20 @@ async function processDirectory({
     dirPath,
     relativePath,
     context,
-    validators,
-    seen,
+    rules,
+    state,
 }: {
     dirPath: string;
     // POSIX path relative to the loader root, "" for the root itself
     relativePath: string;
     context: LoaderContext;
-    validators?: Validators;
-    seen: Set<string>;
-}): Promise<FsEntry<"dir"> | undefined> {
+    rules?: LoaderRules;
+    state: LoadState;
+}): Promise<DirEntry | undefined> {
     const directoryRelativePath = toDirPath(relativePath);
     const parentRelativePath = path.posix.dirname(relativePath);
 
-    const directoryEntry: FsEntry<"dir"> = {
+    const directoryEntry: DirEntry = {
         type: "dir",
         name: path.basename(dirPath),
         path: directoryRelativePath,
@@ -59,7 +106,8 @@ async function processDirectory({
         files: [],
     };
 
-    if (!validateDirectory(directoryEntry, validators)) {
+    if (!acceptDirectory(directoryEntry, rules)) {
+        state.skippedDirectories.push(directoryRelativePath);
         context.logger.warn(
             `Skipping directory ${directoryRelativePath} due to validation`,
         );
@@ -80,17 +128,14 @@ async function processDirectory({
                 dirPath: path.join(dirPath, entry.name),
                 relativePath: path.posix.join(relativePath, entry.name),
                 context,
-                validators,
-                seen,
+                rules,
+                state,
             });
 
             if (subDirEntry) {
-                // Parent only keeps a shallow reference to its children
-                directoryEntry.directories.push({
-                    ...subDirEntry,
-                    directories: [],
-                    files: [],
-                });
+                // Parent only keeps a summary of its children
+                const { directories, files, ...summary } = subDirEntry;
+                directoryEntry.directories.push(summary);
             }
         }
 
@@ -108,17 +153,19 @@ async function processDirectory({
             const fileRelativePath = `${directoryRelativePath}${entry.name}`;
             const { name, ext } = path.parse(entry.name);
 
-            const fileEntry: FsEntry<"file"> = {
-                type: "file",
-                name,
-                path: fileRelativePath,
-                parentPath: directoryRelativePath,
-                extension: ext.toLowerCase(),
-                directories: undefined,
-                files: undefined,
-            };
+            const fileEntry = processFile(
+                {
+                    type: "file",
+                    name,
+                    path: fileRelativePath,
+                    parentPath: directoryRelativePath,
+                    extension: ext.toLowerCase(),
+                },
+                rules,
+            );
 
-            if (!validateFile(fileEntry, validators)) {
+            if (!fileEntry) {
+                state.skippedFiles.push(fileRelativePath);
                 context.logger.warn(
                     `Skipping file ${fileRelativePath} due to validation`,
                 );
@@ -127,23 +174,18 @@ async function processDirectory({
 
             directoryEntry.files.push(fileEntry);
 
-            context.store.set(
-                toDataEntry(context, seen, {
-                    id: fileRelativePath,
-                    data: fileEntry,
-                    filePath,
-                }),
-            );
+            await storeEntry(context, state, {
+                id: fileRelativePath,
+                data: fileEntry,
+                filePath,
+            });
         }
 
-        context.store.set({
-            ...toDataEntry(context, seen, {
-                id: directoryRelativePath,
-                data: directoryEntry,
-                filePath: dirPath,
-                content,
-            }),
-            rendered: content ? await context.renderMarkdown(content) : undefined,
+        await storeEntry(context, state, {
+            id: directoryRelativePath,
+            data: directoryEntry,
+            filePath: dirPath,
+            content,
         });
 
         return directoryEntry;
@@ -152,29 +194,34 @@ async function processDirectory({
     }
 }
 
-export function filesystemLoader(options: { root: string, validators?: Validators }): Loader {
+export function filesystemLoader(options: { root: string, rules?: LoaderRules }): Loader {
     return {
         name: "fs-loader",
         schema: fsEntrySchema,
         async load(context) {
             context.logger.info("Loading filesystem content");
 
-            const seen = new Set<string>();
+            const state: LoadState = { seen: new Set(), skippedFiles: [], skippedDirectories: [] };
 
             await processDirectory({
                 dirPath: options.root,
                 relativePath: "",
                 context,
-                validators: options.validators,
-                seen,
+                rules: options.rules,
+                state,
             });
 
             // Drop entries for files/directories that no longer exist, so the
             // cached data store does not keep serving deleted or renamed papers.
             for (const id of context.store.keys()) {
-                if (!seen.has(id)) {
+                if (!state.seen.has(id)) {
                     context.store.delete(id);
                 }
+            }
+
+            const summary = formatSkippedSummary(state);
+            if (summary) {
+                context.logger.warn(summary);
             }
 
             context.logger.info("Filesystem content loading completed");

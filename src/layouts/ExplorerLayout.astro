@@ -6,23 +6,25 @@ import { base } from "astro:config/server";
 import Separator from "@/components/starwind/separator";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
 import { render, type CollectionEntry } from "astro:content";
-import type { FsEntry } from "@/lib/content/schema";
+import type { DirEntry } from "@/lib/content/schema";
 import HomePageBanner from "@/components/widgets/HomePageBanner.astro";
 import Prose from "@/components/partials/Prose.astro";
 import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
 
 interface Props {
+	// The collection entry is needed to render the folder's index.md
 	entry: CollectionEntry<"fs">;
+	dir: DirEntry;
 }
 
-const { entry } = Astro.props;
+const { entry, dir } = Astro.props;
 
 const isHomePage = Astro.url.pathname === base;
 
-const path: string = addForwardSlashAndBaseUrl(entry.data.path);
+const path: string = addForwardSlashAndBaseUrl(dir.path);
 const pathList = path.split("/").filter((element) => element);
 
-let title: string = entry.data.name.toUpperCase();
+let title: string = dir.name.toUpperCase();
 
 if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 	title = pathList.splice(-2).join(" > ");
@@ -30,7 +32,6 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 	title = pathList.splice(-3).join(" > ");
 }
 
-const data = entry.data as FsEntry<"dir">;
 const { Content } = await render(entry);
 ---
 
@@ -45,7 +46,7 @@ const { Content } = await render(entry);
 
 	<Separator class="my-4" />
 
-	<EntryList entry={data} {path} {title} capitalize={isHomePage} />
+	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 
 	<Prose class="my-10">
 		<Content />

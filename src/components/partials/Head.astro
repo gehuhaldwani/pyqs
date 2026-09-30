@@ -14,6 +14,8 @@ interface Props {
 	ogImageUrl?: URL;
 	ogImage?: ImageMetadata;
 	transition?: boolean;
+	// Disable browser pinch-zoom, for pages with their own zoom (PDF viewer).
+	lockZoom?: boolean;
 }
 
 export type { Props };
@@ -23,7 +25,12 @@ const {
 	description = siteConfig.site.description,
 	ogImage,
 	transition = true,
+	lockZoom = false,
 } = Astro.props;
+
+const viewport = lockZoom
+	? "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+	: "width=device-width, initial-scale=1.0";
 
 const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
@@ -44,10 +51,7 @@ if (ogImage) {
 ---
 
 <meta charset="UTF-8" />
-<meta
-	name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-/>
+<meta name="viewport" content={viewport} />
 
 <title>{title}</title>
 <meta name="description" content={description} />

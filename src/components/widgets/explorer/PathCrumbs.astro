@@ -39,6 +39,7 @@ for (const p of path.split("/")) {
 			size="sm"
 			disabled={!back}
 			href="../"
+			data-astro-prefetch="viewport"
 			aria-label="Up a folder"
 			title="Up a folder">↑</Button
 		>
@@ -50,6 +51,7 @@ for (const p of path.split("/")) {
 							<Breadcrumb.Item>
 								<Breadcrumb.Link
 									href={crumb.path}
+									data-astro-prefetch="viewport"
 									class="text-lg"
 								>
 									{crumb.title}

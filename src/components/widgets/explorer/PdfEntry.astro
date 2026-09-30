@@ -1,37 +1,30 @@
 ---
 import Item from "@/components/starwind/item";
-import type { FsEntry } from "@/lib/content/schema";
-import { Pyq } from "@/lib/pyqs";
+import type { PyqFileEntry } from "@/lib/content/schema";
+import { formatPyqDate, formatPyqTitle } from "@/lib/pyqs";
 import { addForwardSlashAndBaseUrl } from "@/utils/url";
 import { Icon } from "astro-icon/components";
 
 interface Props {
-	entry: FsEntry<"file">;
+	entry: PyqFileEntry;
 }
 
 const { entry } = Astro.props;
-
-let pyq: Pyq;
-try {
-	pyq = new Pyq(entry);
-} catch (e) {
-	console.error("Error creating Pyq instance:", (e as Error).message);
-	return;
-}
 ---
 
 <Item.Root
 	as="a"
 	href={addForwardSlashAndBaseUrl(entry.path)}
+	data-astro-prefetch="hover"
 	class="[a]:active:bg-accent/50"
 >
 	<Item.Media variant="image">
 		<Icon name="pdf" width={32} height={32} class:list={"text-red-500"} />
 	</Item.Media>
 	<Item.Content>
-		<Item.Title>{pyq.title}</Item.Title>
+		<Item.Title>{formatPyqTitle(entry.pyq)}</Item.Title>
 		<Item.Description>
-			{pyq.dateString}
+			{formatPyqDate(entry.pyq)}
 		</Item.Description>
 	</Item.Content>
 </Item.Root>

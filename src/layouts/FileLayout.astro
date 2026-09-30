@@ -1,17 +1,15 @@
 ---
 import siteConfig from "@/configs/site.config";
 import { githubRawUrl } from "@/utils/links";
-import type { FsEntry } from "@/lib/content/schema";
+import type { FileEntry } from "@/lib/content/schema";
 import PdfLayout from "./PdfLayout.astro";
-import type { CollectionEntry } from "astro:content";
 
 interface Props {
-	entry: CollectionEntry<"fs">;
+	file: FileEntry;
 }
 
-const { entry: collectionEntry } = Astro.props;
+const { file: entry } = Astro.props;
 
-const entry = collectionEntry.data as FsEntry<"file">;
 const downloadUrl = githubRawUrl(
 	siteConfig.site.githubRepo,
 	siteConfig.site.contentBranch,

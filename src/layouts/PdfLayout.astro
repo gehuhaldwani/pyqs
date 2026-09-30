@@ -2,11 +2,11 @@
 import PdfViewer from "@/components/widgets/PdfViewer.astro";
 import BaseLayout from "./BaseLayout.astro";
 import siteConfig from "@/configs/site.config";
-import type { FsEntry } from "@/lib/content/schema";
+import type { FileEntry } from "@/lib/content/schema";
 import { githubRawUrl, pdfThumbnailPath } from "@/utils/links";
 
 interface Props {
-    entry: FsEntry<"file">;
+    entry: FileEntry;
 }
 
 const { entry } = Astro.props;
@@ -20,6 +20,7 @@ const thumbnail = githubRawUrl(githubRepo, thumbnailsBranch, pdfThumbnailPath(en
     title={entry.name.toUpperCase().split("_").join(" ")}
     description={entry.path.split("/").slice(1).join(" > ")}
     ogImageUrl={new URL(thumbnail)}
+    lockZoom
 >
     <PdfViewer {src} />
 </BaseLayout>

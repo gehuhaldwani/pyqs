@@ -53,8 +53,8 @@ const { class: className, ...props } = Astro.props;
 				<Dropdown.Content align="end">
 					{
 						siteConfig.header.links.map((link) => (
-							<Dropdown.Item
-								as="a"
+							<Dropdown.LinkItem
+								closeOnClick
 								href={
 									link.type === "external"
 										? link.url
@@ -67,7 +67,7 @@ const { class: className, ...props } = Astro.props;
 								}
 							>
 								{link.name}
-							</Dropdown.Item>
+							</Dropdown.LinkItem>
 						))
 					}
 				</Dropdown.Content>
