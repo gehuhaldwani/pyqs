@@ -56,7 +56,7 @@ describe("createBuildInfo", () => {
 
 describe("formatBuildTime", () => {
 	test("formats in the given timezone", () => {
-		// 12:00 UTC is 17:30 in Asia/Kolkata
+		// 12:00 UTC is 17:30 in Asia/Kolkata.
 		expect(
 			formatBuildTime(new Date("2026-09-30T12:00:00Z"), "Asia/Kolkata"),
 		).toMatch(/30\/9\/2026.*5:30:00\s?pm/i);

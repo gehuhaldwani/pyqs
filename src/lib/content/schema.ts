@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import { type PyqData, pyqDataSchema } from "@/lib/pyqs";
 
-// The zod schemas are the source of truth; TypeScript types are inferred from them.
+// The types below are inferred from these schemas, so change the schemas, not the types.
 
 const baseSchema = z.object({
 	name: z.string(),
@@ -9,21 +9,20 @@ const baseSchema = z.object({
 	parentPath: z.string(),
 });
 
-// How a file is listed and shown. Loader rules set it; "file" is the fallback
-// for anything no rule claims (shown as a download page).
+// Loader rules set the kind. "file" is the fallback, and its page is a download link.
 export const FILE_KINDS = ["file", "pdf", "doc"] as const;
 
 const fileSchema = baseSchema.extend({
 	type: z.literal("file"),
 	kind: z.enum(FILE_KINDS),
 	extension: z.string(),
-	// Display title, e.g. from a markdown file's frontmatter
+	// From a markdown file's frontmatter.
 	title: z.string().optional(),
-	// Set for files whose name follows the PYQ naming scheme
+	// Set for files whose name follows the PYQ naming scheme.
 	pyq: pyqDataSchema.optional(),
 });
 
-// A child directory as listed by its parent (without its own contents).
+// How a parent directory lists a child, without the child's contents.
 const dirSummarySchema = baseSchema.extend({
 	type: z.literal("dir"),
 });
@@ -49,7 +48,6 @@ export function isPyqFile(file: FileEntry): file is PyqFileEntry {
 	return file.pyq !== undefined;
 }
 
-// Name shown in listings, crumbs and page titles.
 export function displayName(file: FileEntry): string {
 	return file.title ?? file.name;
 }

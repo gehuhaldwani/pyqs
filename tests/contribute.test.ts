@@ -3,14 +3,13 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { parsePyqName } from "@/lib/pyqs";
 
-// The contribution guide tells people how to name files; its examples must
-// actually be accepted by the site, or contributors' papers get skipped.
+// Contributors copy these examples, so the site must accept every one of them.
 const guide = await readFile(
 	path.join(import.meta.dir, "../src/pages/contribute.md"),
 	"utf-8",
 );
 
-// Example list items look like: - `tcs101_midsem_2023.pdf`
+// Matches list items such as: - `tcs101_midsem_2023.pdf`
 const examples = [...guide.matchAll(/^- `([^`]+\.pdf)`$/gm)].map(
 	(match) => match[1],
 );

@@ -11,8 +11,10 @@ interface Props {
 	description?: string;
 	ogImageUrl?: URL;
 	transition?: boolean;
-	// Disable browser pinch-zoom, for pages with their own zoom (PDF viewer).
+	// Disables pinch-zoom on pages with their own zoom controls, such as the PDF viewer.
 	lockZoom?: boolean;
+	// Origins the page fetches from early, such as the host of a PDF.
+	preconnect?: string[];
 }
 
 export type { Props };
@@ -23,6 +25,7 @@ const {
 	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
 	transition = true,
 	lockZoom = false,
+	preconnect = [],
 } = Astro.props;
 
 const viewport = lockZoom
@@ -34,6 +37,20 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
 <meta charset="UTF-8" />
 <meta name="viewport" content={viewport} />
+<!-- Matches the page background. Media queries follow the OS theme, not the site's toggle. -->
+<meta
+	name="theme-color"
+	content="#fafafa"
+	media="(prefers-color-scheme: light)"
+/>
+<meta
+	name="theme-color"
+	content="#0a0a0a"
+	media="(prefers-color-scheme: dark)"
+/>
+
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+{preconnect.map((origin) => <link rel="preconnect" href={origin} />)}
 
 <title>{title}</title>
 <meta name="description" content={description} />
@@ -43,8 +60,6 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
 <link rel="sitemap" href={addBaseUrl("/sitemap-index.xml")} />
 <meta name="generator" content={Astro.generator} />
-
-<!-- Open Graph -->
 
 <meta property="og:title" content={title} />
 <meta property="og:site_name" content={siteConfig.site.title} />
@@ -57,7 +72,6 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
 {transition && <ClientRouter fallback="none" />}
 
-<!-- Applies the stored/system theme before paint and re-applies it after each view-transition swap -->
 <ThemeInitScript />
 
 <script>

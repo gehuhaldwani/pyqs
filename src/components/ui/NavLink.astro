@@ -4,18 +4,27 @@ import { Icon } from "astro-icon/components";
 import { linkAttributes } from "@/utils/site-url";
 
 interface Props extends Omit<HTMLAttributes<"a">, "href" | "target" | "rel"> {
-	// A site path ("/about") or, when `external`, a full URL
+	// A site path such as "/about", or a full URL when `external` is set.
 	href: string;
-	// Open in a new tab instead of resolving `href` against the site's base
+	// Opens in a new tab and uses `href` as is, without the site's base path.
 	external?: boolean;
-	// Show a ↗ icon after external links
 	externalIcon?: boolean;
 }
 
-const { href, external = false, externalIcon = false, ...rest } = Astro.props;
+const {
+	href,
+	external = false,
+	externalIcon = false,
+	class: className,
+	...rest
+} = Astro.props;
 ---
 
-<a {...linkAttributes(href, external)} {...rest}>
+<a
+	{...linkAttributes(href, external)}
+	class:list={["link-base", className]}
+	{...rest}
+>
 	<slot />
 	{
 		external && externalIcon && (

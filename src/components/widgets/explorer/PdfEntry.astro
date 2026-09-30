@@ -19,10 +19,16 @@ const { entry } = Astro.props;
 	class="item-link"
 >
 	<Item.Media variant="image">
-		<Icon name="pdf" width={32} height={32} class="text-pdf" />
+		<Icon
+			name="pdf"
+			width={32}
+			height={32}
+			class="text-pdf"
+			aria-hidden="true"
+		/>
 	</Item.Media>
 	<Item.Content>
-		<Item.Title>{formatPyqTitle(entry.pyq)}</Item.Title>
+		<Item.Title translate="no">{formatPyqTitle(entry.pyq)}</Item.Title>
 		<Item.Description>
 			{formatPyqDate(entry.pyq)}
 		</Item.Description>

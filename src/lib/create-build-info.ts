@@ -2,7 +2,7 @@ import type { Social } from "@/configs/types";
 import type { BuildInfo } from "./build-info";
 import { renderIconSvg } from "./icons";
 
-// Build-time only: pulls in full icon sets.
+// Build-time only, because it loads full icon sets.
 function createBuildInfo(
 	socials: Social[],
 	builtAt: Date = new Date(),

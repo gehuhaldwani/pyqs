@@ -37,7 +37,7 @@ const subjectSchema = z.object({
 	specialization_code: z.string().nullable(),
 });
 
-// Parsed from a paper's file name by the content loader and stored with the entry.
+// The loader parses this from a paper's file name and stores it on the entry.
 const pyqDataSchema = z.object({
 	subjects: z.array(subjectSchema).min(1),
 	type: z.enum(EXAM_TYPES),
@@ -52,7 +52,7 @@ const pyqDataSchema = z.object({
 type Subject = z.infer<typeof subjectSchema>;
 type PyqData = z.infer<typeof pyqDataSchema>;
 
-// Parses a file name (without extension), or returns null if it doesn't follow the naming scheme.
+// Takes a file name without its extension. Returns null if it doesn't follow the naming scheme.
 function parsePyqName(name: string): PyqData | null {
 	const groups = PYQ_NAME_PATTERN.exec(name)?.groups;
 	if (!groups) {
@@ -142,7 +142,7 @@ function compareSubjects(a: Subject[], b: Subject[]): number {
 	return 0;
 }
 
-// Ascending chronological order; a total order, so sorting is deterministic.
+// Oldest first. Every field takes part, so sorting gives the same order on every build.
 function comparePyqs(a: PyqData, b: PyqData): number {
 	return (
 		a.year - b.year ||

@@ -8,8 +8,7 @@ Allow: /
 Sitemap: ${sitemapURL.href}
 `;
 
-// Note: crawlers only read /robots.txt at the domain root, so this file (served
-// under the `base` path) is informational unless the root serves or proxies it.
+// Crawlers only read /robots.txt at the domain root, so this copy under the base path has no effect unless the root serves it.
 export const GET: APIRoute = ({ site }) => {
 	const sitemapURL = sitemapIndexUrl(
 		site ?? import.meta.env.SITE,

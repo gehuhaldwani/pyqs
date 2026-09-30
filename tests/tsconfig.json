@@ -1,5 +1,5 @@
 {
-	// Tests run under Bun, so they get Bun's types; the site code does not.
+	// Tests run under Bun and get Bun's types. The site code does not.
 	"extends": "../tsconfig.json",
 	"include": ["../.astro/types.d.ts", "./**/*.ts"],
 	"exclude": [],

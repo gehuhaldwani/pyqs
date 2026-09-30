@@ -49,7 +49,7 @@ function createContext() {
 		},
 		generateDigest: (data: unknown) =>
 			Bun.hash(JSON.stringify(data)).toString(),
-		// Minimal stand-in for Astro's renderer: `key: value` frontmatter + body
+		// Stand-in for Astro's renderer that reads `key: value` frontmatter.
 		renderMarkdown: async (content: string) => {
 			const match = /^---\n([\s\S]*?)\n---\n?/.exec(content);
 			const frontmatter = Object.fromEntries(
@@ -61,7 +61,7 @@ function createContext() {
 			const body = match ? content.slice(match[0].length) : content;
 			return { html: `<p>${body.trim()}</p>`, metadata: { frontmatter } };
 		},
-		// Like Astro, validate against the collection schema (and strip unknown keys)
+		// Validates and strips unknown keys, as Astro does.
 		parseData: async ({ data }: { data: unknown }) => fsEntrySchema.parse(data),
 	};
 
@@ -132,7 +132,7 @@ describe("filesystemLoader", () => {
 		await loader().load(context);
 
 		expect(entries.get("/")?.data.parentPath).toBe("/");
-		// Regression: top-level folders used to get "/./"
+		// Regression test. Top-level folders used to get "/./".
 		expect(entries.get("/bca/")?.data.parentPath).toBe("/");
 		expect(entries.get("/bca/sem 1/")?.data.parentPath).toBe("/bca/");
 		expect(
@@ -257,7 +257,7 @@ describe("filesystemLoader", () => {
 		);
 	});
 
-	// Regression: the cached data store kept entries for deleted files.
+	// Regression test. The cached data store used to keep entries for deleted files.
 	test("removes entries for deleted files and directories on reload", async () => {
 		const { context, entries } = createContext();
 		await loader().load(context);
@@ -283,7 +283,7 @@ describe("skipped summary", () => {
 			rules: { ...pyqRules, directory: (entry) => entry.path !== "/ba jmc/" },
 		}).load(context);
 
-		// Per-file warnings are kept
+		// The per-file warnings still appear.
 		expect(warnings).toContain(
 			"Skipping file /bca/sem 1/random notes.pdf due to validation",
 		);
@@ -356,9 +356,9 @@ describe("formatSkippedSummary", () => {
 describe("empty directories", () => {
 	test("leaves out directories with nothing kept inside them", async () => {
 		await writeTree(root, [
-			// only an invalid paper
+			// Holds only a misnamed paper.
 			"bhm/sem 7/food production 2 a/BHM701 .pdf",
-			// nested: only contains an empty directory
+			// Holds only an empty directory.
 			"bba/sem 2/old/notes.txt",
 		]);
 		const { context, entries, dir, warnings } = createContext();
@@ -467,13 +467,12 @@ describe("markdown docs", () => {
 			"<p>Hello</p>",
 		);
 
-		// Title comes from frontmatter, which is not part of the page body
+		// The frontmatter sets the title and is not part of the page body.
 		expect(file("/bca/guides/how to study.md")?.title).toBe("How to Study");
 		expect(entries.get("/bca/guides/how to study.md")?.rendered?.html).toBe(
 			"<p># Tips</p>",
 		);
 
-		// Listed in the parent directory next to papers
 		expect(
 			dir("/bca/sem 1/")
 				?.files.map((f) => `${f.kind}:${f.name}`)
@@ -484,12 +483,12 @@ describe("markdown docs", () => {
 			"pdf:tcs101_midsem_2023",
 		]);
 
-		// A folder with only docs is not empty
+		// A folder with only docs is not empty.
 		expect(dir("/bca/")?.directories.map((d) => d.path)).toContain(
 			"/bca/guides/",
 		);
 
-		// README.md is repository metadata and stays hidden
+		// README.md stays hidden.
 		expect(entries.has("/bca/sem 1/README.md")).toBe(false);
 		expect(warnings.at(-1)).toContain("/bca/sem 1/README.md");
 	});

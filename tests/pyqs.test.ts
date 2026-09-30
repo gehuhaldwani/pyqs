@@ -120,8 +120,7 @@ describe("comparePyqs", () => {
 		expect(cmp("tcs101_midsem_2023_jan", "tcs101_midsem_2023_jan_1")).toBe(-1);
 	});
 
-	// Regression: papers with the same month and no date (or no month at all)
-	// used to return -1 in both directions.
+	// Regression test. Papers with the same month and no date, or no month, used to compare as -1 both ways.
 	test("is antisymmetric when month/date are missing on both sides", () => {
 		for (const [x, y] of [
 			["tcs101_midsem_2023", "tcs102_midsem_2023"],

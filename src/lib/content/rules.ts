@@ -1,17 +1,14 @@
 import type { DirEntry, FileEntry } from "./schema";
 
-// Rules deciding which directories and files the loader keeps.
-
-// Return false to skip the directory (and everything inside it).
+// Returns false to skip the directory and everything inside it.
 type DirectoryRule = (entry: DirEntry) => boolean;
 
-// Return the entry to store (optionally with extra data such as `pyq`),
-// or null to skip the file.
+// Returns the entry to store, possibly with extra data such as `pyq`, or null to skip the file.
 type FileRule = (entry: FileEntry) => FileEntry | null;
 
 type LoaderRules = {
 	directory?: DirectoryRule;
-	// Keyed by lower-case extension (".pdf"); "*" applies to any other extension.
+	// Keyed by lower-case extension such as ".pdf". The "*" rule matches any other extension.
 	file?: Record<string, FileRule>;
 };
 

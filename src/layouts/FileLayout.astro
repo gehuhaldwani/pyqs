@@ -1,5 +1,5 @@
 ---
-// Picks the page layout for a file by its kind (set by the loader rules).
+// Picks the page layout by the file's kind, which the loader rules set.
 import type { CollectionEntry } from "astro:content";
 import Alert from "@/components/starwind/alert";
 import siteConfig from "@/configs/site.config";
@@ -29,7 +29,7 @@ const downloadUrl = githubRawUrl(
 {
 	file.kind === "file" && (
 		<Alert.Root variant="error">
-			<Alert.Title>Preview not supported</Alert.Title>
+			<Alert.Title>Preview Not Supported</Alert.Title>
 			<Alert.Description>
 				<p>
 					Sorry, this file format (
@@ -37,8 +37,9 @@ const downloadUrl = githubRawUrl(
 					not supported for preview.
 				</p>
 				<p>
-					You can download the file directly by clicking
-					<a href={downloadUrl} class="text-primary underline">here</a>.
+					<a href={downloadUrl} class="link-base text-primary underline">
+						Download {file.name}{file.extension}
+					</a>
 				</p>
 			</Alert.Description>
 		</Alert.Root>

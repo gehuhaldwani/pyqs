@@ -1,7 +1,8 @@
 ---
 import PdfViewer from "@/components/widgets/PdfViewer.astro";
 import siteConfig from "@/configs/site.config";
-import type { FileEntry } from "@/lib/content/schema";
+import { displayName, type FileEntry } from "@/lib/content/schema";
+import { formatPyqTitle } from "@/lib/pyqs";
 import { githubRawUrl, pdfThumbnailPath } from "@/utils/url";
 import BaseLayout from "./BaseLayout.astro";
 
@@ -18,13 +19,18 @@ const thumbnail = githubRawUrl(
 	thumbnailsBranch,
 	pdfThumbnailPath(entry.path),
 );
+
+const pageTitle = entry.name.toUpperCase().split("_").join(" ");
+const title = entry.pyq ? formatPyqTitle(entry.pyq) : displayName(entry);
 ---
 
 <BaseLayout
-    title={entry.name.toUpperCase().split("_").join(" ")}
+    title={pageTitle}
     description={entry.path.split("/").slice(1).join(" > ")}
     ogImageUrl={new URL(thumbnail)}
     lockZoom
+    preconnect={[new URL(src).origin]}
 >
+    <h1 class="sr-only">{title}</h1>
     <PdfViewer {src} />
 </BaseLayout>

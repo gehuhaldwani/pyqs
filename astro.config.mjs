@@ -8,9 +8,8 @@ export default defineConfig({
 	site: "https://haldwani.gehu.in",
 	base: "/pyqs/",
 	trailingSlash: "always",
-	// ClientRouter enables prefetchAll, and clientPrerender turns each prefetch
-	// into a full prerender. Default to "hover" so heavy pages (PDF viewer) only
-	// load on intent; folder links opt into "viewport" via data-astro-prefetch.
+	// ClientRouter prefetches every link, and clientPrerender turns each prefetch into a full prerender.
+	// "hover" keeps heavy PDF pages from loading until a link is hovered, and folder links opt into "viewport".
 	prefetch: {
 		defaultStrategy: "hover",
 	},

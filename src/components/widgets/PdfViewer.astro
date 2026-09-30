@@ -6,10 +6,14 @@ interface Props {
 const { src } = Astro.props;
 ---
 
-<div id="pdf-viewer" class="w-full h-screen" data-src={src}></div>
+<div
+	id="pdf-viewer"
+	class="w-full h-dvh pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]"
+	data-src={src}
+></div>
 
 <script>
-	// https://www.embedpdf.com/docs/snippet/introduction
+	// Docs: https://www.embedpdf.com/docs/snippet/introduction
 
 	import EmbedPDF from "@embedpdf/snippet";
 	import { navigate } from "astro:transitions/client";
@@ -110,8 +114,8 @@ const { src } = Astro.props;
 	async function setupViewer() {
 		const container = document.getElementById("pdf-viewer");
 
-		// The viewer tears itself down when its element leaves the DOM; this
-		// only guards against initialising the same container twice.
+		// EmbedPDF cleans up when its element leaves the DOM.
+		// This check only stops a second init on the same container.
 		if (container && !container.dataset.initialized) {
 			container.dataset.initialized = "true";
 
@@ -142,7 +146,6 @@ const { src } = Astro.props;
 				return;
 			}
 
-			// plugins
 			const commands = commandsPlugin.provides();
 			const ui = uiPlugin.provides();
 

@@ -1,24 +1,21 @@
-// Pure URL helpers. Keep this module free of `astro:*` imports so it can be
-// unit tested; `site-url.ts` binds these to the site's Astro config.
+// Keep astro:* imports out of this module so the tests can import it. site-url.ts binds these helpers to the Astro config.
 
 type TrailingSlash = "always" | "never" | "ignore";
 
 const UPLOADER_URL = "https://pyqs-uploader.pages.dev/";
 
-// Attributes for links that leave the site.
 const EXTERNAL_LINK_ATTRIBUTES = { target: "_blank", rel: "noopener" } as const;
 
 function ensureLeadingSlash(path: string): string {
 	return path.startsWith("/") ? path : `/${path}`;
 }
 
-// joinBase("/pyqs/", "about") -> "/pyqs/about"
+// joinBase("/pyqs/", "about") returns "/pyqs/about".
 function joinBase(base: string, path: string): string {
 	const basePath = base.endsWith("/") ? base.slice(0, -1) : base;
 	return `${basePath}${ensureLeadingSlash(path)}`;
 }
 
-// Adds or removes the trailing slash to match Astro's `trailingSlash` option.
 function applyTrailingSlash(url: string, trailingSlash: TrailingSlash): string {
 	if (trailingSlash === "always" && !url.endsWith("/")) {
 		return `${url}/`;
@@ -29,7 +26,7 @@ function applyTrailingSlash(url: string, trailingSlash: TrailingSlash): string {
 	return url;
 }
 
-// Encodes each segment of a slash-separated path while keeping the slashes.
+// Encodes each path segment and keeps the slashes.
 function encodePath(path: string): string {
 	return path.split("/").map(encodeURIComponent).join("/");
 }

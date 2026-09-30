@@ -1,13 +1,11 @@
 import { parsePyqName } from "@/lib/pyqs";
 import type { LoaderRules } from "./rules";
 
-// Repository metadata that is never listed (index.md is handled by the loader).
+// README.md documents the content repository and is not archive content.
 const HIDDEN_MARKDOWN = new Set(["readme"]);
 
-// Loader rules for the PYQs archive:
-// - PDFs that follow the naming scheme, with their parsed details
-// - any other markdown file, as a "doc" page (no name filtering)
-// - everything else is skipped
+// Keeps PDFs that follow the naming scheme, and every markdown file except README as a doc.
+// Everything else is skipped.
 export const pyqRules: LoaderRules = {
 	file: {
 		".pdf": (entry) => {

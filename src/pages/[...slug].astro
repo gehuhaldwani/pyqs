@@ -14,9 +14,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		props: {
 			entry: entry,
 		},
-		// Lets experimental.incrementalBuild reuse the previous output when the
-		// entry is unchanged. The fs loader updates the digest whenever an
-		// entry's data (including a folder's listing or index.md) changes.
+		// Incremental builds reuse a page's previous output while its cacheKey stays the same.
+		// The loader changes the digest whenever the entry's data or markdown changes.
 		cacheKey: entry.digest === undefined ? undefined : String(entry.digest),
 	}));
 };

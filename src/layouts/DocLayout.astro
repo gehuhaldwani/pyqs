@@ -1,6 +1,5 @@
 ---
-// A markdown "doc" file: the folder-style frame (crumbs) with the rendered
-// markdown as the page body, and no entry list.
+// Page for a markdown doc. It uses the folder page frame without the entry list.
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
 import { displayName, type FileEntry } from "@/lib/content/schema";
@@ -8,7 +7,7 @@ import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
 
 interface Props {
-	// The collection entry is needed to render the markdown
+	// render() needs the collection entry for the markdown body.
 	entry: CollectionEntry<"fs">;
 	doc: FileEntry;
 }
@@ -16,10 +15,16 @@ interface Props {
 const { entry, doc } = Astro.props;
 
 const title = displayName(doc);
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const hasOwnHeading = headings.some((heading) => heading.depth === 1);
 ---
 
-<BrowseLayout {title} path={addForwardSlashAndBaseUrl(doc.path)} current={title}>
+<BrowseLayout
+	{title}
+	path={addForwardSlashAndBaseUrl(doc.path)}
+	current={title}
+	heading={!hasOwnHeading}
+>
 	<Prose class="my-10">
 		<Content />
 	</Prose>

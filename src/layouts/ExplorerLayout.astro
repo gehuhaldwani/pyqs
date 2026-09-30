@@ -8,7 +8,7 @@ import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
 
 interface Props {
-	// The collection entry is needed to render the folder's index.md
+	// render() needs the collection entry for the folder's index.md.
 	entry: CollectionEntry<"fs">;
 	dir: DirEntry;
 }
@@ -28,10 +28,11 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 	title = pathList.splice(-3).join(" > ");
 }
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const hasOwnHeading = headings.some((heading) => heading.depth === 1);
 ---
 
-<BrowseLayout {title} {path} back={!isHomePage}>
+<BrowseLayout {title} {path} back={!isHomePage} heading={!hasOwnHeading}>
 	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 
 	<Prose class="my-10">

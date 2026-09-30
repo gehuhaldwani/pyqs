@@ -50,7 +50,7 @@ const builtAt = new Date();
 					{
 						SOCIALS.map((social) => (
 							<NavLink href={social.url} external aria-label={social.name}>
-								<Icon name={social.iconify} class="social-icon" />
+								<Icon name={social.iconify} class="social-icon" aria-hidden="true" />
 							</NavLink>
 						))
 					}
@@ -59,7 +59,7 @@ const builtAt = new Date();
 				<p>{siteConfig.site.description}</p>
 			</div>
 			<div class="col-span-1">
-				<p class="text-lg font-medium mb-2">Quick Links</p>
+				<h2 class="text-lg font-medium mb-2">Quick Links</h2>
 				<ul class="font-excalifont">
 					<li>
 						<GithubButton />
@@ -86,10 +86,10 @@ const builtAt = new Date();
 			Built with <NavLink
 				href="https://astro.build"
 				external
-				class="underline"
+				class="underline hover:decoration-2"
 				aria-label="Astro"
 			>
-				<Icon name="astro" class="inline" />
+				<Icon name="astro" class="inline" aria-hidden="true" />
 			</NavLink>
 		</p>
 		<p class="w-full text-center">
@@ -98,15 +98,14 @@ const builtAt = new Date();
 				data-footer-built-at={builtAt.toISOString()}
 				data-timezone={siteConfig.site.timezone}
 				>{formatBuildTime(builtAt, siteConfig.site.timezone)}</span
-			> (IST)
+			>
 		</p>
 	</div>
 </footer>
 
 <script>
-	// With incremental builds, a page's HTML can be reused from an older build,
-	// so the build time and socials rendered above may be stale. Refresh them
-	// from build-info.json, which is regenerated on every build.
+	// Incremental builds can reuse this page's HTML from an older build, so the build time and socials above may be stale.
+	// This script replaces them with the values in build-info.json, which every build regenerates.
 	import { BUILD_INFO_PATH, type BuildInfo } from "@/lib/build-info";
 	import { formatBuildTime } from "@/utils/date";
 	import { addBaseUrl } from "@/utils/site-url";
@@ -114,7 +113,7 @@ const builtAt = new Date();
 
 	let buildInfo: Promise<BuildInfo | null> | undefined;
 
-	// Fetched once per visit; the client router keeps this module alive across navigations.
+	// The client router keeps this module loaded between pages, so the file is fetched once per visit.
 	function loadBuildInfo() {
 		buildInfo ??= fetch(addBaseUrl(BUILD_INFO_PATH), { cache: "no-cache" })
 			.then((res) => (res.ok ? (res.json() as Promise<BuildInfo>) : null))
@@ -123,15 +122,16 @@ const builtAt = new Date();
 	}
 
 	function renderSocialLink(social: BuildInfo["socials"][number]) {
-		// Mirrors <NavLink external> in the markup above
+		// Same attributes as <NavLink external> in the markup above.
 		const link = document.createElement("a");
 		link.href = social.url;
 		link.target = EXTERNAL_LINK_ATTRIBUTES.target;
 		link.rel = EXTERNAL_LINK_ATTRIBUTES.rel;
 		link.setAttribute("aria-label", social.name);
-		// SVG markup comes from our own build output, not user input
+		// The SVG markup comes from this site's own build output, so innerHTML is safe here.
 		link.innerHTML = social.svg;
 		link.firstElementChild?.setAttribute("class", "social-icon");
+		link.firstElementChild?.setAttribute("aria-hidden", "true");
 		return link;
 	}
 

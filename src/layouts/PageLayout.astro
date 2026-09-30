@@ -7,9 +7,16 @@ export interface Props extends BaseLayoutProps {}
 ---
 
 <BaseLayout bodyClass="flex flex-col" {...Astro.props}>
+	<a
+		href="#main"
+		class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-2 focus-visible:z-50 focus-visible:rounded-md focus-visible:bg-background focus-visible:px-4 focus-visible:py-2 focus-visible:outline-2 focus-visible:outline-outline"
+	>
+		Skip to Content
+	</a>
+
 	<Header transition:name="page-header" class="flex-none" />
 
-	<main class="flex-auto w-full max-w-5xl mx-auto p-10">
+	<main id="main" tabindex="-1" class="flex-auto w-full max-w-5xl mx-auto p-10">
 		<slot />
 	</main>
 

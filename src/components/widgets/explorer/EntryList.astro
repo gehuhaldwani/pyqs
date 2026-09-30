@@ -21,7 +21,7 @@ const dirs = entry.directories.toSorted((a, b) => a.name.localeCompare(b.name));
 const docs = entry.files
 	.filter((file) => file.kind === "doc")
 	.toSorted((a, b) => displayName(a).localeCompare(displayName(b)));
-// Newest first
+// Newest first.
 const pdfs = entry.files
 	.filter(isPyqFile)
 	.toSorted((a, b) => comparePyqs(b.pyq, a.pyq));

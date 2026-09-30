@@ -5,12 +5,12 @@ import { acceptDirectory, type LoaderRules, processFile } from "./rules";
 import { type DirEntry, type FsEntry, fsEntrySchema } from "./schema";
 
 type LoadState = {
-	// Ids stored during this load; anything else in the store is stale
+	// Entry ids stored in this load. Anything else in the store is stale.
 	seen: Set<string>;
-	// Paths rejected by the loader rules, reported in a summary at the end
+	// The summary at the end of the load lists these paths.
 	skippedFiles: string[];
 	skippedDirectories: string[];
-	// Directories left out because nothing inside them was kept
+	// Directories left out because nothing inside them was kept.
 	emptyDirectories: string[];
 };
 
@@ -19,12 +19,12 @@ type SkippedSummary = Pick<
 	"skippedFiles" | "skippedDirectories" | "emptyDirectories"
 >;
 
-// "" -> "/", "a/b" -> "/a/b/"
+// "" becomes "/", and "a/b" becomes "/a/b/".
 function toDirPath(relativePath: string): string {
 	return relativePath ? `/${relativePath}/` : "/";
 }
 
-// Stored file paths use forward slashes on every OS.
+// Forward slashes keep stored paths the same on Windows and Linux.
 function toPosixPath(filePath: string): string {
 	return filePath.split(path.sep).join("/");
 }
@@ -33,8 +33,8 @@ function plural(count: number, singular: string, pluralForm: string): string {
 	return `${count} ${count === 1 ? singular : pluralForm}`;
 }
 
-// Lists skipped paths, with files grouped by extension so that e.g. badly
-// named PDFs stand out from unrelated files. Returns null if nothing was skipped.
+// Groups skipped files by extension so misnamed PDFs stand apart from files like LICENSE.
+// Returns null when nothing was skipped.
 export function formatSkippedSummary({
 	skippedFiles,
 	skippedDirectories,
@@ -84,8 +84,7 @@ export function formatSkippedSummary({
 
 type RenderedContent = Awaited<ReturnType<LoaderContext["renderMarkdown"]>>;
 
-// Markdown source and its rendered HTML, for entries that have a page body
-// (a directory's index.md, or a markdown file).
+// Directories get their page body from index.md, and docs from their own file.
 type Markdown = { source: string; rendered: RenderedContent };
 
 async function renderMarkdownFile(
@@ -96,13 +95,12 @@ async function renderMarkdownFile(
 	return { source, rendered: await context.renderMarkdown(source) };
 }
 
-// A string `title` from the markdown's frontmatter, if any.
 function frontmatterTitle(markdown: Markdown): string | undefined {
 	const title = markdown.rendered.metadata?.frontmatter?.title;
 	return typeof title === "string" && title.trim() ? title.trim() : undefined;
 }
 
-// Validates an entry against the collection schema and stores it.
+// Validates the data against the collection schema before storing it.
 async function storeEntry(
 	context: LoaderContext,
 	state: LoadState,
@@ -132,8 +130,7 @@ async function storeEntry(
 	});
 }
 
-// Recursively stores a directory and its contents. Returns the directory entry,
-// or undefined if it was skipped.
+// Returns undefined if the directory was skipped or left out as empty.
 async function processDirectory({
 	dirPath,
 	relativePath,
@@ -142,7 +139,7 @@ async function processDirectory({
 	state,
 }: {
 	dirPath: string;
-	// POSIX path relative to the loader root, "" for the root itself
+	// POSIX path from the loader root, or "" for the root.
 	relativePath: string;
 	context: LoaderContext;
 	rules?: LoaderRules;
@@ -171,12 +168,11 @@ async function processDirectory({
 	try {
 		const entries = await fs.readdir(dirPath, { withFileTypes: true });
 
-		// Filter out hidden files/directories
 		const visibleEntries = entries.filter(
 			(entry) => !entry.name.startsWith("."),
 		);
 
-		// Process subdirectories first
+		// Subdirectories go first so the empty-directory check below knows what they kept.
 		for (const entry of visibleEntries.filter((e) => e.isDirectory())) {
 			const subDirEntry = await processDirectory({
 				dirPath: path.join(dirPath, entry.name),
@@ -187,16 +183,13 @@ async function processDirectory({
 			});
 
 			if (subDirEntry) {
-				// Parent only keeps a summary of its children
 				const { directories, files, ...summary } = subDirEntry;
 				directoryEntry.directories.push(summary);
 			}
 		}
 
-		// The directory's own index.md, shown below its listing
 		let index: Markdown | undefined;
 
-		// Process files
 		for (const entry of visibleEntries.filter((e) => e.isFile())) {
 			const filePath = path.join(dirPath, entry.name);
 
@@ -220,7 +213,7 @@ async function processDirectory({
 				rules,
 			);
 
-			// Kept markdown files get a rendered page body, titled by their frontmatter
+			// Markdown files get a rendered page body, and their frontmatter title if they have one.
 			let markdown: Markdown | undefined;
 			if (fileEntry && fileEntry.extension === ".md") {
 				markdown = await renderMarkdownFile(context, filePath);
@@ -248,9 +241,8 @@ async function processDirectory({
 			});
 		}
 
-		// Leave out directories with nothing to show (the root is always kept).
-		// Subdirectories are processed first, so this also removes directories
-		// that only contain empty directories.
+		// Leave out directories with nothing to show, except the root.
+		// Because subdirectories run first, this also drops directories that only hold empty ones.
 		const isEmpty =
 			directoryEntry.files.length === 0 &&
 			directoryEntry.directories.length === 0 &&
@@ -298,8 +290,7 @@ export function filesystemLoader(options: {
 				state,
 			});
 
-			// Drop entries for files/directories that no longer exist, so the
-			// cached data store does not keep serving deleted or renamed papers.
+			// Delete entries for paths that no longer exist, so the cached data store doesn't keep deleted or renamed papers.
 			for (const id of context.store.keys()) {
 				if (!state.seen.has(id)) {
 					context.store.delete(id);
