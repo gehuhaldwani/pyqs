@@ -22,11 +22,6 @@ export default defineConfig({
 		},
 		{
 			provider: fontProviders.google(),
-			name: "Noto Serif",
-			cssVariable: "--font-noto-serif",
-		},
-		{
-			provider: fontProviders.google(),
 			name: "Noto Sans Mono",
 			cssVariable: "--font-noto-sans-mono",
 		},

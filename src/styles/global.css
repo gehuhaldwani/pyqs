@@ -4,5 +4,44 @@
     --font-excalifont: var(--font-excalifont);
     --font-mono: var(--font-noto-sans-mono);
     --font-sans: var(--font-noto-sans);
-    --font-serif: var(--font-noto-serif);
+
+    /* App-specific colors (Starwind's status colors are meant for backgrounds) */
+    --color-folder: var(--folder);
+    --color-folder-muted: var(--folder-muted);
+    --color-pdf: var(--pdf);
+    --color-support: var(--support);
+    --color-support-hover: var(--support-hover);
+}
+
+@layer base {
+    /* Same in light and dark mode; add a `.dark` override here if that changes */
+    :root {
+        --folder: #f5b800;
+        --folder-muted: var(--color-gray-500);
+        --pdf: var(--color-red-500);
+        --support: var(--color-green-500);
+        --support-hover: var(--color-green-600);
+    }
+}
+
+/* Reused class combinations */
+
+/* Secondary link/icon that brightens on hover */
+@utility link-muted {
+    @apply text-muted-foreground hover:text-foreground;
+}
+
+/* Icon in the footer's social links (also applied by the Footer's client script) */
+@utility social-icon {
+    @apply size-7 link-muted;
+}
+
+/* Highlighted "support" link */
+@utility link-support {
+    @apply text-support underline hover:text-support-hover;
+}
+
+/* Pressed state for explorer list items rendered as links */
+@utility item-link {
+    @apply [a]:active:bg-accent/50;
 }

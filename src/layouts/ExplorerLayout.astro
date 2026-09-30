@@ -7,7 +7,6 @@ import Separator from "@/components/starwind/separator";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
 import { render, type CollectionEntry } from "astro:content";
 import type { DirEntry } from "@/lib/content/schema";
-import HomePageBanner from "@/components/widgets/HomePageBanner.astro";
 import Prose from "@/components/partials/Prose.astro";
 import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
 
@@ -36,8 +35,6 @@ const { Content } = await render(entry);
 ---
 
 <PageLayout title={title}>
-	{isHomePage && <HomePageBanner />}
-
 	<EntryListContentBlock />
 
 	<Separator class="my-4" />

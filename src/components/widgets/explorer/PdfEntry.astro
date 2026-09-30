@@ -16,10 +16,10 @@ const { entry } = Astro.props;
 	as="a"
 	href={addForwardSlashAndBaseUrl(entry.path)}
 	data-astro-prefetch="hover"
-	class="[a]:active:bg-accent/50"
+	class="item-link"
 >
 	<Item.Media variant="image">
-		<Icon name="pdf" width={32} height={32} class:list={"text-red-500"} />
+		<Icon name="pdf" width={32} height={32} class="text-pdf" />
 	</Item.Media>
 	<Item.Content>
 		<Item.Title>{formatPyqTitle(entry.pyq)}</Item.Title>

@@ -1,6 +1,6 @@
 ---
 layout: "@/layouts/PostLayout.astro"
-title: Contribute
+title: How to Block Ads
 ---
 
 # How to Block Ads (H2BA)

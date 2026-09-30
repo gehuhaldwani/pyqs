@@ -23,7 +23,7 @@ function getDirTitle(title: string, capitalize: boolean) {
 	as="a"
 	href={addForwardSlashAndBaseUrl(dir.path)}
 	data-astro-prefetch="viewport"
-	class="[a]:active:bg-accent/50"
+	class="item-link"
 >
 	<Item.Media variant="image">
 		<Icon
@@ -31,8 +31,8 @@ function getDirTitle(title: string, capitalize: boolean) {
 			width={32}
 			height={32}
 			class:list={dir.name === "OTHERS" || dir.name === "OLD"
-				? "text-gray-500"
-				: "text-[#F5B800]"}
+				? "text-folder-muted"
+				: "text-folder"}
 		/>
 	</Item.Media>
 	<Item.Content>

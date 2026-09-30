@@ -11,7 +11,6 @@ interface Props extends HTMLAttributes<"footer"> {}
 
 const { class: className, ...props } = Astro.props;
 
-const SOCIAL_ICON_CLASS = "w-7 h-7 text-muted-foreground hover:text-foreground";
 const builtAt = new Date();
 ---
 
@@ -36,7 +35,7 @@ const builtAt = new Date();
 
 				<p class="text-lg font-medium">
 					<a
-						class="font-excalifont text-green-500 hover:text-green-600 underline flex"
+						class="font-excalifont link-support flex"
 						href={siteConfig.footer.maintainer.support}
 						target="_blank"
 					>
@@ -50,7 +49,6 @@ const builtAt = new Date();
 				<div
 					class="flex gap-4 mt-3"
 					data-footer-socials
-					data-icon-class={SOCIAL_ICON_CLASS}
 				>
 					{
 						SOCIALS.map((social) => (
@@ -62,7 +60,7 @@ const builtAt = new Date();
 							>
 								<Icon
 									name={social.iconify}
-									class={SOCIAL_ICON_CLASS}
+									class="social-icon"
 								/>
 							</a>
 						))
@@ -88,7 +86,7 @@ const builtAt = new Date();
 													link.url,
 												)
 									}
-									class="flex text-muted-foreground hover:text-foreground"
+									class="flex link-muted"
 									target={
 										link.type === "external"
 											? "_blank"
@@ -148,7 +146,7 @@ const builtAt = new Date();
 		return buildInfo;
 	}
 
-	function renderSocialLink(social: BuildInfo["socials"][number], iconClass: string) {
+	function renderSocialLink(social: BuildInfo["socials"][number]) {
 		const link = document.createElement("a");
 		link.href = social.url;
 		link.target = "_blank";
@@ -156,7 +154,7 @@ const builtAt = new Date();
 		link.setAttribute("aria-label", social.name);
 		// SVG markup comes from our own build output, not user input
 		link.innerHTML = social.svg;
-		link.firstElementChild?.setAttribute("class", iconClass);
+		link.firstElementChild?.setAttribute("class", "social-icon");
 		return link;
 	}
 
@@ -175,11 +173,7 @@ const builtAt = new Date();
 
 		const socials = document.querySelector<HTMLElement>("[data-footer-socials]");
 		if (socials && info.socials.length > 0) {
-			socials.replaceChildren(
-				...info.socials.map((social) =>
-					renderSocialLink(social, socials.dataset.iconClass ?? ""),
-				),
-			);
+			socials.replaceChildren(...info.socials.map(renderSocialLink));
 		}
 	}
 

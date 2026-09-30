@@ -3,8 +3,6 @@ import siteConfig from "@/configs/site.config";
 import { addBaseUrl } from "@/utils/url";
 import { formatPageTitle } from "@/utils/string";
 import { ThemeInitScript } from "@starwind-ui/astro/theme";
-import type { ImageMetadata } from "astro";
-import { getImage } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import Fonts from "./Fonts.astro";
 
@@ -12,7 +10,6 @@ interface Props {
 	title?: string;
 	description?: string;
 	ogImageUrl?: URL;
-	ogImage?: ImageMetadata;
 	transition?: boolean;
 	// Disable browser pinch-zoom, for pages with their own zoom (PDF viewer).
 	lockZoom?: boolean;
@@ -23,7 +20,7 @@ export type { Props };
 const {
 	title: pageTitle,
 	description = siteConfig.site.description,
-	ogImage,
+	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
 	transition = true,
 	lockZoom = false,
 } = Astro.props;
@@ -33,21 +30,6 @@ const viewport = lockZoom
 	: "width=device-width, initial-scale=1.0";
 
 const title = formatPageTitle(siteConfig.site.title, pageTitle);
-
-let {
-	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
-} = Astro.props;
-
-if (ogImage) {
-	const image = await getImage({
-		src: ogImage,
-		format: "png",
-		fit: "contain",
-		width: 1000,
-		height: 1000,
-	});
-	ogImageUrl = new URL(image.src, Astro.url.origin);
-}
 ---
 
 <meta charset="UTF-8" />

@@ -3,6 +3,7 @@ import siteConfig from "@/configs/site.config";
 import { githubRawUrl } from "@/utils/links";
 import type { FileEntry } from "@/lib/content/schema";
 import PdfLayout from "./PdfLayout.astro";
+import Alert from "@/components/starwind/alert";
 
 interface Props {
 	file: FileEntry;
@@ -21,22 +22,19 @@ const downloadUrl = githubRawUrl(
 
 {
 	entry.extension !== ".pdf" && (
-		<div class="p-4 border border-red-500 rounded-md bg-red-50 text-red-700">
-			<p>
-				Sorry, this file format (
-				<span class="font-mono font-bold">{entry.extension}</span>) is
-				not supported for preview.
-			</p>
-			<p>
-				You can download the file directly by clicking
-				<a
-					href={downloadUrl}
-					class="text-blue-600 underline ml-1"
-				>
-					here
-				</a>
-				.
-			</p>
-		</div>
+		<Alert.Root variant="error">
+			<Alert.Title>Preview not supported</Alert.Title>
+			<Alert.Description>
+				<p>
+					Sorry, this file format (
+					<span class="font-mono font-bold">{entry.extension}</span>) is
+					not supported for preview.
+				</p>
+				<p>
+					You can download the file directly by clicking
+					<a href={downloadUrl} class="text-primary underline">here</a>.
+				</p>
+			</Alert.Description>
+		</Alert.Root>
 	)
 }

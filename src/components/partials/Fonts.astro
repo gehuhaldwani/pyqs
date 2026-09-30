@@ -2,7 +2,7 @@
 import { Font } from "astro:assets";
 ---
 
+<!-- Preload only the fonts used above the fold; mono is loaded on demand -->
 <Font cssVariable="--font-excalifont" preload />
 <Font cssVariable="--font-noto-sans" preload />
-<Font cssVariable="--font-noto-serif" preload />
-<Font cssVariable="--font-noto-sans-mono" preload />
+<Font cssVariable="--font-noto-sans-mono" />
