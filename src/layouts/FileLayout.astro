@@ -1,5 +1,6 @@
 ---
-import { addForwardSlashAndBaseUrl } from "@/utils/url";
+import siteConfig from "@/configs/site.config";
+import { githubRawUrl } from "@/utils/links";
 import type { FsEntry } from "@/lib/content/schema";
 import PdfLayout from "./PdfLayout.astro";
 import type { CollectionEntry } from "astro:content";
@@ -11,6 +12,11 @@ interface Props {
 const { entry: collectionEntry } = Astro.props;
 
 const entry = collectionEntry.data as FsEntry<"file">;
+const downloadUrl = githubRawUrl(
+	siteConfig.site.githubRepo,
+	siteConfig.site.contentBranch,
+	entry.path,
+);
 ---
 
 {entry.extension === ".pdf" && <PdfLayout entry={entry} />}
@@ -26,7 +32,7 @@ const entry = collectionEntry.data as FsEntry<"file">;
 			<p>
 				You can download the file directly by clicking
 				<a
-					href={addForwardSlashAndBaseUrl(entry.path)}
+					href={downloadUrl}
 					class="text-blue-600 underline ml-1"
 				>
 					here

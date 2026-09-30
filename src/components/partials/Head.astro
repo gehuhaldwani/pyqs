@@ -1,6 +1,8 @@
 ---
 import siteConfig from "@/configs/site.config";
 import { addBaseUrl } from "@/utils/url";
+import { formatPageTitle } from "@/utils/string";
+import { ThemeInitScript } from "@starwind-ui/astro/theme";
 import type { ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
@@ -23,7 +25,7 @@ const {
 	transition = true,
 } = Astro.props;
 
-const title = `${siteConfig.site.title}${pageTitle && ` | ${pageTitle}`}`;
+const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
 let {
 	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
@@ -69,45 +71,8 @@ if (ogImage) {
 
 {transition && <ClientRouter fallback="none" />}
 
-<script is:inline>
-	function initTheme() {
-		const colorTheme = localStorage.getItem("colorTheme");
-		if (!colorTheme) {
-			if (
-				window.matchMedia &&
-				window.matchMedia("(prefers-color-scheme: dark)").matches
-			) {
-				document.documentElement.classList.add("dark");
-				localStorage.setItem("colorTheme", "dark");
-			} else {
-				document.documentElement.classList.remove("dark");
-				localStorage.setItem("colorTheme", "light");
-			}
-		} else {
-			if (colorTheme === "dark") {
-				document.documentElement.classList.add("dark");
-			} else if (colorTheme === "light") {
-				document.documentElement.classList.remove("dark");
-			} else if (colorTheme === "system") {
-				const prefersDark = window.matchMedia(
-					"(prefers-color-scheme: dark)",
-				).matches;
-				document.documentElement.classList.toggle("dark", prefersDark);
-			}
-		}
-	}
-
-	// document.addEventListener("astro:after-swap", initTheme);
-	initTheme();
-
-	document.addEventListener("astro:before-swap", (event) => {
-		const colorTheme = localStorage.getItem("colorTheme");
-		event.newDocument.documentElement.classList.toggle(
-			"dark",
-			colorTheme === "dark",
-		);
-	});
-</script>
+<!-- Applies the stored/system theme before paint and re-applies it after each view-transition swap -->
+<ThemeInitScript />
 
 <script>
 	import { haptics, defaultPatterns } from "@/lib/haptics";
@@ -130,7 +95,6 @@ if (ogImage) {
 				(window.adsbygoogle = window.adsbygoogle || []).push({});
 			});
 	}
-	document.addEventListener("onload", initAds);
 	document.addEventListener("astro:page-load", initAds);
 </script>
 

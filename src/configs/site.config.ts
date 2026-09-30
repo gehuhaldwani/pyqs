@@ -4,8 +4,10 @@ const siteConfig: SiteConfig = {
 	"site": {
 		"title": "PYQs Archive",
 		"description": "A collection of student contributed previous year question papers for Graphic Era Hill University semester examinations.",
-		"url": "https://hualdwani.gehu.in/pyqs",
+		"url": "https://haldwani.gehu.in/pyqs",
 		"githubRepo": "gehuhaldwani/pyqs",
+		"contentBranch": "main",
+		"thumbnailsBranch": "thumbnails",
 		"logo": "/logo.png",
 		"favicon": "/favicon.ico",
 		"timezone": "Asia/Kolkata"

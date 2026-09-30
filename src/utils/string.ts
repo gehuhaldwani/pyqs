@@ -5,4 +5,8 @@ function toTitleCase(str: string): string {
 	);
 }
 
-export { toTitleCase };
+function formatPageTitle(siteTitle: string, pageTitle?: string): string {
+	return pageTitle ? `${siteTitle} | ${pageTitle}` : siteTitle;
+}
+
+export { toTitleCase, formatPageTitle };

@@ -10,6 +10,8 @@ interface SiteConfig {
 		description: string;
 		url: string;
 		githubRepo: string;
+		contentBranch: string;
+		thumbnailsBranch: string;
 		logo: string;
 		favicon: string;
 		timezone: string;

@@ -3,15 +3,17 @@ import PdfViewer from "@/components/widgets/PdfViewer.astro";
 import BaseLayout from "./BaseLayout.astro";
 import siteConfig from "@/configs/site.config";
 import type { FsEntry } from "@/lib/content/schema";
+import { githubRawUrl, pdfThumbnailPath } from "@/utils/links";
 
 interface Props {
     entry: FsEntry<"file">;
 }
 
 const { entry } = Astro.props;
+const { githubRepo, contentBranch, thumbnailsBranch } = siteConfig.site;
 
-const src = `https://raw.githubusercontent.com/${siteConfig.site.githubRepo}/main${entry.path.replace("/pyqs", "").replaceAll(" ", "%20")}`;
-const thumbnail = `https://raw.githubusercontent.com/${siteConfig.site.githubRepo}/refs/heads/thumbnails${entry.path.replace("/pyqs", "").replaceAll(" ", "%20").replace(".pdf", ".webp")}`;
+const src = githubRawUrl(githubRepo, contentBranch, entry.path);
+const thumbnail = githubRawUrl(githubRepo, thumbnailsBranch, pdfThumbnailPath(entry.path));
 ---
 
 <BaseLayout

@@ -37,9 +37,10 @@ for (const p of path.split("/")) {
 			class="font-bold text-foreground"
 			variant="outline"
 			size="sm"
-			disabled
-			href={back ? "../" : null}
-			about={"Up a folder"}>↑</Button
+			disabled={!back}
+			href="../"
+			aria-label="Up a folder"
+			title="Up a folder">↑</Button
 		>
 		{
 			crumbs.map((crumb, index) => {
@@ -59,9 +60,9 @@ for (const p of path.split("/")) {
 					);
 				return (
 					<Breadcrumb.Item>
-						<a class="text-foreground font-medium text-lg">
+						<Breadcrumb.Page class="text-foreground font-medium text-lg">
 							{crumb.title}
-						</a>
+						</Breadcrumb.Page>
 					</Breadcrumb.Item>
 				);
 			})

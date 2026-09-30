@@ -110,7 +110,11 @@ const { src } = Astro.props;
 	async function setupViewer() {
 		const container = document.getElementById("pdf-viewer");
 
-		if (container) {
+		// The viewer tears itself down when its element leaves the DOM; this
+		// only guards against initialising the same container twice.
+		if (container && !container.dataset.initialized) {
+			container.dataset.initialized = "true";
+
 			const viewer = EmbedPDF.init({
 				type: "container",
 				target: container,

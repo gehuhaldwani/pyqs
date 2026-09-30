@@ -1,5 +1,6 @@
 ---
 import { Button } from "@/components/starwind/button";
+import { uploaderUrl } from "@/utils/links";
 
 interface Props {
 	title: string;
@@ -10,7 +11,7 @@ const { path, title } = Astro.props;
 ---
 
 <Button
-	href={`https://pyqs-uploader.pages.dev/?path=${path}&title=${title}`}
+	href={uploaderUrl(path, title)}
 	target="_blank"
 	variant="default"
 >
