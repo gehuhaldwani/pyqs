@@ -81,7 +81,8 @@ The site uses Astro's `ClientRouter`, so page changes happen without full reload
 
 - **Prefetching.** Links prefetch on hover by default. Folder and doc links prefetch when they scroll into view, because their pages are light. Chrome prerenders prefetched pages because of the `clientPrerender` flag.
 - **Footer refresh.** Incremental builds can reuse a page's HTML from an older build. A script in `Footer.astro` fetches `/build-info.json`, which every build regenerates, and updates the build time and social links.
-- **Ads.** An inline loader in `Head.astro` loads AdSense once per visit, on the first page whose `<meta name="ads">` is `on`, and fills ad slots on each page load. PDF pages set it to `off`.
+- **Ads.** An inline loader in `Head.astro` loads AdSense once per visit, on the first page whose `<meta name="ads">` is `on`. It fills each slot shortly before it scrolls into view, filling earlier slots first because AdSense fills them in page order. PDF pages set the meta to `off`. Slots come from `EntryListContentBlock.astro`: a short banner above the content, an in-feed slot in lists of six or more, and one at the end of papers and docs. Slots AdSense leaves unfilled are hidden.
+- **Path crumbs.** `BrowseLayout` pins the crumbs right under the fixed-height header (`--header-h`), with nothing above them. They sit at the same spot on every page, so their view transition only morphs the width instead of sliding from the old page's scroll position.
 - **Theme.** Starwind's theme script applies the stored or system theme before the page paints.
 
 ## Styling
@@ -89,3 +90,11 @@ The site uses Astro's `ClientRouter`, so page changes happen without full reload
 Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind CLI generates `src/components/starwind/`, `src/styles/starwind.css` and `src/lib/utils/starwind/`, so edit them through the CLI.
 
 `src/styles/global.css` holds the site's own color tokens (`folder`, `pdf`, `doc`, `support`) and utilities for class combinations used in several places, such as `link-base` and `item-link`.
+
+The look follows [DESIGN.md](../DESIGN.md): a dotted whiteboard canvas (`bg-canvas`), pastel sticky notes (`sticky-note` with a `bg-sticky-*` color), white `paper-card`s and black pill buttons. `global.css` overrides Starwind's tokens instead of editing `starwind.css`. `src/lib/sticky.ts` picks a note color from a folder's name, so a folder keeps its color on every page. Illustrations are inline SVGs in `src/components/ui/Doodle.astro`.
+
+Study helpers aimed at short attention spans:
+
+- `FocusTimer` in the header runs 25 minute focus rounds and 5 minute breaks, kept in `localStorage` so it survives page changes.
+- Folder pages group papers by year and offer exam-type filter chips.
+- Doc and post pages show a `ReadingProgress` bar.

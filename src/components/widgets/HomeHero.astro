@@ -1,0 +1,79 @@
+---
+// The home page intro: what the site is, three steps to a paper, and a whiteboard doodle.
+import { Button } from "@/components/starwind/button";
+import Doodle from "@/components/ui/Doodle.astro";
+import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
+
+const steps = [
+	{ text: "Pick your course", color: "bg-sticky-yellow", tilt: "-rotate-2" },
+	{ text: "Choose a semester", color: "bg-sticky-teal", tilt: "rotate-1" },
+	{
+		text: "Open a paper & practice",
+		color: "bg-sticky-rose",
+		tilt: "-rotate-1",
+	},
+];
+---
+
+<section class="grid items-center gap-10 pt-4 pb-10 lg:grid-cols-[1.1fr_1fr] lg:pt-10">
+	<div>
+		<p class="scribble flex items-center gap-2 text-xl">
+			<Doodle name="star" class="size-6 motion-safe:animate-bob" />
+			exam season again? we got you.
+		</p>
+		<h1 class="mt-3 text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+			Past papers, <span class="marker">pinned up</span> and easy to find.
+		</h1>
+		<p class="mt-5 max-w-xl text-lg text-muted-foreground">
+			Every GEHU previous year question paper, sorted by course and semester.
+			No sign-ups, no clutter. Just pick and practice.
+		</p>
+
+		<ol class="mt-8 grid max-w-md grid-cols-3 gap-3 sm:gap-4" aria-label="How it works">
+			{
+				steps.map((step, index) => (
+					<li
+						class:list={[
+							"sticky-note flex flex-col gap-1 p-3 text-sm leading-snug font-semibold",
+							step.color,
+							step.tilt,
+						]}
+					>
+						<span class="font-excalifont text-2xl leading-none">{index + 1}</span>
+						{step.text}
+					</li>
+				))
+			}
+		</ol>
+
+		<div class="mt-8 flex flex-wrap items-center gap-3">
+			<Button href="#folders" size="lg" class="rounded-full">Browse courses ↓</Button>
+			<Button
+				href={addForwardSlashAndBaseUrl("/contribute")}
+				variant="outline"
+				size="lg"
+				class="rounded-full"
+			>
+				Add a paper
+			</Button>
+		</div>
+	</div>
+
+	<div class="relative mx-auto w-full max-w-lg">
+		<Doodle
+			name="board"
+			class="w-full text-foreground drop-shadow-[0_16px_30px_rgb(5_0_56/0.12)]"
+			label="A whiteboard covered in colorful sticky notes"
+		/>
+		<Doodle name="bulb" class="absolute -top-4 left-2 size-14 -rotate-12 motion-safe:animate-bob" />
+		<div
+			class="absolute -bottom-4 right-0 max-w-52 rotate-2 rounded-2xl bg-sticky-mint p-3 text-sm text-sticky-ink shadow-lift sm:-right-4"
+		>
+			<p class="font-excalifont text-base">Pro tip</p>
+			<p>
+				Hit <strong>Focus</strong> up top for a 25 min study sprint, then take a
+				break.
+			</p>
+		</div>
+	</div>
+</section>

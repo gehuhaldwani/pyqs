@@ -1,10 +1,19 @@
 ---
 import Prose from "@/components/partials/Prose.astro";
+import Doodle from "@/components/ui/Doodle.astro";
+import ReadingProgress from "@/components/widgets/ReadingProgress.astro";
 import PageLayout from "./PageLayout.astro";
 ---
 
 <PageLayout title={Astro.props.frontmatter.title}>
-	<Prose>
-		<slot />
-	</Prose>
+	<ReadingProgress />
+	<div class="relative mx-auto max-w-3xl">
+		<Doodle
+			name="bulb"
+			class="absolute -top-6 -right-2 z-10 hidden size-16 rotate-12 sm:block motion-safe:animate-bob"
+		/>
+		<Prose>
+			<slot />
+		</Prose>
+	</div>
 </PageLayout>

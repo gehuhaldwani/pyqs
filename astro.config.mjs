@@ -16,8 +16,9 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Noto Sans",
-			cssVariable: "--font-noto-sans",
+			name: "Figtree",
+			cssVariable: "--font-figtree",
+			weights: [400, 500, 600, 700, 800],
 		},
 		{
 			provider: fontProviders.google(),

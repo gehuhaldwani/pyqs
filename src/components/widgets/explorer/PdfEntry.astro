@@ -1,8 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
-import Item from "@/components/starwind/item";
 import type { PyqFileEntry } from "@/lib/content/schema";
-import { formatPyqDate, formatPyqTitle } from "@/lib/pyqs";
+import { formatPyqDate, formatPyqExam, formatPyqSubjects } from "@/lib/pyqs";
+import { EXAM_TYPE_COLORS } from "@/lib/sticky";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 
 interface Props {
@@ -10,27 +10,33 @@ interface Props {
 }
 
 const { entry } = Astro.props;
+const { pyq } = entry;
 ---
 
-<Item.Root
-	as="a"
+<a
 	href={addForwardSlashAndBaseUrl(entry.path)}
 	data-astro-prefetch="hover"
-	class="item-link"
+	data-exam={pyq.type}
+	class="group paper-card note-hover focus-ring flex items-center gap-4 p-4"
 >
-	<Item.Media variant="image">
-		<Icon
-			name="pdf"
-			width={32}
-			height={32}
-			class="text-pdf"
-			aria-hidden="true"
-		/>
-	</Item.Media>
-	<Item.Content>
-		<Item.Title translate="no">{formatPyqTitle(entry.pyq)}</Item.Title>
-		<Item.Description>
-			{formatPyqDate(entry.pyq)}
-		</Item.Description>
-	</Item.Content>
-</Item.Root>
+	<span
+		class="grid size-12 shrink-0 place-items-center rounded-2xl bg-muted text-pdf transition-transform motion-safe:group-hover:-rotate-6"
+	>
+		<Icon name="pdf" class="size-7" aria-hidden="true" />
+	</span>
+	<span class="flex min-w-0 flex-1 flex-col gap-1.5">
+		<span class="line-clamp-2 text-base font-bold leading-snug break-words" translate="no">
+			{formatPyqSubjects(pyq)}
+		</span>
+		<span class="flex flex-wrap items-center gap-1.5">
+			<span class:list={["pill-tag text-sticky-ink", EXAM_TYPE_COLORS[pyq.type]]}>
+				{formatPyqExam(pyq)}
+			</span>
+			<span class="text-sm text-muted-foreground">{formatPyqDate(pyq)}</span>
+		</span>
+	</span>
+	<span
+		class="font-excalifont text-xl text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+		aria-hidden="true">→</span
+	>
+</a>

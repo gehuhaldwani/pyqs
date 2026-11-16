@@ -2,6 +2,8 @@ import { describe, expect, test } from "bun:test";
 import {
 	comparePyqs,
 	formatPyqDate,
+	formatPyqExam,
+	formatPyqSubjects,
 	formatPyqTitle,
 	type PyqData,
 	parsePyqName,
@@ -166,5 +168,16 @@ describe("comparePyqs", () => {
 				expected,
 			);
 		}
+	});
+});
+
+describe("formatPyqSubjects and formatPyqExam", () => {
+	test("split the title into subjects and exam", () => {
+		const data = pyq("tcs101_F1_tcs102_endsem_2_back_2023_setA");
+		expect(formatPyqSubjects(data)).toBe("TCS101 - F1 • TCS102 • Set A");
+		expect(formatPyqExam(data)).toBe("End Sem 2 BACK");
+		expect(formatPyqTitle(data)).toBe(
+			`${formatPyqSubjects(data)} • ${formatPyqExam(data)}`,
+		);
 	});
 });

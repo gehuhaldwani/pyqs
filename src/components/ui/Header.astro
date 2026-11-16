@@ -4,6 +4,7 @@ import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
 import Dropdown from "@/components/starwind/dropdown";
 import ThemeToggle from "@/components/starwind/theme-toggle/ThemeToggle.astro";
+import FocusTimer from "@/components/widgets/FocusTimer.astro";
 import siteConfig from "@/configs/site.config";
 import { linkAttributes } from "@/utils/site-url";
 import NavLink from "./NavLink.astro";
@@ -13,40 +14,57 @@ interface Props extends HTMLAttributes<"header"> {}
 const { class: className, ...props } = Astro.props;
 ---
 
-<header class:list={["border-b font-excalifont", className]} {...props}>
+<!-- The height is fixed at --header-h, which bars that stick below it rely on. -->
+<header class:list={["sticky top-0 z-40 h-(--header-h) px-3 pt-3 sm:px-6", className]} {...props}>
 	<div
-		class="h-full flex items-center justify-between max-w-7xl mx-auto px-10 py-2"
+		class="mx-auto flex max-w-6xl h-14 items-center justify-between gap-3 rounded-full border bg-card/90 pr-2 pl-3 shadow-soft backdrop-blur-md sm:pl-4"
 	>
-		<div class="text-xl md:text-2xl font-bold">
-			<a href={base} class="link-base">{siteConfig.site.title}</a>
-		</div>
+		<a href={base} class="group flex items-center gap-2.5 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline">
+			<span
+				class="grid size-9 -rotate-6 place-items-center rounded-xl bg-brand-yellow font-excalifont text-xl text-sticky-ink shadow-soft transition-transform motion-safe:group-hover:rotate-6"
+				aria-hidden="true">P</span
+			>
+			<span class="hidden text-lg font-extrabold tracking-tight whitespace-nowrap min-[400px]:inline md:text-xl">{siteConfig.site.title}</span>
+			<span class="sr-only min-[400px]:hidden">{siteConfig.site.title}</span>
+		</a>
 
-		<div class="flex flex-row items-center gap-4">
-			<nav class="hidden sm:flex flex-row gap-3">
+		<div class="flex flex-row items-center gap-2">
+			<nav class="hidden flex-row items-center gap-1 md:flex" aria-label="Main">
 				{
 					siteConfig.header.links.map((link) => (
-						<NavLink href={link.url} external={link.type === "external"}>
+						<NavLink
+							href={link.url}
+							external={link.type === "external"}
+							class="rounded-full px-3 py-2 text-sm font-medium hover:bg-accent hover:no-underline"
+						>
 							{link.name}
 						</NavLink>
 					))
 				}
 			</nav>
 
+			<FocusTimer />
+
 			<ThemeToggle
-				variant="default"
+				variant="outline"
 				size="md"
+				class="rounded-full"
 				transition:name="theme-toggle"
 			/>
 
-			<Dropdown.Root class="inline sm:hidden">
-				<Dropdown.Trigger class="flex items-center justify-center" aria-label="Menu">
-					<Icon name="mdi:menu" class="w-5 h-full" aria-hidden="true" />
+			<Dropdown.Root class="inline md:hidden">
+				<Dropdown.Trigger
+					class="flex size-10 items-center justify-center rounded-full bg-foreground text-background"
+					aria-label="Menu"
+				>
+					<Icon name="mdi:menu" class="size-5" aria-hidden="true" />
 				</Dropdown.Trigger>
-				<Dropdown.Content align="end">
+				<Dropdown.Content align="end" class="rounded-2xl">
 					{
 						siteConfig.header.links.map((link) => (
 							<Dropdown.LinkItem
 								closeOnClick
+								class="rounded-xl"
 								{...linkAttributes(link.url, link.type === "external")}
 							>
 								{link.name}

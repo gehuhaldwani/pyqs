@@ -83,19 +83,27 @@ function parsePyqName(name: string): PyqData | null {
 	};
 }
 
-function formatPyqTitle(pyq: PyqData): string {
+// Subject codes and the set, without the exam, such as "TCS101 • Set A".
+function formatPyqSubjects(pyq: PyqData): string {
 	const subjects = pyq.subjects.map(({ subject_code, specialization_code }) =>
 		specialization_code
 			? `${subject_code.toUpperCase()} - ${specialization_code.toUpperCase()}`
 			: subject_code.toUpperCase(),
 	);
-	const exam = [EXAM_TYPE_LABELS[pyq.type], pyq.no, pyq.back ? "BACK" : null]
-		.filter((part) => part !== null)
-		.join(" ");
-
-	return [...subjects, pyq.set ? `Set ${pyq.set}` : null, exam]
+	return [...subjects, pyq.set ? `Set ${pyq.set}` : null]
 		.filter((part) => part !== null)
 		.join(" • ");
+}
+
+// The exam alone, such as "Sessional 2 BACK".
+function formatPyqExam(pyq: PyqData): string {
+	return [EXAM_TYPE_LABELS[pyq.type], pyq.no, pyq.back ? "BACK" : null]
+		.filter((part) => part !== null)
+		.join(" ");
+}
+
+function formatPyqTitle(pyq: PyqData): string {
+	return `${formatPyqSubjects(pyq)} • ${formatPyqExam(pyq)}`;
 }
 
 function formatPyqDate(pyq: PyqData): string {
@@ -159,7 +167,11 @@ function comparePyqs(a: PyqData, b: PyqData): number {
 export type { ExamType, PyqData, Subject };
 export {
 	comparePyqs,
+	EXAM_TYPE_LABELS,
+	EXAM_TYPES,
 	formatPyqDate,
+	formatPyqExam,
+	formatPyqSubjects,
 	formatPyqTitle,
 	PYQ_NAME_PATTERN,
 	parsePyqName,

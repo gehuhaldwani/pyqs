@@ -2,6 +2,8 @@
 // Page for a markdown doc. It uses the folder page frame without the entry list.
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
+import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
+import ReadingProgress from "@/components/widgets/ReadingProgress.astro";
 import { displayName, type FileEntry } from "@/lib/content/schema";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
@@ -25,7 +27,11 @@ const hasOwnHeading = headings.some((heading) => heading.depth === 1);
 	current={title}
 	heading={!hasOwnHeading}
 >
-	<Prose class="my-10">
+	<ReadingProgress />
+	<Prose class="my-6">
 		<Content />
 	</Prose>
+	<!-- Readers who reach the end are engaged, so this slot sees more attention than a mid-text one. -->
+	<EntryListContentBlock class="mx-auto mt-10 max-w-3xl" />
+
 </BrowseLayout>

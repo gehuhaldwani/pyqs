@@ -4,6 +4,7 @@ import { Icon } from "astro-icon/components";
 import siteConfig, { SOCIALS } from "@/configs/site.config";
 import { formatBuildTime } from "@/utils/date";
 import GithubButton from "../widgets/GithubButton.astro";
+import Doodle from "./Doodle.astro";
 import NavLink from "./NavLink.astro";
 
 interface Props extends HTMLAttributes<"footer"> {}
@@ -16,26 +17,25 @@ const builtAt = new Date();
 <!-- AdSense Auto ads skip elements that already have this status, so it keeps ads out of the footer. -->
 <footer
 	data-adsbygoogle-status="done"
-	class:list={["border-t bg-muted", className]}
+	class:list={["mt-16 rounded-t-[2.5rem] border-t border-white/10 bg-[#1c1c1e] text-white", className]}
 	{...props}
 >
-	<div class="h-full w-full max-w-7xl mx-auto p-10">
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			<div class="col-span-2">
-				<p class="text-xl">
-					Maintained by <span class="font-excalifont"
-						>{siteConfig.footer.maintainer.name}</span
-					>
-				</p>
-				<p class="text-lg font-medium">
-					(<span class="font-excalifont"
-						>{siteConfig.footer.maintainer.designation}</span
-					>)
-				</p>
+	<div class="relative mx-auto h-full w-full max-w-6xl px-6 py-12 sm:px-10">
+		<Doodle name="squiggle" class="absolute top-6 right-10 hidden w-32 text-brand-yellow sm:block" />
+		<div class="grid grid-cols-1 gap-10 md:grid-cols-3">
+			<div class="md:col-span-2">
+				<div class="inline-block -rotate-1 rounded-2xl bg-sticky-yellow px-5 py-4 text-sticky-ink shadow-lift">
+					<p class="text-lg">
+						Maintained by <span class="font-excalifont text-xl">{siteConfig.footer.maintainer.name}</span>
+					</p>
+					<p class="font-excalifont text-sm opacity-80">
+						{siteConfig.footer.maintainer.designation}
+					</p>
+				</div>
 
-				<p class="text-lg font-medium">
+				<p class="mt-6">
 					<NavLink
-						class="font-excalifont link-support flex"
+						class="inline-flex items-center gap-1 rounded-full bg-white px-4 py-2 font-semibold text-sticky-ink hover:bg-brand-yellow hover:no-underline"
 						href={siteConfig.footer.maintainer.support}
 						external
 						externalIcon
@@ -43,11 +43,8 @@ const builtAt = new Date();
 						Support my work
 					</NavLink>
 				</p>
-				<br />
-				<div
-					class="flex gap-4 mt-3"
-					data-footer-socials
-				>
+
+				<div class="mt-6 flex gap-4 text-white/80" data-footer-socials>
 					{
 						SOCIALS.map((social) => (
 							<NavLink href={social.url} external aria-label={social.name}>
@@ -56,23 +53,22 @@ const builtAt = new Date();
 						))
 					}
 				</div>
-				<br />
-				<p>{siteConfig.site.description}</p>
+				<p class="mt-6 max-w-prose text-white/70">{siteConfig.site.description}</p>
 			</div>
-			<div class="col-span-1">
-				<h2 class="text-lg font-medium mb-2">Quick Links</h2>
-				<ul class="font-excalifont">
+			<div>
+				<h2 class="font-excalifont text-xl text-brand-yellow">Quick links</h2>
+				<ul class="mt-3 space-y-2 text-white/80">
 					<li>
 						<GithubButton />
 					</li>
 					{
 						siteConfig.footer.links.map((link) => (
-							<li class="my-2">
+							<li>
 								<NavLink
 									href={link.url}
 									external={link.type === "external"}
 									externalIcon
-									class="flex link-muted"
+									class="inline-flex items-center gap-1 hover:text-white"
 								>
 									{link.name}
 								</NavLink>
@@ -82,25 +78,26 @@ const builtAt = new Date();
 				</ul>
 			</div>
 		</div>
-		<br />
-		<p class="w-full text-center">
-			Built with <NavLink
-				href="https://astro.build"
-				external
-				class="underline hover:decoration-2"
-				aria-label="Astro"
-			>
-				<Icon name="astro" class="inline" aria-hidden="true" />
-			</NavLink>
-		</p>
-		<p class="w-full text-center">
-			Last updated on <span
-				class="font-excalifont"
-				data-footer-built-at={builtAt.toISOString()}
-				data-timezone={siteConfig.site.timezone}
-				>{formatBuildTime(builtAt, siteConfig.site.timezone)}</span
-			>
-		</p>
+		<div class="mt-12 flex flex-col items-center gap-1 border-t border-white/10 pt-6 text-sm text-white/60">
+			<p>
+				Built with <NavLink
+					href="https://astro.build"
+					external
+					class="text-white hover:decoration-2"
+					aria-label="Astro"
+				>
+					<Icon name="astro" class="inline" aria-hidden="true" />
+				</NavLink>
+			</p>
+			<p>
+				Last updated on <span
+					class="font-excalifont text-white/80"
+					data-footer-built-at={builtAt.toISOString()}
+					data-timezone={siteConfig.site.timezone}
+					>{formatBuildTime(builtAt, siteConfig.site.timezone)}</span
+				>
+			</p>
+		</div>
 	</div>
 </footer>
 

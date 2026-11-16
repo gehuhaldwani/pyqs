@@ -91,4 +91,4 @@ The PDFs in this list don't follow the naming scheme. Renaming them puts them, a
 
 ## Thumbnails
 
-The `thumb.yml` workflow on `main` renders the first page of each new or changed PDF as a 512x512 WebP image and commits it to the `thumbnails` branch. PDF pages use it as their link preview image.
+The `thumb.yml` workflow on `main` keeps the `thumbnails` branch in sync with the PDFs. It renders the first page of each new or changed PDF as a WebP image, 512 pixels on its longest side, and deletes thumbnails whose PDF is gone. PDF pages use the thumbnail as their link preview image.

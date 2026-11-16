@@ -3,7 +3,7 @@
 @theme inline {
 	--font-excalifont: var(--font-excalifont);
 	--font-mono: var(--font-noto-sans-mono);
-	--font-sans: var(--font-noto-sans);
+	--font-sans: var(--font-figtree);
 
 	/* Starwind's status colors are meant for backgrounds, so text colors live here. */
 	--color-folder: var(--folder);
@@ -12,6 +12,50 @@
 	--color-doc: var(--doc);
 	--color-support: var(--support);
 	--color-support-hover: var(--support-hover);
+
+	/* Sticky-note pastels. Text on them always uses sticky-ink, in both themes. */
+	--color-sticky-yellow: var(--sticky-yellow);
+	--color-sticky-rose: var(--sticky-rose);
+	--color-sticky-teal: var(--sticky-teal);
+	--color-sticky-coral: var(--sticky-coral);
+	--color-sticky-orange: var(--sticky-orange);
+	--color-sticky-mint: var(--sticky-mint);
+	--color-sticky-lavender: var(--sticky-lavender);
+	--color-sticky-blue: var(--sticky-blue);
+	--color-sticky-ink: #1c1c1e;
+	--color-brand-yellow: #ffd02f;
+	--color-marker: var(--marker);
+
+	--shadow-soft: var(--shadow-soft-value);
+	--shadow-lift: var(--shadow-lift-value);
+}
+
+@theme {
+	--animate-bob: bob 6s ease-in-out infinite;
+	--animate-wiggle: wiggle 0.5s ease-in-out;
+
+	@keyframes bob {
+		0%,
+		100% {
+			transform: translateY(0) rotate(var(--tw-rotate, 0));
+		}
+		50% {
+			transform: translateY(-6px) rotate(var(--tw-rotate, 0));
+		}
+	}
+
+	@keyframes wiggle {
+		0%,
+		100% {
+			rotate: 0deg;
+		}
+		25% {
+			rotate: -6deg;
+		}
+		75% {
+			rotate: 6deg;
+		}
+	}
 }
 
 @layer base {
@@ -26,15 +70,98 @@
 		color-scheme: dark;
 	}
 
-	/* The same in both themes. Add a .dark block here if that changes. */
+	/* Overrides Starwind's generated tokens with the whiteboard palette. */
 	:root {
+		--background: #ffffff;
+		--foreground: #1c1c1e;
+		--card: #ffffff;
+		--card-foreground: #1c1c1e;
+		--popover: #ffffff;
+		--popover-foreground: #1c1c1e;
+		--primary: #4262ff;
+		--primary-foreground: #ffffff;
+		--muted: #f7f8fa;
+		--muted-foreground: #555a6a;
+		--accent: #eef0f3;
+		--accent-foreground: #1c1c1e;
+		--border: #e0e2e8;
+		--input: #c7cad5;
+		--outline: #4262ff;
+		--radius: 1rem;
+		/* pt-3 plus the h-14 bar in Header.astro. */
+		--header-h: 4.25rem;
+
+		--canvas-dot: #d5d8e0;
+		--marker: #ffe58a;
+		--shadow-soft-value: 0 4px 12px 0 rgb(5 0 56 / 0.06);
+		--shadow-lift-value: 0 16px 36px -6px rgb(5 0 56 / 0.16);
+
+		--sticky-yellow: #fff1a8;
+		--sticky-rose: #ffd8f4;
+		--sticky-teal: #c3faf5;
+		--sticky-coral: #ffc6c6;
+		--sticky-orange: #ffe0bf;
+		--sticky-mint: #d3f8df;
+		--sticky-lavender: #e3e0ff;
+		--sticky-blue: #d6e2ff;
+
 		--folder: #f5b800;
 		--folder-muted: var(--color-gray-500);
 		--pdf: var(--color-red-500);
 		--doc: var(--color-sky-500);
-		--support: var(--color-green-500);
-		--support-hover: var(--color-green-600);
+		--support: var(--color-green-600);
+		--support-hover: var(--color-green-700);
 	}
+
+	/* The board dims at night, but the notes keep their colors so they stay easy to tell apart. */
+	.dark {
+		--background: #17171a;
+		--foreground: #f4f4f6;
+		--card: #222227;
+		--card-foreground: #f4f4f6;
+		--popover: #222227;
+		--popover-foreground: #f4f4f6;
+		--primary: #8b9dff;
+		--primary-foreground: #17171a;
+		--muted: #1f1f23;
+		--muted-foreground: #a5a8b5;
+		--accent: #2c2c34;
+		--accent-foreground: #f4f4f6;
+		--border: #33333b;
+		--input: #44444e;
+		--outline: #8b9dff;
+
+		--canvas-dot: #2e2e35;
+		--marker: #6b5a12;
+		--shadow-soft-value: 0 4px 12px 0 rgb(0 0 0 / 0.35);
+		--shadow-lift-value: 0 16px 36px -6px rgb(0 0 0 / 0.6);
+
+		--sticky-yellow: #f3e08f;
+		--sticky-rose: #f0c6e4;
+		--sticky-teal: #ade9e3;
+		--sticky-coral: #f0b3b3;
+		--sticky-orange: #f0cfaa;
+		--sticky-mint: #bfe9cc;
+		--sticky-lavender: #cfcaf5;
+		--sticky-blue: #c2d0f5;
+
+		--support: var(--color-green-400);
+		--support-hover: var(--color-green-300);
+	}
+
+	body {
+		@apply bg-canvas;
+	}
+
+	::selection {
+		background-color: var(--marker);
+		color: var(--foreground);
+	}
+}
+
+/* AdSense marks slots it couldn't fill, so they leave no empty box. */
+.ad-slot:has(ins[data-ad-status="unfilled"]) {
+	display: none;
 }
 
 /* NavLink applies this to every link, so hover and focus states are never missing. */
@@ -48,7 +175,7 @@
 
 /* The Footer's client script also adds this class. */
 @utility social-icon {
-	@apply size-7 link-muted;
+	@apply size-7 transition-transform hover:-translate-y-0.5;
 }
 
 @utility link-support {
@@ -58,4 +185,56 @@
 /* Pressed state for list items that render as links. */
 @utility item-link {
 	@apply [a]:active:bg-accent/50;
+}
+
+/* The dotted whiteboard behind every page. */
+@utility bg-canvas {
+	background-color: var(--background);
+	background-image: radial-gradient(var(--canvas-dot) 1.2px, transparent 1.4px);
+	background-size: 24px 24px;
+}
+
+/* A note stuck on the board. Pair it with a bg-sticky-* color. */
+@utility sticky-note {
+	@apply relative rounded-3xl text-sticky-ink shadow-soft transition-[translate,rotate,box-shadow] duration-200;
+}
+
+/* Lifts a note on hover and focus. Rotation only runs for people who allow motion. */
+@utility note-hover {
+	@apply hover:-translate-y-1 hover:shadow-lift focus-visible:-translate-y-1 focus-visible:shadow-lift motion-safe:hover:rotate-0 motion-safe:focus-visible:rotate-0 active:translate-y-0;
+}
+
+/* White card for content that needs calm, such as papers and long text. */
+@utility paper-card {
+	@apply rounded-3xl border bg-card text-card-foreground shadow-soft;
+}
+
+@utility pill-tag {
+	@apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap;
+}
+
+/* Highlighter stroke behind text, like a marker on a whiteboard. */
+@utility marker {
+	background-image: linear-gradient(
+		transparent 58%,
+		var(--marker) 58%,
+		var(--marker) 92%,
+		transparent 92%
+	);
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+@utility focus-ring {
+	@apply outline-none focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-outline;
+}
+
+/* Section title with a count, such as "Papers 12". */
+@utility section-title {
+	@apply flex items-center gap-2 text-2xl font-extrabold tracking-tight sm:text-3xl;
+}
+
+/* Small label in handwriting, for notes in the margins. */
+@utility scribble {
+	@apply font-excalifont text-muted-foreground;
 }

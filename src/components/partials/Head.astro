@@ -43,12 +43,12 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 <!-- Matches the page background. Media queries follow the OS theme, not the site's toggle. -->
 <meta
 	name="theme-color"
-	content="#fafafa"
+	content="#ffffff"
 	media="(prefers-color-scheme: light)"
 />
 <meta
 	name="theme-color"
-	content="#0a0a0a"
+	content="#17171a"
 	media="(prefers-color-scheme: dark)"
 />
 
@@ -109,14 +109,40 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 		// Start the download while the first page is still parsing, as the old <script> tag did.
 		loadAdSense();
 
+		// Each push() fills the first slot AdSense hasn't seen yet, in page order.
+		// So filling a slot also fills every earlier one, to keep pushes and slots matched.
+		const fillUpTo = (target) => {
+			for (const slot of document.querySelectorAll("ins.adsbygoogle")) {
+				if (!slot.hasAttribute("data-pyqs-queued")) {
+					slot.setAttribute("data-pyqs-queued", "");
+					(window.adsbygoogle = window.adsbygoogle || []).push({});
+				}
+				if (slot === target) break;
+			}
+		};
+
 		document.addEventListener("astro:page-load", () => {
+			window.__pyqsAds.observer?.disconnect();
 			if (!adsEnabled()) return;
 			loadAdSense();
+
+			// Slots fill shortly before they scroll into view, so ads lower down don't slow the page or count as unseen.
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						fillUpTo(entry.target);
+						observer.unobserve(entry.target);
+					}
+				},
+				{ rootMargin: "400px 0px" },
+			);
+			window.__pyqsAds.observer = observer;
 			document
-				.querySelectorAll("ins.adsbygoogle:not([data-adsbygoogle-status])")
-				.forEach(() => {
-					(window.adsbygoogle = window.adsbygoogle || []).push({});
-				});
+				.querySelectorAll(
+					"ins.adsbygoogle:not([data-pyqs-queued]):not([data-adsbygoogle-status])",
+				)
+				.forEach((slot) => observer.observe(slot));
 		});
 	}
 </script>

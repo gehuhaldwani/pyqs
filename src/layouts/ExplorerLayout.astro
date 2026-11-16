@@ -3,6 +3,7 @@ import { base } from "astro:config/server";
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
+import HomeHero from "@/components/widgets/HomeHero.astro";
 import type { DirEntry } from "@/lib/content/schema";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
@@ -30,12 +31,26 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 
 const { Content, headings } = await render(entry);
 const hasOwnHeading = headings.some((heading) => heading.depth === 1);
+// Folders without an index.md render nothing, so they get no empty card.
+const hasBody = Boolean(entry.rendered?.html);
 ---
 
-<BrowseLayout {title} {path} back={!isHomePage} heading={!hasOwnHeading}>
+<BrowseLayout
+	{title}
+	{path}
+	back={!isHomePage}
+	crumbs={!isHomePage}
+	heading={!hasOwnHeading && !isHomePage}
+>
+	{isHomePage && <HomeHero slot="hero" />}
+
 	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 
-	<Prose class="my-10">
-		<Content />
-	</Prose>
+	{
+		hasBody && (
+			<Prose class="mt-12">
+				<Content />
+			</Prose>
+		)
+	}
 </BrowseLayout>

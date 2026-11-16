@@ -1,4 +1,5 @@
 ---
+// Markdown on a white card, at a comfortable reading width with roomy lines.
 interface Props {
 	class?: string;
 }
@@ -7,15 +8,19 @@ const { class: className } = Astro.props as Props;
 ---
 
 <div
-    class:list={[
-        "mx-5",
-        "prose",
-        "dark:prose-invert",
-        "prose-sm md:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl",
-        "max-w-none",
-        "prose-headings:font-excalifont",
-        className,
-    ]}
+	class:list={[
+		"paper-card mx-auto max-w-3xl px-5 py-8 sm:px-10 sm:py-12",
+		"prose prose-base md:prose-lg dark:prose-invert",
+		"prose-p:leading-relaxed prose-li:my-1.5",
+		"prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:scroll-mt-40",
+		"prose-h1:font-excalifont prose-h1:font-normal",
+		"prose-h2:marker prose-h2:inline-block",
+		"prose-a:text-primary prose-a:decoration-2 prose-a:underline-offset-4",
+		"prose-strong:marker prose-img:rounded-2xl prose-img:shadow-soft",
+		"prose-code:rounded-md prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none",
+		"prose-blockquote:rounded-r-2xl prose-blockquote:border-l-brand-yellow prose-blockquote:bg-sticky-yellow/40 prose-blockquote:py-1 prose-blockquote:not-italic",
+		className,
+	]}
 >
-    <slot />
+	<slot />
 </div>

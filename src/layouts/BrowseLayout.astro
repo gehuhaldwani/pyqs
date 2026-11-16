@@ -1,6 +1,5 @@
 ---
-// Shared frame for folder and doc pages. It shows an ad block and the path crumbs above the page content.
-import Separator from "@/components/starwind/separator";
+// Shared frame for folder and doc pages. It pins the path crumbs under the header and puts an ad above the content.
 import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
 import PathCrumbs from "@/components/widgets/explorer/PathCrumbs.astro";
 import PageLayout from "./PageLayout.astro";
@@ -11,6 +10,8 @@ interface Props {
 	path: string;
 	// False on the home page, which has no parent folder.
 	back?: boolean;
+	// False on the home page, where the only crumb would be "Home".
+	crumbs?: boolean;
 	// Shown as the last crumb instead of the last path segment.
 	current?: string;
 	// The crumbs are the visible heading, so the page's <h1> is for screen readers only.
@@ -18,19 +19,37 @@ interface Props {
 	heading?: boolean;
 }
 
-const { title, path, back = true, current, heading = true } = Astro.props;
+const {
+	title,
+	path,
+	back = true,
+	crumbs = true,
+	current,
+	heading = true,
+} = Astro.props;
 ---
 
 <PageLayout {title}>
+	{
+		crumbs && (
+			// Nothing sits above the crumbs, so they are at the same spot on every page, scrolled or not.
+			// That keeps the view transition from sliding them in from an old position.
+			<div
+				slot="top"
+				class="pointer-events-none sticky top-(--header-h) z-30 mx-auto w-full max-w-6xl px-4 pt-3 sm:px-6"
+			>
+				<div class="pointer-events-auto flex max-w-full">
+					<PathCrumbs {path} {back} {current} />
+				</div>
+			</div>
+		)
+	}
+
 	{heading && <h1 class="sr-only">{title}</h1>}
 
-	<EntryListContentBlock />
+	<slot name="hero" />
 
-	<Separator class="my-4" />
-
-	<PathCrumbs {path} {back} {current} />
-
-	<Separator class="my-4" />
+	<EntryListContentBlock format="banner" class="mb-10" />
 
 	<slot />
 </PageLayout>

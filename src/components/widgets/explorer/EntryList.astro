@@ -1,7 +1,13 @@
 ---
-import Item from "@/components/starwind/item";
-import { type DirEntry, displayName, isPyqFile } from "@/lib/content/schema";
-import { comparePyqs } from "@/lib/pyqs";
+import Doodle from "@/components/ui/Doodle.astro";
+import {
+	type DirEntry,
+	displayName,
+	isPyqFile,
+	type PyqFileEntry,
+} from "@/lib/content/schema";
+import { comparePyqs, EXAM_TYPE_LABELS, EXAM_TYPES } from "@/lib/pyqs";
+import { EXAM_TYPE_COLORS } from "@/lib/sticky";
 import DirectoryEntry from "./DirectoryEntry.astro";
 import DocEntry from "./DocEntry.astro";
 import EntryListContentBlock from "./EntryListContentBlock.astro";
@@ -25,65 +31,140 @@ const docs = entry.files
 const pdfs = entry.files
 	.filter(isPyqFile)
 	.toSorted((a, b) => comparePyqs(b.pyq, a.pyq));
+
+// Small groups by year are easier to scan than one long list.
+const years: { year: number; papers: PyqFileEntry[] }[] = [];
+for (const pdf of pdfs) {
+	const last = years.at(-1);
+	if (last?.year === pdf.pyq.year) last.papers.push(pdf);
+	else years.push({ year: pdf.pyq.year, papers: [pdf] });
+}
+
+// In-feed ads only go in lists long enough to carry them, so short folders stay mostly content.
+const IN_FEED_MIN = 6;
+const adAfterFolders = dirs.length >= IN_FEED_MIN;
+const adAfterFirstYear = years.length > 1 && pdfs.length >= IN_FEED_MIN;
+
+const examCounts = EXAM_TYPES.map((type) => ({
+	type,
+	count: pdfs.filter((pdf) => pdf.pyq.type === type).length,
+})).filter(({ count }) => count > 0);
 ---
 
-<div class="[&>*:not(:first-child)]:mt-4 select-none">
+<div class="space-y-12 select-none">
 	{
 		dirs.length > 0 && (
-			<>
-				<Item.Group>
-					{dirs.map((dir) => (
-						<>
-							<DirectoryEntry entry={dir} {capitalize} />
-							<Item.Separator />
-						</>
-					))}
-				</Item.Group>
-
-				<Item.Group>
-					<EntryListContentBlock />
-				</Item.Group>
-			</>
+			<section aria-labelledby="folders-title" id="folders" class="scroll-mt-40">
+				<div class="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+					<h2 id="folders-title" class="section-title">
+						{capitalize ? "Pick your course" : "Pick a folder"}
+					</h2>
+					<span class="scribble text-lg">{dirs.length} to choose from</span>
+				</div>
+				<div class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+					{dirs.map((dir) => <DirectoryEntry entry={dir} {capitalize} />)}
+				</div>
+				{adAfterFolders && <EntryListContentBlock class="mt-10" />}
+			</section>
 		)
 	}
 
 	{
 		docs.length > 0 && (
-			<Item.Group>
-				{docs.map((doc) => (
-					<>
-						<DocEntry entry={doc} />
-						<Item.Separator />
-					</>
-				))}
-			</Item.Group>
+			<section aria-labelledby="docs-title">
+				<h2 id="docs-title" class="section-title mb-6">Notes &amp; guides</h2>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{docs.map((doc) => <DocEntry entry={doc} />)}
+				</div>
+			</section>
 		)
 	}
 
 	{
 		pdfs.length > 0 && (
-			<>
-				<Item.Group>
-					{pdfs.map((pdf) => (
+			<section aria-labelledby="papers-title" data-paper-list>
+				<div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+					<h2 id="papers-title" class="section-title">
+						Papers
+						<span class="pill-tag bg-foreground text-sm text-background">{pdfs.length}</span>
+					</h2>
+					<span class="scribble flex items-center gap-1 text-lg">
+						newest first. one paper per
+						<Doodle name="tomato" class="inline size-5" stroke-width="2" />
+						focus round!
+					</span>
+				</div>
+
+				{examCounts.length > 1 && (
+					<div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter papers by exam">
+						<button
+							type="button"
+							class="pill-tag focus-ring h-9 border bg-card px-4 text-sm aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background"
+							aria-pressed="true"
+							data-exam-filter="all"
+						>
+							All
+						</button>
+						{examCounts.map(({ type, count }) => (
+							<button
+								type="button"
+								class:list={[
+									"pill-tag focus-ring h-9 border border-transparent px-4 text-sm text-sticky-ink aria-pressed:border-sticky-ink aria-pressed:shadow-soft",
+									EXAM_TYPE_COLORS[type],
+								]}
+								aria-pressed="false"
+								data-exam-filter={type}
+							>
+								{EXAM_TYPE_LABELS[type]}
+								<span class="opacity-60">{count}</span>
+							</button>
+						))}
+					</div>
+				)}
+
+				<div class="space-y-8">
+					{years.map(({ year, papers }, index) => (
 						<>
-							<PdfEntry entry={pdf} />
-							<Item.Separator />
+						{index === 1 && adAfterFirstYear && <EntryListContentBlock />}
+						<div data-year-group>
+							<h3 class="mb-3 flex items-center gap-3">
+								<span class="-rotate-2 rounded-lg bg-brand-yellow px-3 py-0.5 font-excalifont text-xl text-sticky-ink shadow-soft">
+									{year}
+								</span>
+								<span class="h-px flex-1 border-t-2 border-dashed border-border" aria-hidden="true" />
+							</h3>
+							<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+								{papers.map((pdf) => <PdfEntry entry={pdf} />)}
+							</div>
+						</div>
 						</>
 					))}
-				</Item.Group>
+				</div>
 
-				<Item.Group>
-					<EntryListContentBlock />
-				</Item.Group>
-			</>
+				<EntryListContentBlock class="mt-10" />
+			</section>
 		)
 	}
 
-	{
-		pdfs.length > 0 && (
-			<div class="flex justify-center">
-				<UploadButton title={title} path={path} />
-			</div>
-		)
-	}
+	{pdfs.length > 0 && <UploadButton title={title} path={path} />}
 </div>
+
+<script>
+	// Delegated once, so it keeps working after client-side navigation swaps the list.
+	document.addEventListener("click", (event) => {
+		const button = (event.target as Element | null)?.closest<HTMLElement>("[data-exam-filter]");
+		const list = button?.closest("[data-paper-list]");
+		if (!button || !list) return;
+
+		const filter = button.dataset.examFilter;
+		for (const chip of list.querySelectorAll<HTMLElement>("[data-exam-filter]")) {
+			chip.setAttribute("aria-pressed", String(chip === button));
+		}
+		for (const paper of list.querySelectorAll<HTMLElement>("[data-exam]")) {
+			paper.hidden = filter !== "all" && paper.dataset.exam !== filter;
+		}
+		for (const group of list.querySelectorAll<HTMLElement>("[data-year-group]")) {
+			group.hidden = !group.querySelector("[data-exam]:not([hidden])");
+		}
+	});
+</script>

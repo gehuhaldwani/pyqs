@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
-import Item from "@/components/starwind/item";
 import type { DirSummary } from "@/lib/content/schema";
+import { stickyColor, stickyTilt } from "@/lib/sticky";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import { toTitleCase } from "@/utils/string";
 
@@ -17,28 +17,41 @@ function getDirTitle(title: string, capitalize: boolean) {
 		? title
 		: toTitleCase(title);
 }
+
+// Archive folders are quieter so the current ones stand out.
+const isArchive = dir.name === "OTHERS" || dir.name === "OLD";
 ---
 
-<Item.Root
-	as="a"
+<a
 	href={addForwardSlashAndBaseUrl(dir.path)}
 	data-astro-prefetch="viewport"
-	class="item-link"
+	class:list={[
+		"group note-hover focus-ring flex min-h-28 flex-col justify-between gap-4 p-4 sm:min-h-32 sm:p-5",
+		isArchive
+			? "relative rounded-3xl border-2 border-dashed border-input bg-card text-muted-foreground transition-[translate,box-shadow] duration-200"
+			: ["sticky-note", stickyColor(dir.name), stickyTilt(dir.name)],
+	]}
 >
-	<Item.Media variant="image">
-		<Icon
-			name="folder"
-			width={32}
-			height={32}
-			class:list={dir.name === "OTHERS" || dir.name === "OLD"
-				? "text-folder-muted"
-				: "text-folder"}
-			aria-hidden="true"
-		/>
-	</Item.Media>
-	<Item.Content>
-		<Item.Title>
+	{
+		!isArchive && (
+			<span
+				class="absolute -top-2.5 left-1/2 h-5 w-14 -translate-x-1/2 rotate-3 rounded-sm bg-white/55 shadow-sm"
+				aria-hidden="true"
+			/>
+		)
+	}
+	<Icon
+		name={isArchive ? "mdi:archive-outline" : "mdi:folder-outline"}
+		class="size-6 opacity-60"
+		aria-hidden="true"
+	/>
+	<span class="flex items-end justify-between gap-2">
+		<span class="text-lg leading-tight font-bold break-words sm:text-xl">
 			{getDirTitle(dir.name.toUpperCase(), capitalize)}
-		</Item.Title>
-	</Item.Content>
-</Item.Root>
+		</span>
+		<span
+			class="font-excalifont text-xl opacity-50 transition-transform group-hover:translate-x-1 group-hover:opacity-100"
+			aria-hidden="true">→</span
+		>
+	</span>
+</a>

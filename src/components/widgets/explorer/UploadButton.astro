@@ -1,5 +1,6 @@
 ---
 import { Button } from "@/components/starwind/button";
+import Doodle from "@/components/ui/Doodle.astro";
 import { EXTERNAL_LINK_ATTRIBUTES, uploaderUrl } from "@/utils/url";
 
 interface Props {
@@ -10,12 +11,24 @@ interface Props {
 const { path, title } = Astro.props;
 ---
 
-<Button
-	href={uploaderUrl(path, title)}
-	{...EXTERNAL_LINK_ATTRIBUTES}
-	variant="default"
+<div
+	class="flex w-full flex-col items-center gap-4 rounded-3xl border-2 border-dashed border-input bg-card/70 p-6 text-center sm:flex-row sm:text-left"
 >
-	<p class="wrap-break-word whitespace-normal text-center">
-		Upload PYQs to <span class="font-bold font-excalifont">“{title}”</span>
-	</p>
-</Button>
+	<Doodle name="papers" class="size-20 shrink-0 text-foreground" />
+	<div class="flex-1">
+		<p class="text-lg font-bold">Got a paper we're missing?</p>
+		<p class="text-muted-foreground">
+			Snap it, upload it, and help the next batch of students.
+		</p>
+	</div>
+	<Button
+		href={uploaderUrl(path, title)}
+		{...EXTERNAL_LINK_ATTRIBUTES}
+		variant="default"
+		class="h-auto min-h-11 rounded-full px-6 py-2"
+	>
+		<span class="whitespace-normal text-center">
+			Upload to <span class="font-excalifont">“{title}”</span>
+		</span>
+	</Button>
+</div>

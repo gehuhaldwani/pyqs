@@ -1,5 +1,6 @@
 ---
 import { Button } from "@/components/starwind/button";
+import Doodle from "@/components/ui/Doodle.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 ---
@@ -8,8 +9,16 @@ import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 	title="404 Not Found"
 	description="The page you are looking for does not exist."
 >
-	<h1 class="text-7xl font-bold text-center">404 - Page Not Found</h1>
-	<div class="mt-16 w-full flex items-center justify-center">
-		<Button href={addForwardSlashAndBaseUrl("")}>Go Home</Button>
+	<div class="mx-auto flex max-w-2xl flex-col items-center py-10 text-center">
+		<Doodle name="eraser" class="w-full max-w-md text-foreground" />
+		<h1 class="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
+			Someone <span class="marker">wiped this</span> off the board.
+		</h1>
+		<p class="mt-4 text-lg text-muted-foreground">
+			This page doesn't exist, or it moved. Let's get you back to your papers.
+		</p>
+		<Button href={addForwardSlashAndBaseUrl("")} size="lg" class="mt-8 rounded-full">
+			Back to the board
+		</Button>
 	</div>
 </PageLayout>

@@ -1,0 +1,192 @@
+---
+// Hand-drawn whiteboard illustrations. Lines use currentColor and fills use the sticky-note tokens, so both themes work.
+import type { HTMLAttributes } from "astro/types";
+
+type DoodleName =
+	| "board"
+	| "bulb"
+	| "star"
+	| "arrow"
+	| "squiggle"
+	| "pencil"
+	| "pin"
+	| "eraser"
+	| "papers"
+	| "tomato";
+
+interface Props extends HTMLAttributes<"svg"> {
+	name: DoodleName;
+	// Describes the drawing for screen readers. Without it the doodle is decorative.
+	label?: string;
+}
+
+const { name, label, class: className, ...rest } = Astro.props;
+
+const viewBoxes: Record<DoodleName, string> = {
+	board: "0 0 420 300",
+	bulb: "0 0 64 64",
+	star: "0 0 48 48",
+	arrow: "0 0 120 60",
+	squiggle: "0 0 160 20",
+	pencil: "0 0 80 80",
+	pin: "0 0 32 32",
+	eraser: "0 0 320 220",
+	papers: "0 0 120 120",
+	tomato: "0 0 48 48",
+};
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox={viewBoxes[name]}
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2.5"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	class={className}
+	role={label ? "img" : undefined}
+	aria-label={label}
+	aria-hidden={label ? undefined : "true"}
+	{...rest}
+>
+	{
+		name === "board" && (
+			<>
+				<path
+					d="M30 34c120-6 240-5 360-1 4 70 5 150 1 222-120 4-240 5-360 0-4-74-5-148-1-221Z"
+					fill="var(--card)"
+				/>
+				<path d="M150 255l-22 38M270 255l22 38M210 258v36" />
+				<g transform="rotate(-4 95 95)">
+					<rect x="58" y="60" width="78" height="72" rx="10" fill="var(--sticky-yellow)" stroke="none" />
+					<path d="M70 82h52M70 96h40M70 110h46" stroke="#1c1c1e" stroke-width="2.5" />
+				</g>
+				<g transform="rotate(3 205 105)">
+					<rect x="168" y="70" width="78" height="72" rx="10" fill="var(--sticky-teal)" stroke="none" />
+					<path d="M180 92l10 10 22-22" stroke="#1c1c1e" stroke-width="3" />
+					<path d="M182 122h50" stroke="#1c1c1e" stroke-width="2.5" />
+				</g>
+				<g transform="rotate(-2 315 110)">
+					<rect x="278" y="68" width="78" height="72" rx="10" fill="var(--sticky-rose)" stroke="none" />
+					<path
+						d="M298 86l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z"
+						stroke="#1c1c1e"
+						stroke-width="2"
+						fill="var(--brand-star, #ffd02f)"
+					/>
+				</g>
+				<g transform="rotate(2 120 200)">
+					<rect x="82" y="168" width="96" height="62" rx="10" fill="var(--sticky-lavender)" stroke="none" />
+					<path d="M96 188h66M96 204h44" stroke="#1c1c1e" stroke-width="2.5" />
+				</g>
+				<path d="M140 100c12 4 20 2 26-2M246 106c10 0 22-2 30-6" stroke-dasharray="4 6" />
+				<path d="M268 98l8 2-4 7" />
+				<path d="M210 150c-6 22-20 34-36 38" stroke-dasharray="4 6" />
+				<path d="M178 186l-6 2 2-7" />
+				<g transform="translate(250 170)">
+					<path d="M8 50l58-46 10 12-58 46-14 4z" fill="var(--sticky-orange)" />
+					<path d="M8 50l-4 16 14-4M56 12l10 12" />
+				</g>
+				<path d="M330 178c10-8 22-6 26 4 4 12-8 22-20 18" />
+				<path d="M352 210l4 10M362 196l10 2M346 168l-2-10" />
+			</>
+		)
+	}
+	{
+		name === "bulb" && (
+			<>
+				<path
+					d="M32 8c-11 0-19 8-19 18 0 7 4 11 8 16 2 3 3 5 3 8h16c0-3 1-5 3-8 4-5 8-9 8-16 0-10-8-18-19-18z"
+					fill="var(--sticky-yellow)"
+				/>
+				<path d="M25 56h14M27 61h10M28 34l4 6 4-6M32 40v10" />
+				<path d="M6 22l-4-2M58 22l4-2M12 6l-3-3M52 6l3-3" />
+			</>
+		)
+	}
+	{
+		name === "star" && (
+			<path
+				d="M24 4l6 13 14 2-10 10 2 14-12-7-12 7 2-14L4 19l14-2z"
+				fill="#ffd02f"
+				stroke="#1c1c1e"
+			/>
+		)
+	}
+	{
+		name === "arrow" && (
+			<>
+				<path d="M6 40c26-30 64-36 100-14" />
+				<path d="M92 14l14 12-17 6" />
+			</>
+		)
+	}
+	{name === "squiggle" && <path d="M4 12c12-10 20 8 32 0s20-10 32 0 20 8 32 0 20-10 32 0 16 6 22 2" />}
+	{
+		name === "pencil" && (
+			<>
+				<path d="M14 66l44-44 10 10-44 44-16 4z" fill="var(--sticky-orange)" />
+				<path d="M50 30l10 10M14 66l10 10M10 74l4 4" />
+				<path d="M58 22l6-6c3-3 7-3 10 0s3 7 0 10l-6 6" fill="var(--sticky-coral)" />
+			</>
+		)
+	}
+	{
+		name === "pin" && (
+			<>
+				<circle cx="16" cy="12" r="8" fill="#ff6b6b" stroke="#1c1c1e" stroke-width="2" />
+				<path d="M16 20v9" stroke="#1c1c1e" stroke-width="2" />
+				<circle cx="13" cy="9" r="2" fill="#fff" stroke="none" />
+			</>
+		)
+	}
+	{
+		name === "eraser" && (
+			<>
+				<path
+					d="M24 30c90-6 180-5 272-1 4 52 4 110 0 162-92 4-182 4-272 0-4-54-4-108 0-161Z"
+					fill="var(--card)"
+				/>
+				<path
+					d="M70 90c20-10 40 10 60 0s40-10 60 0M80 130c30-6 60 4 90-2"
+					stroke-dasharray="2 10"
+					opacity="0.5"
+				/>
+				<g transform="rotate(-18 220 120)">
+					<rect x="180" y="96" width="96" height="44" rx="10" fill="var(--sticky-blue)" />
+					<path d="M180 124h96" />
+				</g>
+				<text
+					x="62"
+					y="178"
+					font-family="var(--font-excalifont), cursive"
+					font-size="34"
+					fill="currentColor"
+					stroke="none"
+				>
+					404?!
+				</text>
+			</>
+		)
+	}
+	{
+		name === "papers" && (
+			<>
+				<path d="M30 22l60-6 6 84-60 6z" fill="var(--sticky-lavender)" />
+				<path d="M22 28h62v86H22z" fill="var(--card)" />
+				<path d="M34 46h38M34 60h30M34 74h38M34 88h22" />
+				<path d="M72 96l6 6 12-14" stroke="var(--support)" stroke-width="3.5" />
+			</>
+		)
+	}
+	{
+		name === "tomato" && (
+			<>
+				<circle cx="24" cy="27" r="16" fill="#ff8a7a" />
+				<path d="M24 11c-2-4-6-5-9-4 3 1 5 3 6 5M24 11c2-4 7-5 10-3-3 1-6 3-7 5M24 11V5" />
+				<path d="M16 22c1-3 3-5 6-6" stroke="#fff" opacity="0.8" />
+			</>
+		)
+	}
+</svg>

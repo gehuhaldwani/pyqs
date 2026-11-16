@@ -28,7 +28,18 @@ Pushes to `gh-pages` don't start a deploy. After changing the site, run the work
 
 ## thumb.yml
 
-The workflow renders a 512x512 WebP thumbnail of the first page of each new or changed PDF and commits it to the `thumbnails` branch. A manual run regenerates every thumbnail.
+The workflow keeps the `thumbnails` branch in sync with the PDFs on `main`. It runs when a push changes a PDF, and on manual runs.
+
+The logic lives in `.github/scripts/sync-thumbnails.sh`. It compares state instead of diffs, so any run fixes what earlier runs missed:
+
+1. It reads each PDF's path and git blob id from the index. The blob id changes when the file's content changes.
+2. It compares them with `.manifest.tsv` on the `thumbnails` branch, which lists what the last run rendered.
+3. It renders PDFs that are new, changed or missing a thumbnail with `pdftoppm` and `cwebp`, one per CPU at a time.
+4. It deletes thumbnails whose PDF no longer exists.
+
+The checkout has no file contents and only `.github/` in the working tree. The script adds just the PDFs it renders, so a run downloads those files instead of the whole 1.2 GB of PDFs.
+
+The `thumbnails` branch keeps a single commit that the workflow replaces on each run. PDFs that fail to render show as warnings, and the run fails after pushing the other thumbnails. To render everything again, start a manual run with "Render every thumbnail again" checked.
 
 ## Incremental builds
 

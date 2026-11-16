@@ -1,4 +1,5 @@
 ---
+import { base } from "astro:config/server";
 import Breadcrumb from "@/components/starwind/breadcrumb";
 import { Button } from "@/components/starwind/button";
 
@@ -23,7 +24,7 @@ for (const p of path.split("/")) {
 	if (p) {
 		currentPath += `${p}/`;
 		crumbs.push({
-			title: p,
+			title: currentPath === base ? "Home" : p,
 			path: currentPath,
 		});
 	}
@@ -31,20 +32,22 @@ for (const p of path.split("/")) {
 ---
 
 <Breadcrumb.Root
-	class="select-none font-excalifont"
+	class="inline-flex min-w-0 max-w-full select-none items-center gap-2 rounded-full border bg-card py-1.5 pr-1.5 pl-1.5 shadow-soft"
 	transition:name="breadcrumbs"
 >
-	<Breadcrumb.List>
-		<Button
-			class="font-bold text-foreground"
-			variant="outline"
-			size="sm"
-			disabled={!back}
-			href="../"
-			data-astro-prefetch="viewport"
-			aria-label="Up a folder"
-			title="Up a folder">↑</Button
-		>
+	<Button
+		class="size-9 shrink-0 rounded-full p-0 text-lg font-bold"
+		variant="default"
+		disabled={!back}
+		href="../"
+		data-astro-prefetch="viewport"
+		aria-label="Up a folder"
+		title="Up a folder">↑</Button
+	>
+	<Breadcrumb.List
+		class="min-w-0 flex-nowrap overflow-x-auto pr-2.5 text-base whitespace-nowrap [scrollbar-width:none]"
+		data-crumb-list
+	>
 		{
 			crumbs.map((crumb, index) => {
 				if (index + 1 !== crumbs.length)
@@ -54,17 +57,17 @@ for (const p of path.split("/")) {
 								<Breadcrumb.Link
 									href={crumb.path}
 									data-astro-prefetch="viewport"
-									class="text-lg"
+									class="font-medium capitalize"
 								>
 									{crumb.title}
 								</Breadcrumb.Link>
 							</Breadcrumb.Item>
-							<Breadcrumb.Separator>/</Breadcrumb.Separator>
+							<Breadcrumb.Separator class="text-muted-foreground">/</Breadcrumb.Separator>
 						</>
 					);
 				return (
 					<Breadcrumb.Item>
-						<Breadcrumb.Page class="text-foreground font-medium text-lg">
+						<Breadcrumb.Page class="marker font-bold text-foreground capitalize">
 							{current ?? crumb.title}
 						</Breadcrumb.Page>
 					</Breadcrumb.Item>
@@ -73,3 +76,11 @@ for (const p of path.split("/")) {
 		}
 	</Breadcrumb.List>
 </Breadcrumb.Root>
+
+<script>
+	// Long paths scroll sideways on small screens. Start at the end, where the current folder is.
+	document.addEventListener("astro:page-load", () => {
+		const list = document.querySelector<HTMLElement>("[data-crumb-list]");
+		if (list) list.scrollLeft = list.scrollWidth;
+	});
+</script>

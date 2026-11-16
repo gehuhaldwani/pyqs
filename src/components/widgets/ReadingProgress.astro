@@ -1,0 +1,24 @@
+---
+// A thin bar at the top of the page that fills as you read, so long pages feel finite.
+---
+
+<div
+	class="pointer-events-none fixed inset-x-0 top-0 z-50 h-1.5 origin-left scale-x-0 bg-brand-yellow"
+	data-reading-progress
+	aria-hidden="true"
+>
+</div>
+
+<script>
+	function update() {
+		const bar = document.querySelector<HTMLElement>("[data-reading-progress]");
+		if (!bar) return;
+		const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+		const progress = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0;
+		bar.style.transform = `scaleX(${progress})`;
+	}
+
+	window.addEventListener("scroll", update, { passive: true });
+	window.addEventListener("resize", update, { passive: true });
+	document.addEventListener("astro:page-load", update);
+</script>
