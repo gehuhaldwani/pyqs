@@ -37,7 +37,7 @@ const title = entry.pyq ? formatPyqTitle(entry.pyq) : displayName(entry);
     <PdfViewer {src} />
     <!-- The viewer has no site header, so the timer floats in a corner the toolbars don't use. -->
     <div
-        class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50"
+        class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 max-[400px]:bottom-[calc(4.5rem+env(safe-area-inset-bottom))]"
         transition:name="focus-timer"
     >
         <FocusTimer />

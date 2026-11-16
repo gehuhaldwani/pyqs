@@ -45,7 +45,7 @@ for (const p of path.split("/")) {
 		title="Up a folder">↑</Button
 	>
 	<Breadcrumb.List
-		class="min-w-0 flex-nowrap overflow-x-auto pr-2.5 text-base whitespace-nowrap [scrollbar-width:none]"
+		class="min-w-0 flex-nowrap overflow-x-auto pr-2.5 text-base whitespace-nowrap [scrollbar-width:none] data-[clipped]:[mask-image:linear-gradient(to_right,transparent,black_1.5rem)]"
 		data-crumb-list
 	>
 		{
@@ -79,8 +79,13 @@ for (const p of path.split("/")) {
 
 <script>
 	// Long paths scroll sideways on small screens. Start at the end, where the current folder is.
+	// While the start of the path is scrolled out of view, the left edge fades to show there is more.
 	document.addEventListener("astro:page-load", () => {
 		const list = document.querySelector<HTMLElement>("[data-crumb-list]");
-		if (list) list.scrollLeft = list.scrollWidth;
+		if (!list) return;
+		const update = () => list.toggleAttribute("data-clipped", list.scrollLeft > 0);
+		list.addEventListener("scroll", update, { passive: true });
+		list.scrollLeft = list.scrollWidth;
+		update();
 	});
 </script>

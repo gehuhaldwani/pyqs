@@ -18,7 +18,7 @@ const { entry } = Astro.props;
 	<span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/60">
 		<Icon name="mdi:file-document-outline" class="size-6" aria-hidden="true" />
 	</span>
-	<span class="flex-1 font-semibold leading-snug">{displayName(entry)}</span>
+	<span class="min-w-0 flex-1 font-semibold leading-snug hyphens-auto wrap-break-word">{displayName(entry)}</span>
 	<span
 		class="font-excalifont text-xl opacity-50 transition-transform group-hover:translate-x-1 group-hover:opacity-100"
 		aria-hidden="true">→</span

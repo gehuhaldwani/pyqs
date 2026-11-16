@@ -9,7 +9,9 @@ const { class: className } = Astro.props as Props;
 
 <div
 	class:list={[
-		"paper-card mx-auto max-w-3xl px-5 py-8 sm:px-10 sm:py-12",
+		"paper-card mx-auto max-w-3xl px-5 py-8 wrap-break-word sm:px-10 sm:py-12",
+		// Wide tables scroll inside the card rather than widening the page.
+		"prose-table:block prose-table:overflow-x-auto",
 		"prose prose-base md:prose-lg dark:prose-invert",
 		"prose-p:leading-relaxed prose-li:my-1.5",
 		"prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:scroll-mt-40",

@@ -40,18 +40,21 @@ const isArchive = dir.name === "OTHERS" || dir.name === "OLD";
 			/>
 		)
 	}
-	<Icon
-		name={isArchive ? "mdi:archive-outline" : "mdi:folder-outline"}
-		class="size-6 opacity-60"
-		aria-hidden="true"
-	/>
-	<span class="flex items-end justify-between gap-2">
-		<span class="text-lg leading-tight font-bold break-words sm:text-xl">
-			{getDirTitle(dir.name.toUpperCase(), capitalize)}
-		</span>
+	<!-- The arrow sits beside the icon, so the title gets the full width of narrow two-column notes. -->
+	<span class="flex items-center justify-between gap-2">
+		<Icon
+			name={isArchive ? "mdi:archive-outline" : "mdi:folder-outline"}
+			class="size-6 opacity-60"
+			aria-hidden="true"
+		/>
 		<span
-			class="font-excalifont text-xl opacity-50 transition-transform group-hover:translate-x-1 group-hover:opacity-100"
+			class="font-excalifont text-xl leading-none opacity-50 transition-transform group-hover:translate-x-1 group-hover:opacity-100"
 			aria-hidden="true">→</span
 		>
+	</span>
+	<span
+		class="min-w-0 text-base leading-tight font-bold hyphens-auto wrap-break-word sm:text-xl"
+	>
+		{getDirTitle(dir.name.toUpperCase(), capitalize)}
 	</span>
 </a>

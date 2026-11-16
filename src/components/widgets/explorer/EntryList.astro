@@ -61,7 +61,13 @@ const examCounts = EXAM_TYPES.map((type) => ({
 					</h2>
 					<span class="scribble text-lg">{dirs.length} to choose from</span>
 				</div>
-				<div class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+				{/* Subject names are long, so the narrowest phones list them in one column. Course names fit two. */}
+				<div
+					class:list={[
+						"grid gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4",
+						capitalize ? "grid-cols-2" : "grid-cols-1 min-[360px]:grid-cols-2",
+					]}
+				>
 					{dirs.map((dir) => <DirectoryEntry entry={dir} {capitalize} />)}
 				</div>
 				{adAfterFolders && <EntryListContentBlock class="mt-10" />}
@@ -88,9 +94,13 @@ const examCounts = EXAM_TYPES.map((type) => ({
 						Papers
 						<span class="pill-tag bg-foreground text-sm text-background">{pdfs.length}</span>
 					</h2>
-					<span class="scribble flex items-center gap-1 text-lg">
+					<span class="scribble text-lg">
 						newest first. one paper per
-						<Doodle name="tomato" class="inline size-5" stroke-width="2" />
+						<Doodle
+							name="tomato"
+							class="inline size-5 align-[-0.2em]"
+							stroke-width="2"
+						/>
 						focus round!
 					</span>
 				</div>

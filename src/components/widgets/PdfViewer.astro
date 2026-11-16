@@ -397,6 +397,11 @@ const { src } = Astro.props;
 									maxWidth: 640,
 									hide: ["comment-button"],
 								},
+								// Scanned papers rarely have text to search, and 320px phones need the room for the close button.
+								"pyqs-small-phone": {
+									maxWidth: 400,
+									hide: ["comment-button", "search-button"],
+								},
 							},
 						},
 					},
