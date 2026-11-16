@@ -89,6 +89,21 @@ The site uses Astro's `ClientRouter`, so page changes happen without full reload
 - **Path crumbs.** `BrowseLayout` pins the crumbs right under the fixed-height header (`--header-h`), with nothing above them. They sit at the same spot on every page, so their view transition only morphs the width instead of sliding from the old page's scroll position.
 - **Theme.** Starwind's theme script applies the stored or system theme before the page paints.
 
+## Installable app and offline use
+
+The site is a PWA. `src/pages/manifest.webmanifest.ts` builds the manifest from `createManifest` in `src/lib/pwa.ts`, scoped to the `/pyqs/` base. The icons in `public/icons/` come from `scripts/icons/icon.html`; run `bun run icons` after changing it.
+
+`Head.astro` registers the service worker in production builds only. `src/pages/sw.js.ts` serves `src/lib/service-worker.js` with `VERSION`, `BASE` and `PAPERS_ORIGIN` defined in front of it. That route has no `cacheKey`, so each build gets a new version and browsers pick up the new worker on their next visit.
+
+| Request                                            | Strategy                                                                      | Cache         |
+| -------------------------------------------------- | ----------------------------------------------------------------------------- | ------------- |
+| `/_astro/` files, EmbedPDF files on jsDelivr       | Cache first. The file names change when the content does.                     | `pyqs-assets` |
+| Pages, including the client router's fetches       | Network first. A saved copy answers after 4 seconds, or at once when offline. | `pyqs-pages`  |
+| Papers on `raw.githubusercontent.com`              | Cache first, so an opened paper works offline.                                | `pyqs-papers` |
+| Everything else, such as ads and `build-info.json` | Not handled                                                                   | none          |
+
+Each cache drops its oldest entries past a limit (papers keep 60). Lookups ignore `Vary`, because cached responses vary on headers such as `Origin` that differ between requests. An unsaved page offline gets `/offline/`, which lists the papers saved in `pyqs-papers` and is left out of the sitemap.
+
 ## Styling
 
 Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind CLI generates `src/components/starwind/`, `src/styles/starwind.css` and `src/lib/utils/starwind/`, so edit them through the CLI.

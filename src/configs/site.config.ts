@@ -11,7 +11,7 @@ const siteConfig: SiteConfig = {
 		thumbnailsBranch: "thumbnails",
 		logo: "/logo.png",
 		ogImage: "/og.png",
-		favicon: "/favicon.ico",
+		favicon: "/icons/favicon-48.png",
 		timezone: "Asia/Kolkata",
 	},
 	header: {

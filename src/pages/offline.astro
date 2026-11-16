@@ -1,0 +1,96 @@
+---
+// The service worker shows this page when a page isn't saved and the network is down.
+import { Button } from "@/components/starwind/button";
+import Doodle from "@/components/ui/Doodle.astro";
+import siteConfig from "@/configs/site.config";
+import PageLayout from "@/layouts/PageLayout.astro";
+import { githubRawUrl } from "@/utils/url";
+
+const { githubRepo, contentBranch } = siteConfig.site;
+// Saved papers are cached under their raw GitHub URL, which starts with this.
+const papersPrefix = githubRawUrl(githubRepo, contentBranch, "/");
+---
+
+<PageLayout
+	title="Offline"
+	description="You are offline. Papers you opened before still work."
+	ads={false}
+>
+	<div class="mx-auto flex max-w-2xl flex-col items-center py-6 text-center">
+		<Doodle name="board" class="w-full max-w-sm text-foreground" />
+		<h1 class="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
+			You're <span class="marker">offline</span>.
+		</h1>
+		<p class="mt-4 text-lg text-muted-foreground">
+			This page isn't saved on your device yet. Papers you opened before still
+			work, so pick one below and keep studying.
+		</p>
+		<Button
+			size="lg"
+			class="mt-8 rounded-full"
+			onclick="location.reload()"
+		>
+			Try again
+		</Button>
+	</div>
+
+	<section class="mx-auto mt-10 max-w-3xl" aria-labelledby="saved-title">
+		<h2 id="saved-title" class="section-title mb-4">Saved on this device</h2>
+		<ul class="grid gap-3 sm:grid-cols-2" data-saved-papers data-prefix={papersPrefix}>
+		</ul>
+		<p class="scribble text-lg" data-saved-empty hidden>
+			nothing saved yet. open a paper while online and it'll be here next time.
+		</p>
+	</section>
+</PageLayout>
+
+<script>
+	import { base } from "astro:config/client";
+
+	// Matches PAPERS in src/lib/service-worker.js.
+	const PAPERS_CACHE = "pyqs-papers";
+
+	async function listSavedPapers() {
+		const list = document.querySelector<HTMLElement>("[data-saved-papers]");
+		const empty = document.querySelector<HTMLElement>("[data-saved-empty]");
+		if (!list || !empty) return;
+
+		const prefix = list.dataset.prefix ?? "";
+		let urls: string[] = [];
+		try {
+			const cache = await caches.open(PAPERS_CACHE);
+			urls = (await cache.keys())
+				.map((request) => request.url)
+				.filter((url) => url.startsWith(prefix));
+		} catch {
+			// No Cache API, as in some private windows.
+		}
+
+		empty.hidden = urls.length > 0;
+		list.replaceChildren(
+			...urls.map((url) => {
+				const path = url.slice(prefix.length);
+				const parts = decodeURIComponent(path).split("/");
+				const file = (parts.pop() ?? "").replace(/\.pdf$/i, "");
+
+				const link = document.createElement("a");
+				link.href = `${base}${path}/`;
+				link.className =
+					"paper-card note-hover focus-ring flex flex-col gap-1 p-4 text-left";
+				const name = document.createElement("span");
+				name.className = "font-bold break-words";
+				name.textContent = file.replaceAll("_", " ").toUpperCase();
+				const where = document.createElement("span");
+				where.className = "text-sm text-muted-foreground capitalize";
+				where.textContent = parts.join(" › ");
+				link.append(name, where);
+
+				const item = document.createElement("li");
+				item.append(link);
+				return item;
+			}),
+		);
+	}
+
+	document.addEventListener("astro:page-load", listSavedPapers);
+</script>

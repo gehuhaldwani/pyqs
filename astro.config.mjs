@@ -47,7 +47,12 @@ export default defineConfig({
 		svgOptimizer: svgoOptimizer(),
 		incrementalBuild: true,
 	},
-	integrations: [sitemap(), icon(), mdx()],
+	integrations: [
+		// The offline page is only for the service worker.
+		sitemap({ filter: (page) => !page.endsWith("/offline/") }),
+		icon(),
+		mdx(),
+	],
 	vite: {
 		cacheDir: "./cache/vite",
 		plugins: [tailwindcss()],

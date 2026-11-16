@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- Source for the app icons in public/icons. Render them with `bun run icons`. -->
+<!-- ?variant=any draws a rounded badge on a transparent square, and ?variant=full fills the square for maskable and Apple icons. -->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<style>
+			@font-face {
+				font-family: "Excalifont";
+				src: url("../../src/assets/fonts/excalifont.woff2") format("woff2");
+				font-display: block;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+			}
+
+			html,
+			body {
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				background: transparent;
+			}
+
+			body {
+				display: grid;
+				place-items: center;
+			}
+
+			.badge {
+				position: relative;
+				display: grid;
+				place-items: center;
+				width: 100vw;
+				height: 100vh;
+				background: #ffd02f;
+				color: #1c1c1e;
+				font-family: "Excalifont", cursive;
+				line-height: 1;
+			}
+
+			.any .badge {
+				width: 88vw;
+				height: 88vh;
+				border-radius: 22%;
+				box-shadow: 0 2vw 4vw rgb(5 0 56 / 0.18);
+			}
+
+			.letter {
+				font-size: 62vw;
+				transform: translateY(4%) rotate(-6deg);
+			}
+
+			/* Maskable icons can be cropped to a circle, so the letter stays inside the middle 80%. */
+			.full .letter {
+				font-size: 50vw;
+			}
+
+			.dot {
+				position: absolute;
+				right: 20%;
+				bottom: 22%;
+				width: 9vw;
+				height: 9vw;
+				border-radius: 50%;
+				background: #ff8a7a;
+				border: 1.4vw solid #1c1c1e;
+			}
+
+			.full .dot {
+				right: 26%;
+				bottom: 27%;
+				width: 7.5vw;
+				height: 7.5vw;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="badge">
+			<span class="letter">P</span>
+			<span class="dot"></span>
+		</div>
+		<script>
+			const variant = new URLSearchParams(location.search).get("variant") ?? "any";
+			document.body.classList.add(variant);
+		</script>
+	</body>
+</html>

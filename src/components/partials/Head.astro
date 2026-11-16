@@ -77,11 +77,29 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
 
-<link rel="icon" href={addBaseUrl(siteConfig.site.favicon)} />
+<link rel="icon" type="image/png" href={addBaseUrl(siteConfig.site.favicon)} />
+
+<link rel="manifest" href={addBaseUrl("/manifest.webmanifest")} />
+<link rel="apple-touch-icon" href={addBaseUrl("/icons/apple-touch-icon.png")} />
+<meta name="apple-mobile-web-app-title" content={siteConfig.site.title} />
+<meta name="mobile-web-app-capable" content="yes" />
 
 {transition && <ClientRouter fallback="none" />}
 
 <ThemeInitScript />
+
+<script>
+	import { base } from "astro:config/client";
+
+	// Dev builds skip the worker, so its caches never serve stale dev pages.
+	if (import.meta.env.PROD && "serviceWorker" in navigator) {
+		navigator.serviceWorker
+			.register(`${base}sw.js`, { scope: base })
+			.catch(() => {
+				// The site works the same without offline support.
+			});
+	}
+</script>
 
 <script>
 	import { haptics, defaultPatterns } from "@/lib/haptics";
