@@ -388,6 +388,17 @@ const { src } = Astro.props;
 					"main-toolbar": {
 						...toolbar,
 						items: reorderedItems,
+						responsive: {
+							...toolbar.responsive,
+							breakpoints: {
+								...toolbar.responsive?.breakpoints,
+								// Phones have no room for every button, and the comments panel pushed the close button off screen.
+								"pyqs-phone": {
+									maxWidth: 640,
+									hide: ["comment-button"],
+								},
+							},
+						},
 					},
 				},
 			});
