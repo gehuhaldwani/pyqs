@@ -9,61 +9,61 @@
   "components": [
     {
       "name": "card",
-      "version": "2.3.1",
+      "version": "2.3.2",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "alert",
-      "version": "1.4.1",
+      "version": "1.4.2",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "separator",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "breadcrumb",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "toggle",
-      "version": "2.0.1",
+      "version": "2.1.0",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "theme-toggle",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "button",
-      "version": "3.0.1",
+      "version": "3.0.3",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "dropdown",
-      "version": "3.2.1",
+      "version": "3.4.0",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "item",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "framework": "astro",
       "registry": "default"
     },
     {
       "name": "alert-dialog",
-      "version": "2.0.2",
+      "version": "2.1.0",
       "framework": "astro",
       "registry": "default"
     }

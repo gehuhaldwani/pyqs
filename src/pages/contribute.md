@@ -1,4 +1,5 @@
 ---
+
 layout: "@/layouts/PostLayout.astro"
 title: Contribute
 ---
@@ -38,7 +39,6 @@ Submit your question paper directly to me.
 - Use the scan button to scan one page at a time.
 
 - Double click on the page to apply effects:
-
   - **Black and White** mode.
   - **Crop** the page to remove extra white space.
   - **Rotate** the page if needed.

@@ -22,12 +22,12 @@ flowchart LR
 
 Every entry has a `type` of `dir` or `file`, and a `path` that is also its URL, such as `/bca/sem 1/`.
 
-| Field | On | Meaning |
-| --- | --- | --- |
-| `directories`, `files` | `dir` | The folder's children. Child folders are summaries without their own contents. |
-| `kind` | `file` | How the file is listed and shown: `pdf`, `doc`, or `file` as the fallback |
-| `pyq` | `file` | Details parsed from a paper's file name, such as subjects, exam type and year |
-| `title` | `file` | A display name, taken from a markdown file's frontmatter |
+| Field                  | On     | Meaning                                                                        |
+| ---------------------- | ------ | ------------------------------------------------------------------------------ |
+| `directories`, `files` | `dir`  | The folder's children. Child folders are summaries without their own contents. |
+| `kind`                 | `file` | How the file is listed and shown: `pdf`, `doc`, or `file` as the fallback      |
+| `pyq`                  | `file` | Details parsed from a paper's file name, such as subjects, exam type and year  |
+| `title`                | `file` | A display name, taken from a markdown file's frontmatter                       |
 
 The loader also:
 
@@ -52,7 +52,11 @@ flowchart TD
 
 `BrowseLayout` is the shared frame for folder and doc pages. It shows an ad slot, the path crumbs and the page content. `ExplorerLayout` adds the entry list and the folder's `index.md`. `DocLayout` adds the rendered markdown.
 
-`PdfLayout` uses `BaseLayout` without the header and footer. It embeds the [EmbedPDF](https://www.embedpdf.com/) viewer, which loads the PDF from `raw.githubusercontent.com`.
+`PdfLayout` uses `BaseLayout` without the header and footer. It embeds the [EmbedPDF](https://www.embedpdf.com/) viewer, which loads the PDF from `raw.githubusercontent.com`, and floats the focus timer in the bottom-right corner.
+
+`PdfViewer.astro` maps the viewer's theme colors to the site's CSS variables and uses the site font. The theme option only covers colors, so a small stylesheet adopted into the viewer's open shadow root adds the dotted canvas and pill buttons. Annotations and panels are on, and panels are needed for the annotation style panel.
+
+The reader's annotations are saved in the browser's IndexedDB (`src/lib/annotation-store.ts`), keyed by the PDF's URL, and imported again when the paper opens. Only annotations the reader made are saved, not ones inside the PDF, so nothing doubles up. Saves run shortly after each change and right away on leaving the page. They stay on that browser and device only. Export still downloads a PDF copy with them.
 
 ## Adding a file kind
 

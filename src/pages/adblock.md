@@ -1,4 +1,5 @@
 ---
+
 layout: "@/layouts/PostLayout.astro"
 title: How to Block Ads
 ---
@@ -18,10 +19,12 @@ Short answer yes. So lets move on
 For Chromium-based browsers (Google Chrome, Microsoft Edge, Opera, Vivaldi, etc.):
 
 Basic:
+
 - Adguard [Extension](https://chromewebstore.google.com/detail/adguard-adblocker/bgnkhhnnamicmpeenaelnjfhikgbkllg)
 - uBlock Origin Lite [Extension](https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh)
 
 Advanced:
+
 - Heilum [Browser](https://helium.computer/) *Editor's choice
 - Brave [Browser](https://brave.com/)
 
@@ -43,6 +46,5 @@ Advanced:
 
 - Brave Browser [App](https://apps.apple.com/us/app/brave-private-web-browser/id1052879175)
 - Adguard for Safari [App](https://apps.apple.com/us/app/adguard-adblock/id1047223162?mt=8)
-
 
 > Do NOT use multiple ad-blockers. It doesn't make the ad-block better, it makes your performance worse as the 2 ad-blockers will fight over each other: https://xcancel.com/gorhill/status/1033706103782170625

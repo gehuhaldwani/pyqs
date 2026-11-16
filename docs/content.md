@@ -4,13 +4,13 @@ The papers live on the `main` branch of [gehuhaldwani/pyqs](https://github.com/g
 
 ## What the site shows
 
-| File | Shown as |
-| --- | --- |
-| A folder | A folder page listing its contents |
-| `index.md` in a folder | Text below that folder's listing |
-| A PDF that follows the naming scheme | A paper, opened in the PDF viewer |
-| Any other `.md` file | A doc page with the rendered markdown |
-| `README.md` | Nothing. It documents the repository. |
+| File                                   | Shown as                              |
+| -------------------------------------- | ------------------------------------- |
+| A folder                               | A folder page listing its contents    |
+| `index.md` in a folder                 | Text below that folder's listing      |
+| A PDF that follows the naming scheme   | A paper, opened in the PDF viewer     |
+| Any other `.md` file                   | A doc page with the rendered markdown |
+| `README.md`                            | Nothing. It documents the repository. |
 | Anything else, including misnamed PDFs | Nothing. The build lists these files. |
 
 Folders with nothing to show are left out. A folder with only an `index.md` or a doc still shows.
@@ -23,17 +23,17 @@ A paper's file name carries its details. The site parses them to build its title
 subject[_SPECIALIZATION]..._type[_number][_back]_year[_month][_date][_setX].pdf
 ```
 
-| Part | Format | Example |
-| --- | --- | --- |
-| Subject code | Lowercase letters, then digits or capitals | `tcs101` |
-| Specialization | Optional, capitals or digits, after a subject | `F1` |
-| Type | `midsem`, `endsem` or `sessional` | `endsem` |
-| Number | Optional, one digit | `2` |
-| Back paper | Optional, the word `back` | `back` |
-| Year | Four digits starting with 20 | `2023` |
-| Month | Optional, three lowercase letters | `jun` |
-| Date | Optional, one or two digits | `15` |
-| Set | Optional, `set` and then capitals or digits | `setA` |
+| Part           | Format                                        | Example  |
+| -------------- | --------------------------------------------- | -------- |
+| Subject code   | Lowercase letters, then digits or capitals    | `tcs101` |
+| Specialization | Optional, capitals or digits, after a subject | `F1`     |
+| Type           | `midsem`, `endsem` or `sessional`             | `endsem` |
+| Number         | Optional, one digit                           | `2`      |
+| Back paper     | Optional, the word `back`                     | `back`   |
+| Year           | Four digits starting with 20                  | `2023`   |
+| Month          | Optional, three lowercase letters             | `jun`    |
+| Date           | Optional, one or two digits                   | `15`     |
+| Set            | Optional, `set` and then capitals or digits   | `setA`   |
 
 Examples:
 
@@ -61,8 +61,8 @@ A doc's name comes from its frontmatter, or from its file name if there is no ti
 
 ```md
 ---
-title: Soft Computing Syllabus
----
+
+## title: Soft Computing Syllabus
 
 ## Units
 ```

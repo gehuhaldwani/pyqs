@@ -16,6 +16,7 @@ const { src } = Astro.props;
 	// Docs: https://www.embedpdf.com/docs/snippet/introduction
 
 	import EmbedPDF from "@embedpdf/snippet";
+	import { loadAnnotations, saveAnnotations } from "@/lib/annotation-store";
 	import { navigate } from "astro:transitions/client";
 
 	const DISABLED_CATEGORIES = [
@@ -25,9 +26,7 @@ const { src } = Astro.props;
 		"document-protect",
 		"document-fullscreen",
 		"redaction",
-		"annotation",
 		"tools",
-		"panel",
 		"form",
 		"insert",
 	];
@@ -47,6 +46,18 @@ const { src } = Astro.props;
 	};
 	const CENTER_ITEM_IDS = ["zoom-menu-button", "zoom-toolbar"];
 
+	// The theme option only covers colors, so the whiteboard canvas and pill buttons go into the viewer's shadow root.
+	// Site variables such as --canvas-dot still reach it, because custom properties inherit into shadow DOM.
+	const VIEWER_CSS = `
+		.bg-bg-app {
+			background-image: radial-gradient(var(--canvas-dot) 1.2px, transparent 1.4px);
+			background-size: 24px 24px;
+		}
+		button.rounded-md {
+			border-radius: 9999px;
+		}
+	`;
+
 	const embedPdfColors = {
 		accent: {
 			primary: "var(--foreground)",
@@ -54,12 +65,11 @@ const { src } = Astro.props;
 				"color-mix(in srgb, var(--foreground) 90%, transparent)",
 			primaryActive:
 				"color-mix(in srgb, var(--foreground) 80%, transparent)",
-			primaryLight:
-				"color-mix(in srgb, var(--foreground) 14%, var(--background))",
+			primaryLight: "var(--marker)",
 			primaryForeground: "var(--background)",
 		},
 		background: {
-			app: "var(--muted)",
+			app: "var(--background)",
 			surface: "var(--card)",
 			surfaceAlt: "var(--muted)",
 			elevated: "var(--popover)",
@@ -77,8 +87,7 @@ const { src } = Astro.props;
 		interactive: {
 			hover: "var(--accent)",
 			active: "color-mix(in srgb, var(--accent) 78%, var(--foreground))",
-			selected:
-				"color-mix(in srgb, var(--foreground) 14%, var(--background))",
+			selected: "var(--marker)",
 			focus: "var(--outline)",
 			focusRing: "color-mix(in srgb, var(--outline) 28%, transparent)",
 		},
@@ -111,6 +120,70 @@ const { src } = Astro.props;
 		},
 	};
 
+	// The parts of EmbedPDF's annotation capability used below. The plugin package isn't a direct dependency.
+	type TransferItem = { annotation: { id: string } };
+	type AnnotationEvent =
+		| { type: "loaded" }
+		| { type: "create" | "update" | "delete"; annotation: { id: string } };
+	type AnnotationApi = {
+		onAnnotationEvent: (listener: (event: AnnotationEvent) => void) => unknown;
+		importAnnotations: (items: TransferItem[]) => void;
+		exportAnnotations: () => { toPromise: () => Promise<TransferItem[]> };
+		// Every page gets a key once the PDF's own annotations have loaded.
+		getState: () => { pages: Record<number, string[]> };
+	};
+
+	// Saves the reader's own annotations for this paper and puts them back when it opens again.
+	// Annotations that came inside the PDF are left out, so they aren't added twice on the next visit.
+	function keepAnnotations(api: AnnotationApi, key: string) {
+		const ownIds = new Set<string>();
+		let restored = false;
+		let saveTimer: ReturnType<typeof setTimeout> | undefined;
+
+		async function save() {
+			clearTimeout(saveTimer);
+			saveTimer = undefined;
+			const items = await api.exportAnnotations().toPromise();
+			await saveAnnotations(
+				key,
+				items.filter((item) => ownIds.has(item.annotation.id)),
+			);
+		}
+
+		async function restore() {
+			if (restored) return;
+			restored = true;
+			const saved = await loadAnnotations<TransferItem>(key);
+			for (const item of saved) ownIds.add(item.annotation.id);
+			if (saved.length > 0) api.importAnnotations(saved);
+		}
+
+		api.onAnnotationEvent((event) => {
+			if (event.type === "loaded") {
+				void restore();
+				return;
+			}
+			// Events before the restore come from the PDF's own annotations.
+			if (!restored) return;
+			if (event.type === "create") ownIds.add(event.annotation.id);
+			if (!ownIds.has(event.annotation.id)) return;
+			if (event.type === "delete") ownIds.delete(event.annotation.id);
+
+			clearTimeout(saveTimer);
+			saveTimer = setTimeout(save, 400);
+		});
+
+		// A cached PDF can finish loading before this listener is attached, so its "loaded" event is already gone.
+		if (Object.keys(api.getState().pages).length > 0) void restore();
+
+		// Save right away when the reader leaves, so the last change isn't lost to the delay.
+		const flush = () => {
+			if (saveTimer !== undefined) void save();
+		};
+		document.addEventListener("astro:before-preparation", flush, { once: true });
+		window.addEventListener("pagehide", flush, { once: true });
+	}
+
 	async function setupViewer() {
 		const container = document.getElementById("pdf-viewer");
 
@@ -124,8 +197,19 @@ const { src } = Astro.props;
 				target: container,
 				src: container.dataset.src,
 				disabledCategories: DISABLED_CATEGORIES,
+				// The site font is already loaded, so the viewer skips its own Open Sans request.
+				// The shadow root has its own --font-sans, so this names the site font directly.
+				fonts: {
+					ui: {
+						family: "var(--font-figtree), system-ui, sans-serif",
+						stylesheetUrl: null,
+					},
+				},
 				theme: {
-					preference: "system",
+					// Follow the site toggle, which sets the .dark class, rather than the OS.
+					preference: document.documentElement.classList.contains("dark")
+						? "dark"
+						: "light",
 					light: embedPdfColors,
 					dark: embedPdfColors,
 				},
@@ -133,7 +217,23 @@ const { src } = Astro.props;
 
 			if (!viewer) return;
 
+			const shadowRoot = container.querySelector("embedpdf-container")?.shadowRoot;
+			if (shadowRoot) {
+				const sheet = new CSSStyleSheet();
+				sheet.replaceSync(VIEWER_CSS);
+				shadowRoot.adoptedStyleSheets = [...shadowRoot.adoptedStyleSheets, sheet];
+			}
+
 			const registry = await viewer.registry;
+
+			const annotationPlugin = registry.getPlugin("annotation");
+			if (annotationPlugin?.provides && container.dataset.src) {
+				keepAnnotations(
+					annotationPlugin.provides() as AnnotationApi,
+					container.dataset.src,
+				);
+			}
+
 			const commandsPlugin = registry.getPlugin("commands");
 			const uiPlugin = registry.getPlugin("ui");
 

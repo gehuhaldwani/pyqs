@@ -4,10 +4,10 @@ This is the website for the GEHU previous year question papers archive, live at 
 
 The code and the papers live in the same GitHub repository, [gehuhaldwani/pyqs](https://github.com/gehuhaldwani/pyqs), on two branches:
 
-| Branch | Contents |
-| --- | --- |
-| `gh-pages` | This website (you are here) |
-| `main` | The question papers, organized in folders |
+| Branch     | Contents                                  |
+| ---------- | ----------------------------------------- |
+| `gh-pages` | This website (you are here)               |
+| `main`     | The question papers, organized in folders |
 
 ## Quick start
 
@@ -25,16 +25,16 @@ Open <http://localhost:4321/pyqs/>. The site reads papers from the `pyqs/` folde
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `bun run dev` | Starts the dev server |
-| `bun run build` | Builds the site into `dist/` |
-| `bun run preview` | Serves the built `dist/` folder |
-| `bun run test` | Runs the unit tests in `tests/` |
-| `bun run check` | Type-checks the site and the tests |
-| `bun run lint` | Checks formatting and lint rules with Biome |
-| `bun run format` | Fixes formatting and import order |
-| `bun run ci` | Runs lint, tests and type checks, like CI does |
+| Command           | What it does                                   |
+| ----------------- | ---------------------------------------------- |
+| `bun run dev`     | Starts the dev server                          |
+| `bun run build`   | Builds the site into `dist/`                   |
+| `bun run preview` | Serves the built `dist/` folder                |
+| `bun run test`    | Runs the unit tests in `tests/`                |
+| `bun run check`   | Type-checks the site and the tests             |
+| `bun run lint`    | Checks formatting and lint rules with Biome    |
+| `bun run format`  | Fixes formatting and import order              |
+| `bun run ci`      | Runs lint, tests and type checks, like CI does |
 
 ## Documentation
 
