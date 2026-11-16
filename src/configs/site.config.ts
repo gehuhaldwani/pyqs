@@ -10,6 +10,7 @@ const siteConfig: SiteConfig = {
 		contentBranch: "main",
 		thumbnailsBranch: "thumbnails",
 		logo: "/logo.png",
+		ogImage: "/og.png",
 		favicon: "/favicon.ico",
 		timezone: "Asia/Kolkata",
 	},

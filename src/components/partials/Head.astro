@@ -24,7 +24,7 @@ export type { Props };
 const {
 	title: pageTitle,
 	description = siteConfig.site.description,
-	ogImageUrl = new URL(addBaseUrl(siteConfig.site.logo), Astro.url.origin),
+	ogImageUrl = new URL(addBaseUrl(siteConfig.site.ogImage), Astro.url.origin),
 	transition = true,
 	lockZoom = false,
 	preconnect = [],
@@ -71,6 +71,11 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 <meta property="og:url" content={Astro.url.href} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={description} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
 
 <link rel="icon" href={addBaseUrl(siteConfig.site.favicon)} />
 

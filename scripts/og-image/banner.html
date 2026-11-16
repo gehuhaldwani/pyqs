@@ -1,0 +1,315 @@
+<!doctype html>
+<!-- Source for public/og.png. Render it with `bun run og`. Colors follow src/styles/global.css. -->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;800&display=block"
+			rel="stylesheet"
+		/>
+		<style>
+			@font-face {
+				font-family: "Excalifont";
+				src: url("../../src/assets/fonts/excalifont.woff2") format("woff2");
+				font-display: block;
+			}
+
+			:root {
+				--ink: #1c1c1e;
+				--muted: #555a6a;
+				--card: #ffffff;
+				--border: #e0e2e8;
+				--marker: #ffe58a;
+				--brand-yellow: #ffd02f;
+				--sticky-yellow: #fff1a8;
+				--sticky-rose: #ffd8f4;
+				--sticky-teal: #c3faf5;
+				--sticky-coral: #ffc6c6;
+				--sticky-orange: #ffe0bf;
+				--sticky-mint: #d3f8df;
+				--sticky-lavender: #e3e0ff;
+				--sticky-blue: #d6e2ff;
+				--shadow: 0 16px 36px -6px rgb(5 0 56 / 0.18);
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+			}
+
+			html,
+			body {
+				width: 1200px;
+				height: 630px;
+				overflow: hidden;
+			}
+
+			body {
+				position: relative;
+				font-family: "Figtree", sans-serif;
+				color: var(--ink);
+				background-color: #fff;
+				background-image: radial-gradient(#d5d8e0 1.6px, transparent 1.9px);
+				background-size: 28px 28px;
+			}
+
+			.scribble {
+				font-family: "Excalifont", cursive;
+			}
+
+			.copy {
+				position: absolute;
+				left: 72px;
+				top: 64px;
+				width: 600px;
+			}
+
+			.brand {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+
+			.badge {
+				display: grid;
+				place-items: center;
+				width: 64px;
+				height: 64px;
+				border-radius: 18px;
+				background: var(--brand-yellow);
+				font-family: "Excalifont", cursive;
+				font-size: 38px;
+				transform: rotate(-6deg);
+				box-shadow: 0 4px 12px rgb(5 0 56 / 0.1);
+			}
+
+			.wordmark {
+				font-size: 34px;
+				font-weight: 800;
+				letter-spacing: -0.5px;
+			}
+
+			.kicker {
+				margin-top: 44px;
+				font-size: 30px;
+				color: var(--muted);
+			}
+
+			h1 {
+				margin-top: 10px;
+				font-size: 76px;
+				font-weight: 800;
+				line-height: 1.02;
+				letter-spacing: -2.5px;
+			}
+
+			.marker {
+				background-image: linear-gradient(
+					transparent 58%,
+					var(--marker) 58%,
+					var(--marker) 92%,
+					transparent 92%
+				);
+			}
+
+			.pills {
+				display: flex;
+				gap: 12px;
+				margin-top: 36px;
+			}
+
+			.pill {
+				padding: 12px 22px;
+				border-radius: 999px;
+				font-size: 22px;
+				font-weight: 600;
+				border: 2px solid var(--border);
+				background: var(--card);
+			}
+
+			.pill.dark {
+				background: var(--ink);
+				border-color: var(--ink);
+				color: #fff;
+			}
+
+			.board {
+				position: absolute;
+				right: 40px;
+				top: 70px;
+				width: 470px;
+				height: 480px;
+			}
+
+			.note {
+				position: absolute;
+				width: 190px;
+				height: 150px;
+				padding: 20px 22px;
+				border-radius: 28px;
+				box-shadow: var(--shadow);
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+
+			.note::before {
+				content: "";
+				position: absolute;
+				top: -11px;
+				left: 50%;
+				width: 64px;
+				height: 22px;
+				transform: translateX(-50%) rotate(3deg);
+				border-radius: 4px;
+				background: rgb(255 255 255 / 0.6);
+				box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+			}
+
+			.note .label {
+				font-size: 32px;
+				font-weight: 800;
+				letter-spacing: -0.5px;
+			}
+
+			.note .arrow {
+				align-self: flex-end;
+				font-family: "Excalifont", cursive;
+				font-size: 28px;
+				opacity: 0.55;
+			}
+
+			.paper {
+				position: absolute;
+				left: 70px;
+				top: 330px;
+				width: 380px;
+				display: flex;
+				align-items: center;
+				gap: 18px;
+				padding: 18px 22px;
+				border-radius: 28px;
+				border: 2px solid var(--border);
+				background: var(--card);
+				box-shadow: var(--shadow);
+				transform: rotate(-2deg);
+			}
+
+			.paper .icon {
+				display: grid;
+				place-items: center;
+				width: 60px;
+				height: 60px;
+				border-radius: 18px;
+				background: #f7f8fa;
+			}
+
+			.paper .title {
+				font-size: 24px;
+				font-weight: 800;
+			}
+
+			.paper .meta {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				margin-top: 6px;
+				font-size: 18px;
+				color: var(--muted);
+			}
+
+			.tag {
+				padding: 3px 12px;
+				border-radius: 999px;
+				background: var(--sticky-coral);
+				color: var(--ink);
+				font-weight: 600;
+			}
+
+			.doodle {
+				position: absolute;
+				fill: none;
+				stroke: var(--ink);
+				stroke-width: 2.5;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+
+			.year {
+				position: absolute;
+				left: 250px;
+				top: 292px;
+				padding: 2px 14px;
+				border-radius: 10px;
+				background: var(--brand-yellow);
+				font-size: 28px;
+				transform: rotate(6deg);
+				box-shadow: 0 4px 12px rgb(5 0 56 / 0.12);
+				z-index: 2;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="copy">
+			<div class="brand">
+				<div class="badge">P</div>
+				<div class="wordmark">PYQs Archive</div>
+			</div>
+			<p class="kicker scribble">GEHU previous year question papers</p>
+			<h1>Past papers, <span class="marker">pinned up</span> and easy to find.</h1>
+			<div class="pills">
+				<span class="pill dark">haldwani.gehu.in/pyqs</span>
+				<span class="pill">Free, no sign-up</span>
+			</div>
+		</div>
+
+		<div class="board">
+			<div class="note" style="left: 10px; top: 10px; background: var(--sticky-yellow); transform: rotate(-4deg)">
+				<span class="label">BTECH</span><span class="arrow">→</span>
+			</div>
+			<div class="note" style="left: 240px; top: 0; background: var(--sticky-teal); transform: rotate(3deg)">
+				<span class="label">BCA</span><span class="arrow">→</span>
+			</div>
+			<div class="note" style="left: 30px; top: 190px; width: 170px; height: 120px; background: var(--sticky-rose); transform: rotate(2deg)">
+				<span class="label">MBA</span><span class="arrow">→</span>
+			</div>
+			<div class="note" style="left: 260px; top: 185px; width: 180px; height: 120px; background: var(--sticky-lavender); transform: rotate(-3deg)">
+				<span class="label">BBA</span><span class="arrow">→</span>
+			</div>
+
+			<span class="year scribble">2025</span>
+
+			<div class="paper">
+				<div class="icon">
+					<svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M14 3v4a1 1 0 0 0 1 1h4" />
+						<path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
+						<path d="M9 13h6M9 17h4" />
+					</svg>
+				</div>
+				<div>
+					<div class="title">TCS 301 • Set A</div>
+					<div class="meta"><span class="tag">End Sem</span> 2025 Dec</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Star, bulb, arrow and squiggle doodles from src/components/ui/Doodle.astro. -->
+		<svg aria-hidden="true" class="doodle" style="left: 620px; top: 52px; width: 54px; transform: rotate(12deg)" viewBox="0 0 48 48">
+			<path d="M24 4l6 13 14 2-10 10 2 14-12-7-12 7 2-14L4 19l14-2z" fill="#ffd02f" />
+		</svg>
+		<svg aria-hidden="true" class="doodle" style="right: 48px; bottom: 34px; width: 64px; transform: rotate(14deg)" viewBox="0 0 64 64">
+			<path d="M32 8c-11 0-19 8-19 18 0 7 4 11 8 16 2 3 3 5 3 8h16c0-3 1-5 3-8 4-5 8-9 8-16 0-10-8-18-19-18z" fill="var(--sticky-yellow)" />
+			<path d="M25 56h14M27 61h10M28 34l4 6 4-6M32 40v10" />
+			<path d="M6 22l-4-2M58 22l4-2M12 6l-3-3M52 6l3-3" />
+		</svg>
+		<svg aria-hidden="true" class="doodle" style="left: 600px; top: 440px; width: 110px; transform: rotate(-8deg)" viewBox="0 0 120 60">
+			<path d="M6 40c26-30 64-36 100-14" />
+			<path d="M92 14l14 12-17 6" />
+		</svg>
+		<svg aria-hidden="true" class="doodle" style="left: 72px; bottom: 44px; width: 180px; stroke: var(--brand-yellow); stroke-width: 4" viewBox="0 0 160 20">
+			<path d="M4 12c12-10 20 8 32 0s20-10 32 0 20 8 32 0 20-10 32 0 16 6 22 2" />
+		</svg>
+	</body>
+</html>

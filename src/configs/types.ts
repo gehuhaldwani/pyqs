@@ -13,6 +13,8 @@ interface SiteConfig {
 		contentBranch: string;
 		thumbnailsBranch: string;
 		logo: string;
+		// Default 1200x630 share image, made by `bun run og`.
+		ogImage: string;
 		favicon: string;
 		timezone: string;
 	};

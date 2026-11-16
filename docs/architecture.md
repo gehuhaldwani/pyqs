@@ -93,6 +93,8 @@ Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind 
 
 The look follows [DESIGN.md](../DESIGN.md): a dotted whiteboard canvas (`bg-canvas`), pastel sticky notes (`sticky-note` with a `bg-sticky-*` color), white `paper-card`s and black pill buttons. `global.css` overrides Starwind's tokens instead of editing `starwind.css`. `src/lib/sticky.ts` picks a note color from a folder's name, so a folder keeps its color on every page. Illustrations are inline SVGs in `src/components/ui/Doodle.astro`.
 
+The default share image, `public/og.png`, comes from `scripts/og-image/banner.html`. After changing the banner, run `bun run og`, which screenshots it with a local Edge or Chrome (or `BROWSER_PATH`) and compresses the PNG. PDF pages use their own thumbnail instead.
+
 Study helpers aimed at short attention spans:
 
 - `FocusTimer` in the header runs 25 minute focus rounds and 5 minute breaks, kept in `localStorage` so it survives page changes.
