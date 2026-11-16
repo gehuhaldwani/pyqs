@@ -1,112 +1,88 @@
 name: Generate Thumbnails
 
-on:
-  workflow_dispatch:
+# Keeps the thumbnails branch in sync with the PDFs on main: one 512px WebP of each PDF's first page.
+# The sync compares state, so any run fixes thumbnails that earlier failed or cancelled runs missed.
 
+on:
   push:
     branches:
       - main
+    paths:
+      - "**.pdf"
+      - "**.PDF"
+      - ".github/workflows/thumb.yml"
+      - ".github/scripts/sync-thumbnails.sh"
 
+  workflow_dispatch:
+    inputs:
+      rebuild:
+        description: Render every thumbnail again
+        type: boolean
+        default: false
+
+# Cancelling an older run is safe, because the newer run picks up everything it missed.
 concurrency:
-  group: "thumbnails"
+  group: thumbnails
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
-  generate:
-    permissions:
-      contents: write
+  sync:
     runs-on: ubuntu-24.04
 
+    env:
+      REMOTE: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+
     steps:
-      - name: Checkout main branch
-        uses: actions/checkout@v4
+      # Without file contents, and with only .github in the working tree. The script adds the PDFs it renders.
+      - name: Check out main
+        uses: actions/checkout@v6
         with:
-          ref: main
-          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout: /.github/
+          sparse-checkout-cone-mode: false
 
-      - name: Checkout existing thumbnails
-        uses: actions/checkout@v4
-        with:
-          ref: thumbnails
-          path: thumbnails
-        continue-on-error: true # First run won't have the branch yet
-
-      - name: Install ImageMagick
-        run: sudo apt-get install -y imagemagick
-
-      - name: Detect changed PDFs and generate thumbnails
+      - name: Install poppler and webp
         run: |
-          THUMBNAIL_SIZE="512x512"
-          OUTPUT_DIR="thumbnails"
-          mkdir -p "$OUTPUT_DIR"
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends poppler-utils webp
 
-          # On workflow_dispatch, regenerate all thumbnails
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "Manual trigger — regenerating all thumbnails."
-            find . -path ./thumbnails -prune -o -type f -name "*.pdf" -print | while read -r pdf_file; do
-              base_name=$(basename "$pdf_file" .pdf)
-              dir_name=$(dirname "$pdf_file")
-              output_subdir="$OUTPUT_DIR/$dir_name"
-              mkdir -p "$output_subdir"
-              (
-                convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
-                echo "Generated: $output_subdir/$base_name.webp"
-              ) &
-            done
-            wait
-            echo "All thumbnails regenerated."
-            exit 0
+      - name: Check out the thumbnails branch
+        run: |
+          if git ls-remote --exit-code --heads "$REMOTE" thumbnails > /dev/null; then
+            git clone --quiet --depth 1 --branch thumbnails --single-branch "$REMOTE" "$RUNNER_TEMP/thumbnails"
+          else
+            git init --quiet "$RUNNER_TEMP/thumbnails"
           fi
 
-          # For push events, only process changed files
-          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- '*.pdf' || true)
-          DELETED_FILES=$(git diff --name-only --diff-filter=D HEAD~1 HEAD -- '*.pdf' || true)
-
-          if [[ -z "$CHANGED_FILES" && -z "$DELETED_FILES" ]]; then
-            echo "No PDF changes detected — nothing to do."
-            exit 0
-          fi
-
-          # Generate thumbnails for added/changed PDFs
-          if [[ -n "$CHANGED_FILES" ]]; then
-            echo "Generating thumbnails for changed PDFs:"
-            echo "$CHANGED_FILES"
-            echo "$CHANGED_FILES" | while read -r pdf_file; do
-              [[ -z "$pdf_file" ]] && continue
-              base_name=$(basename "$pdf_file" .pdf)
-              dir_name=$(dirname "$pdf_file")
-              output_subdir="$OUTPUT_DIR/$dir_name"
-              mkdir -p "$output_subdir"
-              (
-                convert -thumbnail "$THUMBNAIL_SIZE" "$pdf_file"[0] "$output_subdir/$base_name.webp"
-                echo "Generated: $output_subdir/$base_name.webp"
-              ) &
-            done
-            wait
-          fi
-
-          # Remove thumbnails for deleted PDFs
-          if [[ -n "$DELETED_FILES" ]]; then
-            echo "Removing thumbnails for deleted PDFs:"
-            echo "$DELETED_FILES"
-            echo "$DELETED_FILES" | while read -r pdf_file; do
-              [[ -z "$pdf_file" ]] && continue
-              base_name=$(basename "$pdf_file" .pdf)
-              dir_name=$(dirname "$pdf_file")
-              thumb_path="$OUTPUT_DIR/$dir_name/$base_name.webp"
-              if [[ -f "$thumb_path" ]]; then
-                rm "$thumb_path"
-                echo "Removed: $thumb_path"
-              fi
-            done
-          fi
-
-          echo "Incremental thumbnail generation complete."
-
-      - name: Push thumbnails to output branch
-        uses: crazy-max/ghaction-github-pages@v3.1.0
-        with:
-          target_branch: thumbnails
-          build_dir: thumbnails
+      - name: Sync thumbnails
+        id: sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUT: ${{ runner.temp }}/thumbnails
+          REBUILD: ${{ inputs.rebuild == true }}
+        run: bash .github/scripts/sync-thumbnails.sh
+
+      # The branch keeps a single commit, so old thumbnails don't pile up in its history.
+      - name: Push the thumbnails branch
+        working-directory: ${{ runner.temp }}/thumbnails
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          git add --all
+          if git diff --cached --quiet; then
+            echo "Thumbnails are already up to date."
+            exit 0
+          fi
+          commit=$(git commit-tree "$(git write-tree)" -m "Thumbnails for ${GITHUB_SHA::7}")
+          git push --force --quiet "$REMOTE" "$commit:refs/heads/thumbnails"
+
+      - name: Fail if some PDFs could not be rendered
+        if: steps.sync.outputs.failed != '0'
+        run: |
+          echo "::error::${{ steps.sync.outputs.failed }} PDFs could not be rendered. See the warnings in the Sync thumbnails step."
+          exit 1
