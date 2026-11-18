@@ -9,7 +9,6 @@ import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
 
 interface Props {
-	// render() needs the collection entry for the folder's index.md.
 	entry: CollectionEntry<"fs">;
 	dir: DirEntry;
 }
@@ -30,8 +29,8 @@ if (["MID", "END", "OTHERS"].includes(title) || title.includes("YEAR ")) {
 }
 
 const { Content, headings } = await render(entry);
+
 const hasOwnHeading = headings.some((heading) => heading.depth === 1);
-// Folders without an index.md render nothing, so they get no empty card.
 const hasBody = Boolean(entry.rendered?.html);
 ---
 
@@ -42,7 +41,7 @@ const hasBody = Boolean(entry.rendered?.html);
 	crumbs={!isHomePage}
 	heading={!hasOwnHeading && !isHomePage}
 >
-	{isHomePage && <HomeHero slot="hero" />}
+	<!-- {isHomePage && <HomeHero slot="hero" />} -->
 
 	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 

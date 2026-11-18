@@ -32,7 +32,6 @@ const pdfs = entry.files
 	.filter(isPyqFile)
 	.toSorted((a, b) => comparePyqs(b.pyq, a.pyq));
 
-// Small groups by year are easier to scan than one long list.
 const years: { year: number; papers: PyqFileEntry[] }[] = [];
 for (const pdf of pdfs) {
 	const last = years.at(-1);
@@ -57,11 +56,9 @@ const examCounts = EXAM_TYPES.map((type) => ({
 			<section aria-labelledby="folders-title" id="folders" class="scroll-mt-40">
 				<div class="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
 					<h2 id="folders-title" class="section-title">
-						{capitalize ? "Pick your course" : "Pick a folder"}
+						{capitalize ? "Program" : "Pick a folder"}
 					</h2>
-					<span class="scribble text-lg">{dirs.length} to choose from</span>
 				</div>
-				{/* Subject names are long, so the narrowest phones list them in one column. Course names fit two. */}
 				<div
 					class:list={[
 						"grid gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4",
@@ -94,15 +91,6 @@ const examCounts = EXAM_TYPES.map((type) => ({
 						Papers
 						<span class="pill-tag bg-foreground text-sm text-background">{pdfs.length}</span>
 					</h2>
-					<span class="scribble text-lg">
-						newest first. one paper per
-						<Doodle
-							name="tomato"
-							class="inline size-5 align-[-0.2em]"
-							stroke-width="2"
-						/>
-						focus round!
-					</span>
 				</div>
 
 				{examCounts.length > 1 && (

@@ -40,7 +40,7 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 
 <meta charset="UTF-8" />
 <meta name="viewport" content={viewport} />
-<!-- Matches the page background. Media queries follow the OS theme, not the site's toggle. -->
+
 <meta
 	name="theme-color"
 	content="#ffffff"
@@ -91,7 +91,6 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 <script>
 	import { base } from "astro:config/client";
 
-	// Dev builds skip the worker, so its caches never serve stale dev pages.
 	if (import.meta.env.PROD && "serviceWorker" in navigator) {
 		navigator.serviceWorker
 			.register(`${base}sw.js`, { scope: base })
@@ -99,14 +98,6 @@ const title = formatPageTitle(siteConfig.site.title, pageTitle);
 				// The site works the same without offline support.
 			});
 	}
-</script>
-
-<script>
-	import { haptics, defaultPatterns } from "@/lib/haptics";
-
-	document.addEventListener("astro:before-preparation", () => {
-		haptics.trigger(defaultPatterns.selection);
-	});
 </script>
 
 <script is:inline>

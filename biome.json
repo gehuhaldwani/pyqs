@@ -14,7 +14,8 @@
 			"!starwind.config.json",
 			"!.agents",
 			"!.claude/skills",
-			"!skills-lock.json"
+			"!skills-lock.json",
+			"!DESIGN.md"
 		]
 	},
 	"formatter": {
@@ -51,7 +52,7 @@
 			}
 		},
 		{
-			"includes": ["**/*.astro"],
+			"includes": ["**/*.astro", "**/*.svelte"],
 			"linter": {
 				"rules": {
 					"style": {

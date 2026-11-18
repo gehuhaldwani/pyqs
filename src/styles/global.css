@@ -159,6 +159,11 @@
 	}
 }
 
+/* Pill toolbar buttons in the PDF viewer, through the part it exposes for them. */
+embedpdf-viewer::part(toolbar-button) {
+	border-radius: 9999px;
+}
+
 /* AdSense marks slots it couldn't fill, so they leave no empty box. */
 .ad-slot:has(ins[data-ad-status="unfilled"]) {
 	display: none;

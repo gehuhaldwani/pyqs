@@ -15,7 +15,7 @@ import Doodle from "@/components/ui/Doodle.astro";
 	</button>
 	<button
 		type="button"
-		class="hidden size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-outline data-[visible]:inline-flex"
+		class="hidden size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-outline data-visible:inline-flex"
 		data-focus-reset
 		aria-label="Reset focus timer"
 		title="Reset"
@@ -28,8 +28,6 @@ import Doodle from "@/components/ui/Doodle.astro";
 </div>
 
 <script>
-	import { haptics, defaultPatterns } from "@/lib/haptics";
-
 	type Phase = "focus" | "break";
 	type TimerState = {
 		phase: Phase;
@@ -116,7 +114,6 @@ import Doodle from "@/components/ui/Doodle.astro";
 
 	function tick() {
 		if (state?.endsAt != null && remaining() === 0) {
-			haptics.trigger(defaultPatterns.success);
 			if (state.phase === "focus") {
 				state = { phase: "break", endsAt: Date.now() + DURATIONS.break, remaining: null };
 				announce("Focus done. Take a 5 minute break.");
@@ -140,7 +137,6 @@ import Doodle from "@/components/ui/Doodle.astro";
 			state = { ...state, endsAt: Date.now() + remaining(), remaining: null };
 			announce("Timer resumed.");
 		}
-		haptics.trigger(defaultPatterns.selection);
 		save();
 		render();
 	}

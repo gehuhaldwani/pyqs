@@ -33,7 +33,6 @@ for (const p of path.split("/")) {
 
 <Breadcrumb.Root
 	class="inline-flex min-w-0 max-w-full select-none items-center gap-2 rounded-full border bg-card py-1.5 pr-1.5 pl-1.5 shadow-soft"
-	transition:name="breadcrumbs"
 >
 	<Button
 		class="size-9 shrink-0 rounded-full p-0 text-lg font-bold"
@@ -45,7 +44,7 @@ for (const p of path.split("/")) {
 		title="Up a folder">↑</Button
 	>
 	<Breadcrumb.List
-		class="min-w-0 flex-nowrap overflow-x-auto pr-2.5 text-base whitespace-nowrap [scrollbar-width:none] data-[clipped]:[mask-image:linear-gradient(to_right,transparent,black_1.5rem)]"
+		class="min-w-0 flex-nowrap overflow-x-auto pr-2.5 text-base whitespace-nowrap scrollbar-none data-clipped:mask-[linear-gradient(to_right,transparent,black_1.5rem)]"
 		data-crumb-list
 	>
 		{

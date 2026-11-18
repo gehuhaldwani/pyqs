@@ -1,5 +1,6 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders, svgoOptimizer } from "astro/config";
 import icon from "astro-icon";
@@ -8,8 +9,6 @@ export default defineConfig({
 	site: "https://haldwani.gehu.in",
 	base: "/pyqs/",
 	trailingSlash: "always",
-	// ClientRouter prefetches every link, and clientPrerender turns each prefetch into a full prerender.
-	// "hover" keeps heavy PDF pages from loading until a link is hovered, and folder links opt into "viewport".
 	prefetch: {
 		defaultStrategy: "hover",
 	},
@@ -48,10 +47,10 @@ export default defineConfig({
 		incrementalBuild: true,
 	},
 	integrations: [
-		// The offline page is only for the service worker.
 		sitemap({ filter: (page) => !page.endsWith("/offline/") }),
 		icon(),
 		mdx(),
+		svelte(),
 	],
 	vite: {
 		cacheDir: "./cache/vite",

@@ -9,7 +9,6 @@ const siteConfig: SiteConfig = {
 		githubRepo: "gehuhaldwani/pyqs",
 		contentBranch: "main",
 		thumbnailsBranch: "thumbnails",
-		logo: "/logo.png",
 		ogImage: "/og.png",
 		favicon: "/icons/favicon-48.png",
 		timezone: "Asia/Kolkata",
