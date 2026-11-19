@@ -111,6 +111,8 @@ Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind 
 
 Motion stays small and skips users who ask for reduced motion. Cards fade up with `animate-rise` (set `--i` for a staggered list, which also replays when the exam filter shows a card again), cards and buttons press down slightly with `active:scale-*`, and islands use Svelte transitions or the Web Animations API for state changes, such as the star pop and the timer's tomato wiggle.
 
+Toggles in islands (stars, exam chips, the focus timer, Unstar all) tick on tap through the `haptic` attachment in `src/lib/haptics.ts`. Astro elements, such as the theme toggle, opt in with a `data-haptic` attribute, which a script in `Header.astro` picks up after each page load. On iOS it uses `ios-haptics`, which lays an invisible label over the control that forwards the tap to a hidden native switch, and on Android it calls `navigator.vibrate`. The iOS tick needs a real tap, so it can't be fired from code, and it doesn't suit links, since a label inside an `<a>` is invalid.
+
 `src/styles/global.css` holds the site's own color tokens (`folder`, `pdf`, `doc`, `support`) and utilities for class combinations used in several places, such as `link-base` and `item-link`.
 
 The look follows [DESIGN.md](../DESIGN.md): a dotted whiteboard canvas (`bg-canvas`), pastel sticky notes (`sticky-note` with a `bg-sticky-*` color), white `paper-card`s and black pill buttons. `global.css` overrides Starwind's tokens instead of editing `starwind.css`. `src/lib/sticky.ts` picks a note color from a folder's name, so a folder keeps its color on every page. Illustrations are inline SVGs in `src/components/ui/Doodle.astro`.

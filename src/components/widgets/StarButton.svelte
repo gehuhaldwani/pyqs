@@ -2,6 +2,7 @@
 // Stars or unstars a file. Starred files are kept on this device and listed on the home page.
 import { onMount } from "svelte";
 import { Button } from "@/components/starwind-svelte/button";
+import { haptic } from "@/lib/haptics";
 import { starred } from "@/lib/starred.svelte";
 
 interface Props {
@@ -41,6 +42,7 @@ function toggle() {
 	aria-label={isStarred ? `Unstar ${title}` : `Star ${title}`}
 	title={isStarred ? "Unstar" : "Star"}
 	onclick={toggle}
+	{@attach haptic}
 >
 	<svg
 		viewBox="0 0 24 24"

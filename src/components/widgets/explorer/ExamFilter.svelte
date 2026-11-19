@@ -5,6 +5,7 @@ import {
 	ToggleGroup,
 	ToggleGroupItem,
 } from "@/components/starwind-svelte/toggle-group";
+import { haptic } from "@/lib/haptics";
 
 interface Chip {
 	type: string;
@@ -50,6 +51,7 @@ function chipColor(color: string) {
 		<ToggleGroupItem
 			value="all"
 			class="rounded-full border bg-card! px-4 text-foreground! transition-[color,background-color,border-color,box-shadow,scale] motion-safe:active:scale-95 data-[state=off]:hover:bg-muted! data-[state=on]:border-foreground data-[state=on]:bg-foreground! data-[state=on]:text-background!"
+			{@attach haptic}
 		>
 			All
 		</ToggleGroupItem>
@@ -58,6 +60,7 @@ function chipColor(color: string) {
 				value={chip.type}
 				class="rounded-full border border-transparent bg-(--chip)! px-4 text-sticky-ink! transition-[color,background-color,border-color,box-shadow,scale] motion-safe:active:scale-95 hover:bg-(--chip)/85! data-[state=on]:border-sticky-ink data-[state=on]:shadow-soft"
 				style="--chip: {chipColor(chip.color)}"
+				{@attach haptic}
 			>
 				{chip.label}
 				<span class="opacity-60">{chip.count}</span>

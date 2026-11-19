@@ -20,6 +20,7 @@
         "@tailwindcss/vite": "^4.3.5",
         "astro": "^7.4.12",
         "astro-icon": "^1.2.0",
+        "ios-haptics": "^3.3.0",
         "sharp": "^0.35.5",
         "svelte": "^5.57.3",
         "tailwind-merge": "^3.7.0",
@@ -679,6 +680,8 @@
     "http-cache-semantics": ["http-cache-semantics@4.3.0", "", {}, "sha512-M5t5LlJpS1UHMjvwRQVdFHvPISGeLAxNcrWuJkeGh0KxsqCHZ1O3NXZU/8x7cD0BDcGW8kapxMKTvwlqrNkHkA=="],
 
     "import-meta-resolve": ["import-meta-resolve@4.2.0", "", {}, "sha512-Iqv2fzaTQN28s/FwZAoFq0ZSs/7hMAHJVX+w8PZl3cY19Pxk6jFFalxQoIfW2826i/fDLXv8IiEZRIT0lDuWcg=="],
+
+    "ios-haptics": ["ios-haptics@3.3.0", "", {}, "sha512-iaRiaiLml/l3TvuTzGRPHVEo5gj2xV+CdTLs61cxAa/CCtRumALebwTMgUTloO4Xz/SHsZFSzOYZG2sbQzyQlg=="],
 
     "iron-webcrypto": ["iron-webcrypto@1.2.1", "", {}, "sha512-feOM6FaSr6rEABp/eDfVseKyTMDt+KGpeB35SkVn9Tyn0CqvVsY3EwI0v5i8nMHyJnzCIQf7nsy3p41TPkJZhg=="],
 

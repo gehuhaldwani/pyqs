@@ -4,6 +4,7 @@ import { onMount, type Snippet } from "svelte";
 import { prefersReducedMotion } from "svelte/motion";
 import { scale } from "svelte/transition";
 import { Button } from "@/components/starwind-svelte/button";
+import { haptic } from "@/lib/haptics";
 
 interface Props {
 	// The icon inside the toggle, rendered by Astro.
@@ -146,6 +147,7 @@ function onstorage(event: StorageEvent) {
 		title="Focus timer: 25 min study, 5 min break"
 		aria-label={ariaLabel}
 		onclick={toggle}
+		{@attach haptic}
 	>
 		<span class="inline-flex" bind:this={tomato}>
 			{@render children?.()}
@@ -164,6 +166,7 @@ function onstorage(event: StorageEvent) {
 				aria-label="Reset focus timer"
 				title="Reset"
 				onclick={reset}
+				{@attach haptic}
 			>
 				<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
 					<path d="M6 6l12 12M18 6L6 18"></path>

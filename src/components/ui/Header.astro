@@ -50,6 +50,7 @@ const { class: className, ...props } = Astro.props;
 				size="md"
 				class="rounded-full"
 				transition:name="theme-toggle"
+				data-haptic
 			/>
 
 			<Dropdown.Root class="inline md:hidden">
@@ -76,3 +77,18 @@ const { class: className, ...props } = Astro.props;
 		</div>
 	</div>
 </header>
+
+<script>
+	import { haptic } from "@/lib/haptics";
+
+	// Astro elements can't take Svelte attachments, so controls opt in with data-haptic.
+	// ClientRouter swaps in a new header on each page, so this runs again after every swap.
+	const ready = new WeakSet<HTMLElement>();
+	document.addEventListener("astro:page-load", () => {
+		for (const el of document.querySelectorAll<HTMLElement>("[data-haptic]")) {
+			if (ready.has(el)) continue;
+			ready.add(el);
+			haptic(el);
+		}
+	});
+</script>

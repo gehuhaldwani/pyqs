@@ -17,6 +17,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/starwind-svelte/alert-dialog";
 import { Button } from "@/components/starwind-svelte/button";
+import { haptic } from "@/lib/haptics";
 import { folderTrail } from "@/lib/starred";
 import { starred } from "@/lib/starred.svelte";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
@@ -81,7 +82,7 @@ $effect(() => {
 			<AlertDialog>
 				<AlertDialogTrigger>
 					{#snippet child({ props })}
-						<Button {...props} variant="ghost" size="sm" class="rounded-full text-muted-foreground motion-safe:active:scale-95">
+						<Button {...props} variant="ghost" size="sm" class="rounded-full text-muted-foreground motion-safe:active:scale-95" {@attach haptic}>
 							Unstar all
 						</Button>
 					{/snippet}
@@ -97,8 +98,8 @@ $effect(() => {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel class="rounded-full">Cancel</AlertDialogCancel>
-						<AlertDialogAction variant="error" class="rounded-full" onclick={() => starred.clear()}>
+						<AlertDialogCancel class="rounded-full" {@attach haptic}>Cancel</AlertDialogCancel>
+						<AlertDialogAction variant="error" class="rounded-full" onclick={() => starred.clear()} {@attach haptic}>
 							Unstar all
 						</AlertDialogAction>
 					</AlertDialogFooter>
