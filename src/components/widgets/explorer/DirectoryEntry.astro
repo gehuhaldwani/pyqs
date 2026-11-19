@@ -8,9 +8,11 @@ import { toTitleCase } from "@/utils/string";
 interface Props {
 	entry: DirSummary;
 	capitalize?: boolean;
+	// Its place in the list, which staggers its entrance.
+	index?: number;
 }
 
-const { entry: dir, capitalize = false } = Astro.props;
+const { entry: dir, capitalize = false, index = 0 } = Astro.props;
 
 function getDirTitle(title: string, capitalize: boolean) {
 	return capitalize || ["OTHERS", "OLD", "END", "MID"].includes(title)
@@ -25,10 +27,11 @@ const isArchive = dir.name === "OTHERS" || dir.name === "OLD";
 <a
 	href={addForwardSlashAndBaseUrl(dir.path)}
 	data-astro-prefetch="viewport"
+	style={`--i: ${index}`}
 	class:list={[
-		"group note-hover focus-ring flex min-h-28 flex-col justify-between gap-4 p-4 sm:min-h-32 sm:p-5",
+		"group note-hover focus-ring flex min-h-28 flex-col justify-between gap-4 p-4 motion-safe:animate-rise sm:min-h-32 sm:p-5",
 		isArchive
-			? "relative rounded-3xl border-2 border-dashed border-input bg-card text-muted-foreground transition-[translate,box-shadow] duration-200"
+			? "relative rounded-3xl border-2 border-dashed border-input bg-card text-muted-foreground transition-[translate,scale,box-shadow] duration-200"
 			: ["sticky-note", stickyColor(dir.name), stickyTilt(dir.name)],
 	]}
 >

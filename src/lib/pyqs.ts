@@ -102,6 +102,11 @@ function formatPyqExam(pyq: PyqData): string {
 		.join(" ");
 }
 
+// The exam and date, such as "End Sem • 2024 Dec", as starred cards show them.
+function formatPyqDetail(pyq: PyqData): string {
+	return `${formatPyqExam(pyq)} • ${formatPyqDate(pyq)}`;
+}
+
 function formatPyqTitle(pyq: PyqData): string {
 	return `${formatPyqSubjects(pyq)} • ${formatPyqExam(pyq)}`;
 }
@@ -170,6 +175,7 @@ export {
 	EXAM_TYPE_LABELS,
 	EXAM_TYPES,
 	formatPyqDate,
+	formatPyqDetail,
 	formatPyqExam,
 	formatPyqSubjects,
 	formatPyqTitle,

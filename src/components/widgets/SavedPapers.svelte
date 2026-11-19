@@ -46,8 +46,8 @@ $effect(() => {
 
 {#if papers && papers.length > 0}
 	<ul class="grid gap-3 sm:grid-cols-2">
-		{#each papers as paper (paper.href)}
-			<li>
+		{#each papers as paper, i (paper.href)}
+			<li class="motion-safe:animate-rise" style:--i={i}>
 				<a href={paper.href} class="paper-card note-hover focus-ring flex flex-col gap-1 p-4 text-left">
 					<span class="font-bold break-words">{paper.name}</span>
 					<span class="text-sm text-muted-foreground capitalize">{paper.where}</span>
@@ -56,7 +56,7 @@ $effect(() => {
 		{/each}
 	</ul>
 {:else if papers}
-	<p class="scribble text-lg">
+	<p class="scribble text-lg motion-safe:animate-rise">
 		nothing saved yet. open a paper while online and it'll be here next time.
 	</p>
 {/if}

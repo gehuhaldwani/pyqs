@@ -2,8 +2,9 @@
 import { base } from "astro:config/server";
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
+import Doodle from "@/components/ui/Doodle.astro";
 import EntryList from "@/components/widgets/explorer/EntryList.astro";
-import HomeHero from "@/components/widgets/HomeHero.astro";
+import StarredFiles from "@/components/widgets/StarredFiles.svelte";
 import type { DirEntry } from "@/lib/content/schema";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
@@ -41,7 +42,13 @@ const hasBody = Boolean(entry.rendered?.html);
 	crumbs={!isHomePage}
 	heading={!hasOwnHeading && !isHomePage}
 >
-	<!-- {isHomePage && <HomeHero slot="hero" />} -->
+	{
+		isHomePage && (
+			<StarredFiles slot="hero" client:load>
+				<Doodle name="star" class="size-16 shrink-0 text-foreground" />
+			</StarredFiles>
+		)
+	}
 
 	<EntryList entry={dir} {path} {title} capitalize={isHomePage} />
 

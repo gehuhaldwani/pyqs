@@ -3,7 +3,7 @@ import FocusTimer from "@/components/widgets/FocusTimer.astro";
 import PdfViewer from "@/components/widgets/PdfViewer.svelte";
 import siteConfig from "@/configs/site.config";
 import { displayName, type FileEntry } from "@/lib/content/schema";
-import { formatPyqTitle } from "@/lib/pyqs";
+import { formatPyqDetail, formatPyqSubjects, formatPyqTitle } from "@/lib/pyqs";
 import { githubRawUrl, pdfThumbnailPath } from "@/utils/url";
 import BaseLayout from "./BaseLayout.astro";
 
@@ -23,6 +23,9 @@ const thumbnail = githubRawUrl(
 
 const pageTitle = entry.name.toUpperCase().split("_").join(" ");
 const title = entry.pyq ? formatPyqTitle(entry.pyq) : displayName(entry);
+// The star saves the same text a paper's card shows in a folder.
+const starTitle = entry.pyq ? formatPyqSubjects(entry.pyq) : displayName(entry);
+const starDetail = entry.pyq ? formatPyqDetail(entry.pyq) : undefined;
 ---
 
 <BaseLayout
@@ -34,7 +37,13 @@ const title = entry.pyq ? formatPyqTitle(entry.pyq) : displayName(entry);
     ads={false}
 >
     <h1 class="sr-only">{title}</h1>
-    <PdfViewer {src} client:load/>
+    <PdfViewer
+        {src}
+        path={entry.path}
+        title={starTitle}
+        detail={starDetail}
+        client:load
+    />
 
     <div
         class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 max-[400px]:bottom-[calc(4.5rem+env(safe-area-inset-bottom))]"

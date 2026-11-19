@@ -5,15 +5,18 @@ import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 
 interface Props {
 	entry: FileEntry;
+	// Its place in the list, which staggers its entrance.
+	index?: number;
 }
 
-const { entry } = Astro.props;
+const { entry, index = 0 } = Astro.props;
 ---
 
 <a
 	href={addForwardSlashAndBaseUrl(entry.path)}
 	data-astro-prefetch="viewport"
-	class="group sticky-note note-hover focus-ring flex items-center gap-3 bg-sticky-lavender p-4"
+	style={`--i: ${index}`}
+	class="group sticky-note note-hover focus-ring flex items-center gap-3 bg-sticky-lavender p-4 motion-safe:animate-rise"
 >
 	<span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/60">
 		<Icon name="mdi:file-document-outline" class="size-6" aria-hidden="true" />

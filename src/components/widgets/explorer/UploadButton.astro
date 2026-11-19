@@ -25,7 +25,7 @@ const { path, title } = Astro.props;
 		href={uploaderUrl(path, title)}
 		{...EXTERNAL_LINK_ATTRIBUTES}
 		variant="default"
-		class="h-auto min-h-11 rounded-full px-6 py-2"
+		class="h-auto min-h-11 rounded-full px-6 py-2 motion-safe:active:scale-95"
 	>
 		<span class="whitespace-normal text-center">
 			Upload to <span class="font-excalifont">“{title}”</span>

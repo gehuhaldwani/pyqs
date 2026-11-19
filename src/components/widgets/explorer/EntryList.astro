@@ -68,7 +68,7 @@ const examCounts = EXAM_TYPES.map((type) => ({
 						capitalize ? "grid-cols-2" : "grid-cols-1 min-[360px]:grid-cols-2",
 					]}
 				>
-					{dirs.map((dir) => <DirectoryEntry entry={dir} {capitalize} />)}
+					{dirs.map((dir, index) => <DirectoryEntry entry={dir} {capitalize} {index} />)}
 				</div>
 				{adAfterFolders && <EntryListContentBlock class="mt-10" />}
 			</section>
@@ -80,7 +80,7 @@ const examCounts = EXAM_TYPES.map((type) => ({
 			<section aria-labelledby="docs-title">
 				<h2 id="docs-title" class="section-title mb-6">Notes &amp; guides</h2>
 				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-					{docs.map((doc) => <DocEntry entry={doc} />)}
+					{docs.map((doc, index) => <DocEntry entry={doc} {index} />)}
 				</div>
 			</section>
 		)
@@ -110,7 +110,7 @@ const examCounts = EXAM_TYPES.map((type) => ({
 								<span class="h-px flex-1 border-t-2 border-dashed border-border" aria-hidden="true" />
 							</h3>
 							<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-								{papers.map((pdf) => <PdfEntry entry={pdf} />)}
+								{papers.map((pdf, i) => <PdfEntry entry={pdf} index={i} />)}
 							</div>
 						</div>
 						</>

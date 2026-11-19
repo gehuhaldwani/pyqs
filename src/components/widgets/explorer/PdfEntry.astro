@@ -1,42 +1,58 @@
 ---
 import { Icon } from "astro-icon/components";
 import type { PyqFileEntry } from "@/lib/content/schema";
-import { formatPyqDate, formatPyqExam, formatPyqSubjects } from "@/lib/pyqs";
+import {
+	formatPyqDate,
+	formatPyqDetail,
+	formatPyqExam,
+	formatPyqSubjects,
+} from "@/lib/pyqs";
 import { EXAM_TYPE_COLORS } from "@/lib/sticky";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
+import StarButton from "../StarButton.svelte";
 
 interface Props {
 	entry: PyqFileEntry;
+	// Its place in the list, which staggers its entrance.
+	index?: number;
 }
 
-const { entry } = Astro.props;
+const { entry, index = 0 } = Astro.props;
 const { pyq } = entry;
+const title = formatPyqSubjects(pyq);
+const exam = formatPyqExam(pyq);
+const date = formatPyqDate(pyq);
 ---
 
-<a
-	href={addForwardSlashAndBaseUrl(entry.path)}
-	data-astro-prefetch="hover"
+<!-- The star sits beside the link, since a button can't go inside one. -->
+<div
+	class="group/card note-hover-group relative motion-safe:animate-rise"
+	style={`--i: ${index}`}
 	data-exam={pyq.type}
-	class="group paper-card note-hover focus-ring flex items-center gap-4 p-4"
 >
-	<span
-		class="grid size-12 shrink-0 place-items-center rounded-2xl bg-muted text-pdf transition-transform motion-safe:group-hover:-rotate-6"
+	<a
+		href={addForwardSlashAndBaseUrl(entry.path)}
+		data-astro-prefetch="hover"
+		class="group paper-card focus-ring flex h-full items-center gap-4 p-4 pr-14 transition-shadow group-hover/card:shadow-lift focus-visible:shadow-lift"
 	>
-		<Icon name="pdf" class="size-7" aria-hidden="true" />
-	</span>
-	<span class="flex min-w-0 flex-1 flex-col gap-1.5">
-		<span class="line-clamp-2 text-base font-bold leading-snug wrap-break-word" translate="no">
-			{formatPyqSubjects(pyq)}
+		<span
+			class="grid size-12 shrink-0 place-items-center rounded-2xl bg-muted text-pdf transition-transform motion-safe:group-hover/card:-rotate-6"
+		>
+			<Icon name="pdf" class="size-7" aria-hidden="true" />
 		</span>
-		<span class="flex flex-wrap items-center gap-1.5">
-			<span class:list={["pill-tag text-sticky-ink", EXAM_TYPE_COLORS[pyq.type]]}>
-				{formatPyqExam(pyq)}
+		<span class="flex min-w-0 flex-1 flex-col gap-1.5">
+			<span class="line-clamp-2 text-base font-bold leading-snug wrap-break-word" translate="no">
+				{title}
 			</span>
-			<span class="text-sm text-muted-foreground">{formatPyqDate(pyq)}</span>
+			<span class="flex flex-wrap items-center gap-1.5">
+				<span class:list={["pill-tag text-sticky-ink", EXAM_TYPE_COLORS[pyq.type]]}>
+					{exam}
+				</span>
+				<span class="text-sm text-muted-foreground">{date}</span>
+			</span>
 		</span>
-	</span>
-	<span
-		class="font-excalifont text-xl text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
-		aria-hidden="true">→</span
-	>
-</a>
+	</a>
+	<div class="absolute top-1/2 right-3 -translate-y-1/2">
+		<StarButton client:visible path={entry.path} {title} detail={formatPyqDetail(pyq)} />
+	</div>
+</div>

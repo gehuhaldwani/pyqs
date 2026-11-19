@@ -49,14 +49,14 @@ function chipColor(color: string) {
 		size="sm" class="flex-wrap" aria-label="Filter papers by exam">
 		<ToggleGroupItem
 			value="all"
-			class="rounded-full border bg-card! px-4 text-foreground! data-[state=off]:hover:bg-muted! data-[state=on]:border-foreground data-[state=on]:bg-foreground! data-[state=on]:text-background!"
+			class="rounded-full border bg-card! px-4 text-foreground! transition-[color,background-color,border-color,box-shadow,scale] motion-safe:active:scale-95 data-[state=off]:hover:bg-muted! data-[state=on]:border-foreground data-[state=on]:bg-foreground! data-[state=on]:text-background!"
 		>
 			All
 		</ToggleGroupItem>
 		{#each chips as chip (chip.type)}
 			<ToggleGroupItem
 				value={chip.type}
-				class="rounded-full border border-transparent bg-(--chip)! px-4 text-sticky-ink! hover:bg-(--chip)/85! data-[state=on]:border-sticky-ink data-[state=on]:shadow-soft"
+				class="rounded-full border border-transparent bg-(--chip)! px-4 text-sticky-ink! transition-[color,background-color,border-color,box-shadow,scale] motion-safe:active:scale-95 hover:bg-(--chip)/85! data-[state=on]:border-sticky-ink data-[state=on]:shadow-soft"
 				style="--chip: {chipColor(chip.color)}"
 			>
 				{chip.label}

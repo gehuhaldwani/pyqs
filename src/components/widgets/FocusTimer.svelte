@@ -1,6 +1,8 @@
 <script lang="ts">
 // A Pomodoro timer: 25 minutes of focus, then a 5 minute break. It keeps running across pages.
 import { onMount, type Snippet } from "svelte";
+import { prefersReducedMotion } from "svelte/motion";
+import { scale } from "svelte/transition";
 import { Button } from "@/components/starwind-svelte/button";
 
 interface Props {
@@ -69,9 +71,25 @@ const ariaLabel = $derived(
 		: `${timer.phase === "focus" ? "Focus" : "Break"} timer, ${time} left. ${running ? "Pause" : "Resume"}`,
 );
 
+// The tomato wiggles when the timer starts, pauses, resets or changes phase.
+let tomato = $state<HTMLSpanElement>();
+function nudge() {
+	if (prefersReducedMotion.current) return;
+	tomato?.animate(
+		[
+			{ rotate: "0deg" },
+			{ rotate: "-12deg" },
+			{ rotate: "10deg" },
+			{ rotate: "0deg" },
+		],
+		{ duration: 450, easing: "ease-in-out" },
+	);
+}
+
 function tick() {
 	now = Date.now();
 	if (!timer || timer.endsAt === null || remainingAt(timer, now) > 0) return;
+	nudge();
 	if (timer.phase === "focus") {
 		save({ phase: "break", endsAt: now + DURATIONS.break, remaining: null });
 		status = "Focus done. Take a 5 minute break.";
@@ -91,6 +109,7 @@ onMount(() => {
 });
 
 function toggle() {
+	nudge();
 	now = Date.now();
 	if (!timer) {
 		save({ phase: "focus", endsAt: now + DURATIONS.focus, remaining: null });
@@ -105,6 +124,7 @@ function toggle() {
 }
 
 function reset() {
+	nudge();
 	save(null);
 	status = "Timer reset.";
 }
@@ -121,28 +141,35 @@ function onstorage(event: StorageEvent) {
 	<Button
 		variant="ghost"
 		size="sm"
-		class="h-10 rounded-full border bg-card px-3 font-semibold shadow-soft data-[phase=break]:bg-sticky-mint data-[phase=focus]:bg-sticky-coral data-phase:text-sticky-ink data-[phase=break]:hover:bg-sticky-mint/85 data-[phase=focus]:hover:bg-sticky-coral/85 data-phase:hover:text-sticky-ink"
+		class="h-10 rounded-full border bg-card px-3 font-semibold shadow-soft motion-safe:active:scale-95 data-[phase=break]:bg-sticky-mint data-[phase=focus]:bg-sticky-coral data-phase:text-sticky-ink data-[phase=break]:hover:bg-sticky-mint/85 data-[phase=focus]:hover:bg-sticky-coral/85 data-phase:hover:text-sticky-ink"
 		data-phase={timer?.phase}
 		title="Focus timer: 25 min study, 5 min break"
 		aria-label={ariaLabel}
 		onclick={toggle}
 	>
-		{@render children?.()}
+		<span class="inline-flex" bind:this={tomato}>
+			{@render children?.()}
+		</span>
 		<span class="tabular-nums">{label}</span>
 	</Button>
 	{#if timer}
-		<Button
-			variant="ghost"
-			size="icon-sm"
-			class="size-8 rounded-full text-muted-foreground"
-			aria-label="Reset focus timer"
-			title="Reset"
-			onclick={reset}
+		<span
+			class="inline-flex"
+			transition:scale={{ start: 0.5, duration: prefersReducedMotion.current ? 0 : 160 }}
 		>
-			<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-				<path d="M6 6l12 12M18 6L6 18"></path>
-			</svg>
-		</Button>
+			<Button
+				variant="ghost"
+				size="icon-sm"
+				class="size-8 rounded-full text-muted-foreground motion-safe:active:scale-90"
+				aria-label="Reset focus timer"
+				title="Reset"
+				onclick={reset}
+			>
+				<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+					<path d="M6 6l12 12M18 6L6 18"></path>
+				</svg>
+			</Button>
+		</span>
 	{/if}
 	<span class="sr-only" aria-live="polite">{status}</span>
 </div>

@@ -201,12 +201,17 @@ embedpdf-viewer::part(toolbar-button) {
 
 /* A note stuck on the board. Pair it with a bg-sticky-* color. */
 @utility sticky-note {
-	@apply relative rounded-3xl text-sticky-ink shadow-soft transition-[translate,rotate,box-shadow] duration-200;
+	@apply relative rounded-3xl text-sticky-ink shadow-soft transition-[translate,rotate,scale,box-shadow] duration-200;
 }
 
 /* Lifts a note on hover and focus. Rotation only runs for people who allow motion. */
 @utility note-hover {
-	@apply hover:-translate-y-1 hover:shadow-lift focus-visible:-translate-y-1 focus-visible:shadow-lift motion-safe:hover:rotate-0 motion-safe:focus-visible:rotate-0 active:translate-y-0;
+	@apply hover:-translate-y-1 hover:shadow-lift focus-visible:-translate-y-1 focus-visible:shadow-lift motion-safe:hover:rotate-0 motion-safe:focus-visible:rotate-0 active:translate-y-0 motion-safe:active:scale-[0.98];
+}
+
+/* note-hover for a card with controls laid over it, such as a star. Put it on a wrapper that holds both, so they lift together. */
+@utility note-hover-group {
+	@apply transition-transform duration-200 hover:-translate-y-1 has-focus-visible:-translate-y-1 active:translate-y-0 motion-safe:active:scale-[0.98];
 }
 
 /* White card for content that needs calm, such as papers and long text. */
@@ -242,4 +247,18 @@ embedpdf-viewer::part(toolbar-button) {
 /* Small label in handwriting, for notes in the margins. */
 @utility scribble {
 	@apply font-excalifont text-muted-foreground;
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		translate: 0 8px;
+	}
+}
+
+/* A short fade up for content as it appears. In a list, set --i to the item's place so items arrive one after another, up to a dozen.
+   It's a utility rather than a theme animation so --i is read on each element, not once on :root. */
+@utility animate-rise {
+	animation: rise 360ms cubic-bezier(0.2, 0.7, 0.3, 1)
+		calc(min(var(--i, 0), 12) * 40ms) backwards;
 }

@@ -32,6 +32,7 @@ Verify changes with `bun run ci` and `bun run build`. For UI changes, also check
 
 - `astro check` doesn't support TypeScript 7, so TypeScript is pinned to 6.
 - Incremental builds reuse pages whose `cacheKey` (the loader's digest) and route code are unchanged. Anything a page shows that is neither content nor code, such as the build time, must come from `/build-info.json` at runtime.
+- Astro's incremental build doesn't track the client code of hydrated islands, so `[...slug].astro` mixes `ISLAND_VERSION` (`src/lib/island-version.ts`, a hash of every `.svelte` and `.svelte.ts` file) into each `cacheKey`. Keep island components in those files.
 - `ClientRouter` keeps head scripts alive across page changes. Scripts that must run once per visit need a guard, as the ad loader in `Head.astro` has.
 - PDF pages turn off ads (`ads={false}`) and pinch-zoom (`lockZoom`) on purpose.
 - Files in this repo use LF line endings (`.gitattributes`), even on Windows.

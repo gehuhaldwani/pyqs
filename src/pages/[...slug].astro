@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import ExplorerLayout from "@/layouts/ExplorerLayout.astro";
 import FileLayout from "@/layouts/FileLayout.astro";
+import { ISLAND_VERSION } from "@/lib/island-version";
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const entries = await getCollection("fs");
@@ -15,8 +16,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 			entry: entry,
 		},
 		// Incremental builds reuse a page's previous output while its cacheKey stays the same.
-		// The loader changes the digest whenever the entry's data or markdown changes.
-		cacheKey: entry.digest === undefined ? undefined : String(entry.digest),
+		// The loader changes the digest whenever the entry's data or markdown changes, and ISLAND_VERSION whenever island code does.
+		cacheKey:
+			entry.digest === undefined
+				? undefined
+				: `${entry.digest}-${ISLAND_VERSION}`,
 	}));
 };
 

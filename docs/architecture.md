@@ -84,7 +84,7 @@ Use the `NavLink` component for links. It adds the base path to site paths, and 
 The site uses Astro's `ClientRouter`, so page changes happen without full reloads.
 
 - **Prefetching.** Links prefetch on hover by default. Folder and doc links prefetch when they scroll into view, because their pages are light. Chrome prerenders prefetched pages because of the `clientPrerender` flag.
-- **Svelte islands.** Interactive widgets are Svelte 5 components hydrated as Astro islands: `FocusTimer`, `ReadingProgress`, `ExamFilter`, `SavedPapers`, `PdfViewer`, and the footer's `FooterBuildTime` and `FooterSocials`. Islands that wrap Astro-only markup, such as icons, take it as children. Scripts that must run before paint or once per visit stay in `Head.astro`.
+- **Svelte islands.** Interactive widgets are Svelte 5 components hydrated as Astro islands: `FocusTimer`, `ReadingProgress`, `ExamFilter`, `StarButton`, `StarredFiles`, `SavedPapers`, `PdfViewer`, and the footer's `FooterBuildTime` and `FooterSocials`. Islands that wrap Astro-only markup, such as icons, take it as children. Scripts that must run before paint or once per visit stay in `Head.astro`.
 - **Footer refresh.** Incremental builds can reuse a page's HTML from an older build. The `FooterBuildTime` and `FooterSocials` islands fetch `/build-info.json` once per visit (`src/lib/load-build-info.ts`), which every build regenerates, and show its build time and social links.
 - **Ads.** An inline loader in `Head.astro` loads AdSense once per visit, on the first page whose `<meta name="ads">` is `on`. It fills each slot shortly before it scrolls into view, filling earlier slots first because AdSense fills them in page order. PDF pages set the meta to `off`. Slots come from `EntryListContentBlock.astro`: a short banner above the content, an in-feed slot in lists of six or more, and one at the end of papers and docs. Slots AdSense leaves unfilled are hidden.
 - **Path crumbs.** `BrowseLayout` pins the crumbs right under the fixed-height header (`--header-h`), with nothing above them. They sit at the same spot on every page, so their view transition only morphs the width instead of sliding from the old page's scroll position.
@@ -109,6 +109,8 @@ Each cache drops its oldest entries past a limit (papers keep 60). Lookups ignor
 
 Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind CLI generates `src/components/starwind/` (Astro), `src/components/starwind-svelte/` (Svelte, beta), `src/styles/starwind.css` and `src/lib/utils/starwind/`, so edit them through the CLI.
 
+Motion stays small and skips users who ask for reduced motion. Cards fade up with `animate-rise` (set `--i` for a staggered list, which also replays when the exam filter shows a card again), cards and buttons press down slightly with `active:scale-*`, and islands use Svelte transitions or the Web Animations API for state changes, such as the star pop and the timer's tomato wiggle.
+
 `src/styles/global.css` holds the site's own color tokens (`folder`, `pdf`, `doc`, `support`) and utilities for class combinations used in several places, such as `link-base` and `item-link`.
 
 The look follows [DESIGN.md](../DESIGN.md): a dotted whiteboard canvas (`bg-canvas`), pastel sticky notes (`sticky-note` with a `bg-sticky-*` color), white `paper-card`s and black pill buttons. `global.css` overrides Starwind's tokens instead of editing `starwind.css`. `src/lib/sticky.ts` picks a note color from a folder's name, so a folder keeps its color on every page. Illustrations are inline SVGs in `src/components/ui/Doodle.astro`.
@@ -120,3 +122,4 @@ Study helpers aimed at short attention spans:
 - `FocusTimer` in the header runs 25 minute focus rounds and 5 minute breaks, kept in `localStorage` so it survives page changes.
 - Folder pages group papers by year and offer exam-type filter chips.
 - Doc and post pages show a `ReadingProgress` bar.
+- Papers can be starred from their card in a folder (`StarButton`) or from the PDF viewer's toolbar. The home page lists them where the hero used to be (`StarredFiles`), with an empty card when there are none. Stars live in `localStorage` under `pyqs-starred`, so they stay on one device. `src/lib/starred.ts` holds the pure list logic and `src/lib/starred.svelte.ts` the store every island shares, synced across tabs.

@@ -78,6 +78,12 @@
       "version": "2.1.0",
       "framework": "svelte",
       "registry": "default"
+    },
+    {
+      "name": "alert-dialog",
+      "version": "2.1.0",
+      "framework": "svelte",
+      "registry": "default"
     }
   ],
   "tailwind": {
