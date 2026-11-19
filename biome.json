@@ -9,6 +9,7 @@
 		"includes": [
 			"**",
 			"!src/components/starwind",
+			"!src/components/starwind-svelte",
 			"!src/lib/utils/starwind",
 			"!src/styles/starwind.css",
 			"!starwind.config.json",

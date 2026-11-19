@@ -1,12 +1,12 @@
 ---
 import Prose from "@/components/partials/Prose.astro";
 import Doodle from "@/components/ui/Doodle.astro";
-import ReadingProgress from "@/components/widgets/ReadingProgress.astro";
+import ReadingProgress from "@/components/widgets/ReadingProgress.svelte";
 import PageLayout from "./PageLayout.astro";
 ---
 
 <PageLayout title={Astro.props.frontmatter.title}>
-	<ReadingProgress />
+	<ReadingProgress client:idle />
 	<div class="relative mx-auto max-w-3xl">
 		<Doodle
 			name="bulb"

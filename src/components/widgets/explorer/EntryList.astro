@@ -11,6 +11,7 @@ import { EXAM_TYPE_COLORS } from "@/lib/sticky";
 import DirectoryEntry from "./DirectoryEntry.astro";
 import DocEntry from "./DocEntry.astro";
 import EntryListContentBlock from "./EntryListContentBlock.astro";
+import ExamFilter from "./ExamFilter.svelte";
 import PdfEntry from "./PdfEntry.astro";
 import UploadButton from "./UploadButton.astro";
 
@@ -46,6 +47,8 @@ const adAfterFirstYear = years.length > 1 && pdfs.length >= IN_FEED_MIN;
 
 const examCounts = EXAM_TYPES.map((type) => ({
 	type,
+	label: EXAM_TYPE_LABELS[type],
+	color: EXAM_TYPE_COLORS[type],
 	count: pdfs.filter((pdf) => pdf.pyq.type === type).length,
 })).filter(({ count }) => count > 0);
 ---
@@ -93,32 +96,7 @@ const examCounts = EXAM_TYPES.map((type) => ({
 					</h2>
 				</div>
 
-				{examCounts.length > 1 && (
-					<div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter papers by exam">
-						<button
-							type="button"
-							class="pill-tag focus-ring h-9 border bg-card px-4 text-sm aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background"
-							aria-pressed="true"
-							data-exam-filter="all"
-						>
-							All
-						</button>
-						{examCounts.map(({ type, count }) => (
-							<button
-								type="button"
-								class:list={[
-									"pill-tag focus-ring h-9 border border-transparent px-4 text-sm text-sticky-ink aria-pressed:border-sticky-ink aria-pressed:shadow-soft",
-									EXAM_TYPE_COLORS[type],
-								]}
-								aria-pressed="false"
-								data-exam-filter={type}
-							>
-								{EXAM_TYPE_LABELS[type]}
-								<span class="opacity-60">{count}</span>
-							</button>
-						))}
-					</div>
-				)}
+				{examCounts.length > 1 && <ExamFilter client:visible chips={examCounts} />}
 
 				<div class="space-y-8">
 					{years.map(({ year, papers }, index) => (
@@ -147,22 +125,3 @@ const examCounts = EXAM_TYPES.map((type) => ({
 	{pdfs.length > 0 && <UploadButton title={title} path={path} />}
 </div>
 
-<script>
-	// Delegated once, so it keeps working after client-side navigation swaps the list.
-	document.addEventListener("click", (event) => {
-		const button = (event.target as Element | null)?.closest<HTMLElement>("[data-exam-filter]");
-		const list = button?.closest("[data-paper-list]");
-		if (!button || !list) return;
-
-		const filter = button.dataset.examFilter;
-		for (const chip of list.querySelectorAll<HTMLElement>("[data-exam-filter]")) {
-			chip.setAttribute("aria-pressed", String(chip === button));
-		}
-		for (const paper of list.querySelectorAll<HTMLElement>("[data-exam]")) {
-			paper.hidden = filter !== "all" && paper.dataset.exam !== filter;
-		}
-		for (const group of list.querySelectorAll<HTMLElement>("[data-year-group]")) {
-			group.hidden = !group.querySelector("[data-exam]:not([hidden])");
-		}
-	});
-</script>

@@ -3,7 +3,7 @@
 import { type CollectionEntry, render } from "astro:content";
 import Prose from "@/components/partials/Prose.astro";
 import EntryListContentBlock from "@/components/widgets/explorer/EntryListContentBlock.astro";
-import ReadingProgress from "@/components/widgets/ReadingProgress.astro";
+import ReadingProgress from "@/components/widgets/ReadingProgress.svelte";
 import { displayName, type FileEntry } from "@/lib/content/schema";
 import { addForwardSlashAndBaseUrl } from "@/utils/site-url";
 import BrowseLayout from "./BrowseLayout.astro";
@@ -27,7 +27,7 @@ const hasOwnHeading = headings.some((heading) => heading.depth === 1);
 	current={title}
 	heading={!hasOwnHeading}
 >
-	<ReadingProgress />
+	<ReadingProgress client:idle />
 	<Prose class="my-6">
 		<Content />
 	</Prose>

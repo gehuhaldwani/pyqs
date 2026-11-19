@@ -13,6 +13,7 @@
         "@iconify-json/simple-icons": "^1.2.102",
         "@iconify/utils": "^3.1.7",
         "@starwind-ui/astro": "^1.5.0",
+        "@starwind-ui/svelte": "0.3.0",
         "@tabler/icons": "^3.52.0",
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.20",
@@ -430,6 +431,8 @@
     "@starwind-ui/astro": ["@starwind-ui/astro@1.5.0", "", { "dependencies": { "@starwind-ui/runtime": "1.5.0" }, "peerDependencies": { "astro": ">=5" } }, "sha512-SXNKHXkWZdBxHYA8hAyx3fbfMsYqmiJi8Xflw7PeCNMIv1SkyttjN9Gm5wnZzdNoSHFk3QeueQrm2TBl7Qn12A=="],
 
     "@starwind-ui/runtime": ["@starwind-ui/runtime@1.5.0", "", { "dependencies": { "@floating-ui/dom": "^1.8.0", "embla-carousel": "^8.6.0" } }, "sha512-Ez3Jh7O3qQuYvNFHWN1TbG7fatDJmgfsUptdqxF0QB1P6qDsfJda06ltF7j+SA8zX2zH+f1aFfNthdxwMH+6sw=="],
+
+    "@starwind-ui/svelte": ["@starwind-ui/svelte@0.3.0", "", { "dependencies": { "@starwind-ui/runtime": "1.5.0" }, "peerDependencies": { "svelte": ">=5.29.0 <6" } }, "sha512-ykkxYTGZecBLcjBBOraT03ERkHU+xmLJMSMNwQViYugSfTlVmDdkWklEBHdZhJPSFZJ41hNL5IRxO091MYN0bw=="],
 
     "@sveltejs/acorn-typescript": ["@sveltejs/acorn-typescript@1.0.13", "", { "peerDependencies": { "acorn": "^8.9.0" } }, "sha512-wgKggnhZVL9Bfx1OaKKTrYY9BFRk6C8UAkQNUcIv1+llzYrIqy+RZm5HPKzn0NpEBvTVhTqB4kQyllZywsRBRQ=="],
 

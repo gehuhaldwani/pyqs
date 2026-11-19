@@ -2,9 +2,10 @@
 import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
 import siteConfig, { SOCIALS } from "@/configs/site.config";
-import { formatBuildTime } from "@/utils/date";
 import GithubButton from "../widgets/GithubButton.astro";
 import Doodle from "./Doodle.astro";
+import FooterBuildTime from "./FooterBuildTime.svelte";
+import FooterSocials from "./FooterSocials.svelte";
 import NavLink from "./NavLink.astro";
 
 interface Props extends HTMLAttributes<"footer"> {}
@@ -44,7 +45,7 @@ const builtAt = new Date();
 					</NavLink>
 				</p>
 
-				<div class="mt-6 flex gap-4 text-white/80" data-footer-socials>
+				<FooterSocials client:idle>
 					{
 						SOCIALS.map((social) => (
 							<NavLink href={social.url} external aria-label={social.name}>
@@ -52,7 +53,7 @@ const builtAt = new Date();
 							</NavLink>
 						))
 					}
-				</div>
+				</FooterSocials>
 				<p class="mt-6 max-w-prose text-white/70">{siteConfig.site.description}</p>
 			</div>
 			<div>
@@ -90,67 +91,12 @@ const builtAt = new Date();
 				</NavLink>
 			</p>
 			<p>
-				Last updated on <span
-					class="font-excalifont text-white/80"
-					data-footer-built-at={builtAt.toISOString()}
-					data-timezone={siteConfig.site.timezone}
-					>{formatBuildTime(builtAt, siteConfig.site.timezone)}</span
-				>
+				Last updated on <FooterBuildTime
+					client:idle
+					builtAt={builtAt.toISOString()}
+					timezone={siteConfig.site.timezone}
+				/>
 			</p>
 		</div>
 	</div>
 </footer>
-
-<script>
-	// Incremental builds can reuse this page's HTML from an older build, so the build time and socials above may be stale.
-	// This script replaces them with the values in build-info.json, which every build regenerates.
-	import { BUILD_INFO_PATH, type BuildInfo } from "@/lib/build-info";
-	import { formatBuildTime } from "@/utils/date";
-	import { addBaseUrl } from "@/utils/site-url";
-	import { EXTERNAL_LINK_ATTRIBUTES } from "@/utils/url";
-
-	let buildInfo: Promise<BuildInfo | null> | undefined;
-
-	// The client router keeps this module loaded between pages, so the file is fetched once per visit.
-	function loadBuildInfo() {
-		buildInfo ??= fetch(addBaseUrl(BUILD_INFO_PATH), { cache: "no-cache" })
-			.then((res) => (res.ok ? (res.json() as Promise<BuildInfo>) : null))
-			.catch(() => null);
-		return buildInfo;
-	}
-
-	function renderSocialLink(social: BuildInfo["socials"][number]) {
-		// Same attributes as <NavLink external> in the markup above.
-		const link = document.createElement("a");
-		link.href = social.url;
-		link.target = EXTERNAL_LINK_ATTRIBUTES.target;
-		link.rel = EXTERNAL_LINK_ATTRIBUTES.rel;
-		link.setAttribute("aria-label", social.name);
-		// The SVG markup comes from this site's own build output, so innerHTML is safe here.
-		link.innerHTML = social.svg;
-		link.firstElementChild?.setAttribute("class", "social-icon");
-		link.firstElementChild?.setAttribute("aria-hidden", "true");
-		return link;
-	}
-
-	async function refreshFooter() {
-		const info = await loadBuildInfo();
-		if (!info) return;
-
-		const builtAt = document.querySelector<HTMLElement>("[data-footer-built-at]");
-		if (builtAt && builtAt.dataset.footerBuiltAt !== info.builtAt) {
-			builtAt.dataset.footerBuiltAt = info.builtAt;
-			builtAt.textContent = formatBuildTime(
-				new Date(info.builtAt),
-				builtAt.dataset.timezone ?? "Asia/Kolkata",
-			);
-		}
-
-		const socials = document.querySelector<HTMLElement>("[data-footer-socials]");
-		if (socials && info.socials.length > 0) {
-			socials.replaceChildren(...info.socials.map(renderSocialLink));
-		}
-	}
-
-	document.addEventListener("astro:page-load", refreshFooter);
-</script>

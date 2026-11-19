@@ -26,7 +26,7 @@ Verify changes with `bun run ci` and `bun run build`. For UI changes, also check
 - Tests go in `tests/` and use `bun:test`. Bun can't resolve `astro:*` imports, so keep testable logic in modules without them, such as `src/utils/url.ts`.
 - Comments explain only what the code can't, in at most two plain sentences. Avoid em dashes and filler.
 - Use `NavLink` for links, `src/utils/site-url.ts` for site paths, and the tokens and utilities in `src/styles/global.css` for colors and repeated class sets.
-- The Starwind CLI generates `src/components/starwind/`, `src/styles/starwind.css` and `src/lib/utils/starwind/`. Change them through the CLI or the starwind-ui MCP server, not by hand.
+- The Starwind CLI generates `src/components/starwind/` (Astro), `src/components/starwind-svelte/` (Svelte, beta), `src/styles/starwind.css` and `src/lib/utils/starwind/`. Change them through the CLI or the starwind-ui MCP server, not by hand.
 
 ## Gotchas
 

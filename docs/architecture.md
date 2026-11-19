@@ -54,7 +54,7 @@ flowchart TD
 
 `PdfLayout` uses `BaseLayout` without the header and footer. It embeds the [EmbedPDF](https://www.embedpdf.com/) viewer, which loads the PDF from `raw.githubusercontent.com`, and floats the focus timer in the bottom-right corner.
 
-`PdfViewer.astro` maps the viewer's theme colors to the site's CSS variables and uses the site font. The theme option only covers colors, so a small stylesheet adopted into the viewer's open shadow root adds the dotted canvas and pill buttons. Annotations and panels are on, and panels are needed for the annotation style panel.
+`PdfViewer.svelte` maps the viewer's theme colors to the site's CSS variables and uses the site font. The theme option only covers colors, so a small stylesheet adopted into the viewer's open shadow root adds the dotted canvas and pill buttons. Annotations and panels are on, and panels are needed for the annotation style panel.
 
 The reader's annotations are saved in the browser's IndexedDB (`src/lib/annotation-store.ts`), keyed by the PDF's URL, and imported again when the paper opens. Only annotations the reader made are saved, not ones inside the PDF, so nothing doubles up. Saves run shortly after each change and right away on leaving the page. They stay on that browser and device only. Export still downloads a PDF copy with them.
 
@@ -84,7 +84,8 @@ Use the `NavLink` component for links. It adds the base path to site paths, and 
 The site uses Astro's `ClientRouter`, so page changes happen without full reloads.
 
 - **Prefetching.** Links prefetch on hover by default. Folder and doc links prefetch when they scroll into view, because their pages are light. Chrome prerenders prefetched pages because of the `clientPrerender` flag.
-- **Footer refresh.** Incremental builds can reuse a page's HTML from an older build. A script in `Footer.astro` fetches `/build-info.json`, which every build regenerates, and updates the build time and social links.
+- **Svelte islands.** Interactive widgets are Svelte 5 components hydrated as Astro islands: `FocusTimer`, `ReadingProgress`, `ExamFilter`, `SavedPapers`, `PdfViewer`, and the footer's `FooterBuildTime` and `FooterSocials`. Islands that wrap Astro-only markup, such as icons, take it as children. Scripts that must run before paint or once per visit stay in `Head.astro`.
+- **Footer refresh.** Incremental builds can reuse a page's HTML from an older build. The `FooterBuildTime` and `FooterSocials` islands fetch `/build-info.json` once per visit (`src/lib/load-build-info.ts`), which every build regenerates, and show its build time and social links.
 - **Ads.** An inline loader in `Head.astro` loads AdSense once per visit, on the first page whose `<meta name="ads">` is `on`. It fills each slot shortly before it scrolls into view, filling earlier slots first because AdSense fills them in page order. PDF pages set the meta to `off`. Slots come from `EntryListContentBlock.astro`: a short banner above the content, an in-feed slot in lists of six or more, and one at the end of papers and docs. Slots AdSense leaves unfilled are hidden.
 - **Path crumbs.** `BrowseLayout` pins the crumbs right under the fixed-height header (`--header-h`), with nothing above them. They sit at the same spot on every page, so their view transition only morphs the width instead of sliding from the old page's scroll position.
 - **Theme.** Starwind's theme script applies the stored or system theme before the page paints.
@@ -106,7 +107,7 @@ Each cache drops its oldest entries past a limit (papers keep 60). Lookups ignor
 
 ## Styling
 
-Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind CLI generates `src/components/starwind/`, `src/styles/starwind.css` and `src/lib/utils/starwind/`, so edit them through the CLI.
+Tailwind CSS 4 and [Starwind UI](https://starwind.dev) components. The Starwind CLI generates `src/components/starwind/` (Astro), `src/components/starwind-svelte/` (Svelte, beta), `src/styles/starwind.css` and `src/lib/utils/starwind/`, so edit them through the CLI.
 
 `src/styles/global.css` holds the site's own color tokens (`folder`, `pdf`, `doc`, `support`) and utilities for class combinations used in several places, such as `link-base` and `item-link`.
 

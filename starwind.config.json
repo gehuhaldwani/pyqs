@@ -66,6 +66,18 @@
       "version": "2.1.0",
       "framework": "astro",
       "registry": "default"
+    },
+    {
+      "name": "button",
+      "version": "3.0.3",
+      "framework": "svelte",
+      "registry": "default"
+    },
+    {
+      "name": "toggle-group",
+      "version": "2.1.0",
+      "framework": "svelte",
+      "registry": "default"
     }
   ],
   "tailwind": {
@@ -74,5 +86,8 @@
     "cssVariables": true
   },
   "componentDir": "src/components/starwind",
+  "componentDirs": {
+    "svelte": "src/components/starwind-svelte"
+  },
   "utilsDir": "src/lib/utils"
 }
